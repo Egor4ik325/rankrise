@@ -36,7 +36,7 @@ The goal of this website is to help users choose the best product in their case.
 
 - Answer name, website link, images, videos (links)
 
-- Answer rank (rating) calculation
+- Answer rank (rating) calculation/*algorithm*
 
 - Questing/answer search
 
@@ -96,8 +96,10 @@ The goal of this website is to help users choose the best product in their case.
 
 **Roadmap**:
 
-- [ ] dockerize project + PostgreSQL (setup dev environment)
+- [x] dockerize project + PostgreSQL (setup dev environment)
 
-- [ ] migrate + custom user model
+- [x] migrate + custom user model
 
 - [ ] authentication endpoints
+
+- [ ] API documentation
