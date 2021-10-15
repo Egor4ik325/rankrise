@@ -11,6 +11,8 @@ easy-thumbnails = "*"
 djangorestframework-simplejwt = "*"
 djangorestframework = "*"
 dj-rest-auth = "*"
+pyyml = "*"
+uritemplate = "*"
 
 [dev-packages]
 black = "*"

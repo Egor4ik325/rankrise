@@ -19,8 +19,11 @@ pillow==8.4.0; python_version >= '3.6'
 psycopg2-binary==2.9.1
 pyjwt==2.2.0; python_version >= '3.6'
 pytz==2021.3
+pyyaml==6.0; python_version >= '3.6'
+pyyml==0.0.2
 reportlab==3.6.2; python_version >= '3.6' and python_version < '4'
 sqlparse==0.4.2; python_version >= '3.5'
 svglib==1.1.0; python_version >= '3'
 tinycss2==1.1.0; python_version >= '3.6'
+uritemplate==4.1.1
 webencodings==0.5.1
