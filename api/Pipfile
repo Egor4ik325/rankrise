@@ -8,6 +8,9 @@ django = "*"
 psycopg2-binary = "*"
 django-environ = "*"
 easy-thumbnails = "*"
+djangorestframework-simplejwt = "*"
+djangorestframework = "*"
+dj-rest-auth = "*"
 
 [dev-packages]
 black = "*"

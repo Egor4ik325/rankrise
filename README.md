@@ -56,9 +56,11 @@ The goal of this website is to help users choose the best product in their case.
 
 **Plan**:
 
-- project boilerplate setup
+- Project development setup
 
-- users & API authentication/authorization
+- Authentication/Authorization
+
+- Documentation
 
 - CRUD components API
   
@@ -78,7 +80,7 @@ The goal of this website is to help users choose the best product in their case.
 
 - dj_rest_auth, pytest/coverage, Swagger, django_dotenv
 
-- black, pylint, isort
+- black, pylint, isort, rope
 
 - AWS/Heroku, Docker, Compose, Github, CI/CD
 
@@ -100,6 +102,8 @@ The goal of this website is to help users choose the best product in their case.
 
 - [x] migrate + custom user model
 
-- [ ] authentication endpoints
+- [x] move from session to JWT authentication
 
-- [ ] API documentation
+- [x] authentication endpoints
+
+- [ ] API documentation generation

@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'easy_thumbnails',
+    'rest_framework',
+    'dj_rest_auth',
 
     'authentication',
 ]
@@ -142,3 +144,16 @@ AUTH_USER_MODEL = "authentication.CustomUser"
 
 MEDIA_ROOT = BASE_DIR / 'media/'
 MEDIA_URL = '/media/'
+
+REST_FRAMEWORK = {
+   "DEFAULT_AUTHENTICATION_CLASSES": [
+       "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+   ],
+}
+
+# Enable JWT authentication is dj-rest-auth
+REST_USE_JWT = True
+
+# JWT token names
+JWT_AUTH_COOKIE = "rankrise_token"
+JWT_AUTH_REFRESH_COOKIE = "rankrise_refresh_token"
