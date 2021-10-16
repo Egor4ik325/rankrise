@@ -62,6 +62,8 @@ The goal of this website is to help users choose the best product in their case.
 
 - Documentation
 
+- Automated testing + test coverage
+
 - CRUD components API
   
   - Model
@@ -106,4 +108,6 @@ The goal of this website is to help users choose the best product in their case.
 
 - [x] authentication endpoints
 
-- [ ] API documentation generation
+- [x] API documentation generation
+
+- [x] Automated testing

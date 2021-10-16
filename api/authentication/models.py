@@ -3,6 +3,7 @@ from django.utils.translation import gettext_lazy as _
 from easy_thumbnails.fields import ThumbnailerImageField
 
 
+# TODO: inherit AbstractBaseUser
 class CustomUser(models.AbstractUser):
     first_name = None
     last_name = None

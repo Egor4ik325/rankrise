@@ -13,6 +13,7 @@ djangorestframework = "*"
 dj-rest-auth = "*"
 pyyml = "*"
 uritemplate = "*"
+pytest-django = "*"
 
 [dev-packages]
 black = "*"
