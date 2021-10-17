@@ -51,6 +51,7 @@ def admin_api_client(authenticate_api_client, test_admin):
 def create_question():
     def make_question(**kwargs):
         serializer = QuestionSerializer(data=kwargs)
+        serializer.is_valid(raise_exception=True)
         return serializer.save()
 
     return make_question
@@ -63,7 +64,7 @@ def list_url():
 
 @pytest.fixture
 def detail_url():
-    return lambda *args: reverse("question-detail", *args)
+    return lambda *args: reverse("question-detail", args=args)
 
 
 def test_user_can_ask_question_authenticated(user_api_client, list_url):
@@ -110,8 +111,8 @@ def test_unauth_can_retrieve_question(create_question, api_client, detail_url):
 def test_admin_delete_user(create_question, admin_api_client, detail_url):
     q = create_question(title="What is the test title?")
     response = admin_api_client.delete(detail_url(q.pk))
-    assert response.status_code == status.HTTP_200_OK
-    with pytest.raises(Question.DoesNotExists):
+    assert response.status_code == status.HTTP_204_NO_CONTENT
+    with pytest.raises(Question.DoesNotExist):
         Question.objects.get(pk=q.pk)
 
 
@@ -119,7 +120,7 @@ def test_admin_delete_user(create_question, admin_api_client, detail_url):
 def test_user_delete_user(create_question, user_api_client, detail_url):
     q = create_question(title="What is the test title?")
     response = user_api_client.delete(detail_url(q.pk))
-    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    assert response.status_code == status.HTTP_403_FORBIDDEN
 
 
 @pytest.mark.django_db
@@ -136,4 +137,4 @@ def test_user_update_user(create_question, user_api_client, detail_url):
     q = create_question(title="What is the test title?")
     update_title = "New question title?"
     response = user_api_client.patch(detail_url(q.pk), {"title": update_title})
-    assert response.status_code == status.HTTP_401_UNAUTHORIZED
+    assert response.status_code == status.HTTP_403_FORBIDDEN
