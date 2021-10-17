@@ -28,7 +28,7 @@ The goal of this website is to help users choose the best product in their case.
 
 - Product/service search/suggesting
 
-- Questing tagging/categories
+- Questing tagging/categories (categorization)
 
 - Pros/Cons answer rating
 
@@ -43,6 +43,10 @@ The goal of this website is to help users choose the best product in their case.
 - API request throttling
 
 - API testing & documenting
+
+- Reporting feature (report questions/products/answers/comments)
+
+- Question/product throttling/ban
 
 **Similar websites**:
 
@@ -111,3 +115,21 @@ The goal of this website is to help users choose the best product in their case.
 - [x] API documentation generation
 
 - [x] Automated testing
+
+- [ ] Questioning feature
+
+## Question
+
+Questions are the core of API.
+
+API:
+
+- Users (authenticated) can only ask questions. There should be some kind of throttling to prevent users from spamming a lot of questions. 
+
+- Any one can only list and retrieve questions.
+
+- Only admins can delete or update questions (maybe based on reports).
+
+Models:
+
+- Questions aren't bind to any user (not owned). A question is just a small text around 100 characters which has some (category) and ask_time. Question should be looked up by primary key (integer id or character slug).

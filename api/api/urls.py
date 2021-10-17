@@ -6,7 +6,7 @@ urlpatterns = [
     path(
         "schema/",
         get_schema_view(
-            title="Product ranking API",
+            title="Q&A recommendation API",
             description="Get user recommendations for asked questions.",
             version="1.0.0",
         ),
