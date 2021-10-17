@@ -116,7 +116,7 @@ The goal of this website is to help users choose the best product in their case.
 
 - [x] Automated testing
 
-- [ ] Questioning feature
+- [x] Questioning feature
 
 ## Question
 
@@ -129,6 +129,14 @@ API:
 - Any one can only list and retrieve questions.
 
 - Only admins can delete or update questions (maybe based on reports).
+
+API:
+
+- list, retrieve - unauthenticated users
+
+- create - authenticated users
+
+- update, destroy - authenticated staff users
 
 Models:
 

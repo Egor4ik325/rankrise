@@ -96,11 +96,11 @@
         },
         "django-environ": {
             "hashes": [
-                "sha256:20a5a3570333d3718c0a7ca834290ef850e2b96237ae4ca0a05823b3a0cb3363",
-                "sha256:b99bd3704221f8b717c8517d8146e53fdee509d9e99056be560060003b92213e"
+                "sha256:e52b3cd0fde08afe6a3367d125cda43a0bf2a0166e2797a31df1a826521dde34",
+                "sha256:f77f8890d4cdaf53c3f233bc4367c219d3e8f15073959f8decffc72fd64321c2"
             ],
             "index": "pypi",
-            "version": "==0.7.0"
+            "version": "==0.8.0"
         },
         "djangorestframework": {
             "hashes": [
@@ -120,10 +120,11 @@
         },
         "easy-thumbnails": {
             "hashes": [
-                "sha256:a0bca40773aad6e84449a552410e82a6787433583321ea63bcbbe3d71a0c9c51"
+                "sha256:51dee269f7abe668cdb94cc92a4d09f21003eb2ad79661284f0e4fe5f7f28c4f",
+                "sha256:9334f5cd0a3a497c02e5384ba5978b91d9aa5e230f6b531d6a2b3afbd4524480"
             ],
             "index": "pypi",
-            "version": "==2.8rc0"
+            "version": "==2.8rc1"
         },
         "iniconfig": {
             "hashes": [

@@ -21,4 +21,5 @@ urlpatterns = [
         name="swagger_ui",
     ),
     path("auth/", include("authentication.urls")),
+    path("", include("question.urls")),
 ]
