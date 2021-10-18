@@ -4,7 +4,7 @@ The goal of this website is to help users choose the best product in their case.
 
 **Idea**:
 
-- Q/A website
+- Q/A website (question answer/solution/option/recommendation)
 
 - Voting platform
 
@@ -12,11 +12,15 @@ The goal of this website is to help users choose the best product in their case.
 
 - Ranking platform
 
+- Suggesting platform
+
 - Comparison website
 
 - Alternative searching platform
 
 - Product rating platform
+
+- Community centered
 
 **Features**:
 
@@ -28,7 +32,9 @@ The goal of this website is to help users choose the best product in their case.
 
 - Product/service search/suggesting
 
-- Questing tagging/categories (categorization)
+- Question tags/categories (categorization)
+
+- Multilayer categories
 
 - Pros/Cons answer rating
 
@@ -47,6 +53,20 @@ The goal of this website is to help users choose the best product in their case.
 - Reporting feature (report questions/products/answers/comments)
 
 - Question/product throttling/ban
+
+- Follow question options/last update
+
+- Question comments
+
+- Question sharing/linking
+
+- Option score calculation
+
+- Product community specs (+proc/concomments)
+
+- Product price (free, paid, open-source)
+
+- Recommendation community agreement
 
 **Similar websites**:
 
@@ -102,6 +122,12 @@ The goal of this website is to help users choose the best product in their case.
 
 - Debug Django container
 
+- Throttling
+
+- Pagination
+
+- Search
+
 **Roadmap**:
 
 - [x] dockerize project + PostgreSQL (setup dev environment)
@@ -117,6 +143,12 @@ The goal of this website is to help users choose the best product in their case.
 - [x] Automated testing
 
 - [x] Questioning feature
+
+- [x] Test-driven development
+
+- [ ] Product CRUD
+
+- [ ] Search
 
 ## Question
 
@@ -141,3 +173,57 @@ API:
 Models:
 
 - Questions aren't bind to any user (not owned). A question is just a small text around 100 characters which has some (category) and ask_time. Question should be looked up by primary key (integer id or character slug).
+
+## Product
+
+Product represent some product or service that can be recommended as an option to specific question. Usually it is online/software or Internet service/product. S
+
+Model (database representation):
+
+- id
+
+- name (title, help text: you can not change name after)
+
+- slug (automatically based on name)
+
+- description
+
+- images (links or *filesystem storage*: Django package)
+
+- product website link
+
+- price/cost (*choices* from: open source, free, paid)
+
+Validation/Model:
+
+- id is a auto incrementing primary key (model)
+
+- product name and slug must be unique
+
+- price should contain values only from choices
+
+- website link must be valid URL
+
+- description can be blank
+
+- slug (URI) must not update after name update
+
+- slug can not be changed in serializer/API
+
+- name can not be blank
+
+- description, website can be blank
+
+- price default set to free (model)
+
+- name must be <= 50 characters
+
+- images must have image media type
+
+API permissions:
+
+- retrieve, list: unauthenticated
+
+- create: authenticated
+
+- delete: staff
