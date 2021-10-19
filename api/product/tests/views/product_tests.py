@@ -29,38 +29,46 @@ def setup_data(create_product):
 
 
 @pytest.fixture
-def act_list():
-    return lambda client, setup_data: self.client.get(reverse(self.list_url_name))
+def product_list_url_name():
+    return "product-list"
 
 
-def test_retrieve():
-    return lambda client, setup_data: self.client.get(setup_data[0].get_absolute_url())
+@pytest.fixture
+def act_list(product_list_url_name):
+    return lambda client, setup_data: client.get(reverse(product_list_url_name))
 
 
-def test_create():
-    return lambda client, setup_data: self.client.post(
-        reverse(self.list_url_name), {"name": "C++"}
+@pytest.fixture
+def act_retrieve():
+    return lambda client, setup_data: client.get(setup_data[0].get_absolute_url())
+
+
+@pytest.fixture
+def act_create(product_list_url_name):
+    return lambda client, setup_data: client.post(
+        reverse(product_list_url_name), {"name": "C++"}
     )
 
 
-def test_update():
-    return lambda client, setup_data: self.client.put(
+@pytest.fixture
+def act_update():
+    return lambda client, setup_data: client.put(
         setup_data[0].get_absolute_url(),
         {"name": "Ruby", "description": "Improved Python"},
     )
 
 
-def test_partial_update():
-    return lambda client, setup_data: self.client.patch(
+@pytest.fixture
+def act_partial_update():
+    return lambda client, setup_data: client.patch(
         setup_data[0].get_absolute_url(),
         {"name": "Ruby"},
     )
 
 
-def test_delete():
-    return lambda client, setup_data: self.client.delete(
-        setup_data[0].get_absolute_url()
-    )
+@pytest.fixture
+def act_delete():
+    return lambda client, setup_data: client.delete(setup_data[0].get_absolute_url())
 
 
 class TestUnAuthenticated:

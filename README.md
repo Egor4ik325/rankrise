@@ -176,9 +176,7 @@ Models:
 
 ## Product
 
-Product represent some product or service that can be recommended as an option to specific question. Usually it is online/software or Internet service/product. S
-
-Model (database representation):
+Product represent some product or service that can be recommended as an option to specific question. Usually it is online/software or Internet service/product. 
 
 - id
 
@@ -198,7 +196,7 @@ Validation/Model:
 
 - id is a auto incrementing primary key (model)
 
-- product name and slug must be unique
+- name and slug must be unique
 
 - price should contain values only from choices
 
@@ -208,7 +206,7 @@ Validation/Model:
 
 - slug (URI) must not update after name update
 
-- slug can not be changed in serializer/API
+- name and slug can not be changed in serializer/API
 
 - name can not be blank
 
@@ -220,6 +218,14 @@ Validation/Model:
 
 - images must have image media type
 
+URLs:
+
+- Products should be available under /products/ URL
+
+Serialization:
+
+- Products should include images objects
+
 API permissions:
 
 - retrieve, list: unauthenticated
@@ -227,3 +233,25 @@ API permissions:
 - create: authenticated
 
 - delete: staff
+
+### Product image
+
+Image of the product, has the have API permissions as product.
+
+Model:
+
+- image field
+  
+  - 300x200
+  
+  - JPEG
+  
+  - 80% source quality
+
+Permissions:
+
+- Same as models
+
+URL:
+
+- Image will be available under /products/images/

@@ -1,4 +1,6 @@
 import pytest
+from PIL import Image
+from pathlib import Path
 from django.core.files.uploadedfile import InMemoryUploadedFile, SimpleUploadedFile
 from django.urls import reverse
 from product.models import PriceChoices, Product, ProductImage
@@ -8,12 +10,14 @@ from product.models import PriceChoices, Product, ProductImage
 def upload_test_image():
     """Create invalid in-memory image with image media type."""
     return SimpleUploadedFile(
-        "image.png", b"some invalid image content", content_type="image/png"
+        "image.png", b"some random image content", content_type="image/png"
     )
 
 
+@pytest.fixture
 def load_upload_file():
-    pass
+    with open(Path(__file__) / "media/sheep.png") as i:
+        return SimpleUploadedFile("sheep.png", i.read(), content_type="image/png")
 
 
 def test_can_create_product_with_fields():
@@ -31,17 +35,25 @@ def test_can_create_product_with_fields():
     assert p.price == PriceChoices.FREE
 
 
-def test_can_create_product_with_images(upload_test_image):
+@pytest.fixture
+def test_product():
     p = Product.objects.create(
         name="Python",
         description="Modern programming language",
         website="https://python.org",
         price=PriceChoices.OPEN_SOURCE,
     )
-    p = Product.objects.get(pk=p.pk)
-    i = ProductImage.objects.create(image=upload_test_file, product=p)
+    return Product.objects.get(pk=p.pk)
+
+
+def test_can_create_product_with_images(test_product, load_upload_file):
+    p = test_product
+    i = ProductImage.objects.create(image=load_upload_file, product=p)
     i = ProductImage.objects.get(pk=i.pk)
 
+    with open(i.image) as image:
+        assert image.format.lower() == "jpeg"
+        assert image.size == 300, 200
     assert p.images.first().pk == i.pk
 
 

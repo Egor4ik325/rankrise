@@ -1,1 +1,1 @@
-pytest_plugins = "rankrise.fixtures"
+# pytest_plugins = "rankrise.fixtures"

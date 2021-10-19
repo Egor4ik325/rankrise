@@ -1,6 +1,7 @@
 import pytest
+from django.core.files.uploadedfile import SimpleUploadedFile
 from product.models import PriceChoices, Product
-from product.serializers import ProductSerializer
+from product.serializers import ProductSerializer, ProductImageSerializer
 
 
 @pytest.fixture
@@ -11,6 +12,11 @@ def test_data():
         "website": "https://heroku.com",
         "price": PriceChoices.PAID,
     }
+
+
+def load_upload_file():
+    with open(Path(__file__) / "media/sheep.png") as i:
+        return SimpleUploadedFile("sheep.png", i.read(), content_type="image/png")
 
 
 def test_is_valid(test_data):
@@ -62,6 +68,7 @@ def test_name_greater_50(test_data):
     test_data["name"] = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     assert not ProductSerializer(data=test_data).is_valid()
 
+
 @pytest.mark.django_db
 def test_name_not_editable(test_data):
     serializer = ProductSerializer(data=test_data)
@@ -72,3 +79,14 @@ def test_name_not_editable(test_data):
     serializer.is_valid()
     product = serializer.save()
     assert product.name != "AWS"
+
+
+@pytest.fixture
+def text_file():
+    return SimpleUploadedFile("test.txt", b"Some test text", content_type="text/plain")
+
+
+def test_image_format(test_data, text_file):
+    p = Product.objects.create(**test_data)
+    i = ProductImageSerializer(data={"image": text_file, "product": p})
+    assert not i.is_valid()
