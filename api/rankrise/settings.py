@@ -47,10 +47,13 @@ INSTALLED_APPS = [
     'easy_thumbnails',
     'rest_framework',
     'dj_rest_auth',
+    'autoslug',
+    'imagekit',
 
     'api',
     'authentication',
     'question',
+    'product',
 ]
 
 MIDDLEWARE = [

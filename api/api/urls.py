@@ -22,4 +22,5 @@ urlpatterns = [
     ),
     path("auth/", include("authentication.urls")),
     path("", include("question.urls")),
+    path("", include("product.urls")),
 ]

@@ -15,6 +15,9 @@ pyyml = "*"
 uritemplate = "*"
 pytest-django = "*"
 coverage = "*"
+django-autoslug = "*"
+pillow = "*"
+django-imagekit = "*"
 
 [dev-packages]
 black = "*"
