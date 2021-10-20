@@ -18,6 +18,7 @@ coverage = "*"
 django-autoslug = "*"
 pillow = "*"
 django-imagekit = "*"
+django-filter = "*"
 
 [dev-packages]
 black = "*"

@@ -1,4 +1,5 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins, filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 from .models import Product, ProductImage
 from .permissions import CommunityPermission
@@ -10,15 +11,19 @@ class NonUpdatableViewSet(
     mixins.RetrieveModelMixin,
     mixins.CreateModelMixin,
     mixins.DestroyModelMixin,
-    GenericViewSet,
+    viewsets.GenericViewSet,
 ):
     pass
 
 
 class ProductViewSet(NonUpdatableViewSet):
+    lookup_field = "slug"
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [CommunityPermission]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    search_fields = ["name", "@description"]
+    filterset_fields = ["price"]
 
 
 class ProductImageViewSet(NonUpdatableViewSet):

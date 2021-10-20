@@ -21,7 +21,7 @@ class Product(models.Model):
     )
     slug = AutoSlugField(_("slug"), populate_from="name", unique=True, editable=False)
     description = models.CharField(_("description"), max_length=300, blank=True)
-    website = models.URLField(_("website url"), max_length=200)
+    website = models.URLField(_("website url"), max_length=200, blank=True)
     price = models.CharField(
         _("price"),
         max_length=1,
