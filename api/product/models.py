@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from django.urls import reverse
 from autoslug import AutoSlugField
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
@@ -16,7 +17,7 @@ class Product(models.Model):
         _("name"),
         max_length=50,
         unique=True,
-        editable=False,
+        blank=False,
         help_text=_("The name of the product is set only once when creating"),
     )
     slug = AutoSlugField(_("slug"), populate_from="name", unique=True, editable=False)
@@ -59,7 +60,7 @@ class ProductImage(models.Model):
         verbose_name_plural = _("product images")
 
     def __str__(self):
-        return self.name
+        return self.image.name
 
     def get_absolute_url(self):
         return reverse("productimage-detail", kwargs={"pk": self.pk})

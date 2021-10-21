@@ -2,6 +2,7 @@ __pycache__
 *.pyc
 *.sqlite3
 .env
+.pytest_cache
 
 # coverage
 htmlcov/
