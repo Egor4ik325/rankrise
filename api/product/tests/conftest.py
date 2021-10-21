@@ -1,6 +1,7 @@
 import pytest
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
+from product.serializers import ProductSerializer
 
 
 @pytest.fixture
@@ -45,3 +46,18 @@ def authenticated_api_client(create_api_client, test_user):
 @pytest.fixture
 def staff_api_client(create_api_client, test_admin):
     return create_api_client(test_admin)
+
+
+@pytest.fixture
+def create_product():
+    def inner(**kwargs):
+        serializer = ProductSerializer(data=kwargs)
+        serializer.is_valid(raise_exception=True)
+        return serializer.save()
+
+    return inner
+
+
+@pytest.fixture
+def product_list_url_name():
+    return "product-list"

@@ -11,26 +11,11 @@ from product.models import Product
 
 
 @pytest.fixture
-def create_product():
-    def inner(**kwargs):
-        serializer = ProductSerializer(data=kwargs)
-        serializer.is_valid()
-        return serializer.save()
-
-    return inner
-
-
-@pytest.fixture
 def setup_data(create_product):
     p = create_product(name="Python")
     p2 = create_product(name="JavaScript")
     p3 = create_product(name="Go")
     return [p, p2, p3]
-
-
-@pytest.fixture
-def product_list_url_name():
-    return "product-list"
 
 
 @pytest.fixture
@@ -82,7 +67,7 @@ class TestUnAuthenticated:
     def test_retrieve(self, setup_data, act_retrieve, anonymous_api_client):
         response = act_retrieve(anonymous_api_client, setup_data)
         assert response.status_code == status.HTTP_200_OK
-        assert response.data['pk'] == setup_data[0].pk
+        assert response.data["pk"] == setup_data[0].pk
 
     @pytest.mark.django_db
     def test_create(self, setup_data, act_create, anonymous_api_client):
@@ -95,9 +80,7 @@ class TestUnAuthenticated:
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
     @pytest.mark.django_db
-    def test_partial_update(
-        self, setup_data, act_partial_update, anonymous_api_client
-    ):
+    def test_partial_update(self, setup_data, act_partial_update, anonymous_api_client):
         response = act_partial_update(anonymous_api_client, setup_data)
         assert response.status_code == status.HTTP_401_UNAUTHORIZED
 
