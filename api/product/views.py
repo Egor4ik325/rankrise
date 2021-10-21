@@ -4,6 +4,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import Product, ProductImage
 from .permissions import CommunityPermission
 from .serializers import ProductSerializer, ProductImageSerializer
+from .pagination import ProductPagination
 
 
 class NonUpdatableViewSet(
@@ -24,9 +25,11 @@ class ProductViewSet(NonUpdatableViewSet):
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ["name", "@description"]
     filterset_fields = ["price"]
+    pagination_class = ProductPagination
 
 
 class ProductImageViewSet(NonUpdatableViewSet):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
     permission_classes = [CommunityPermission]
+    pagination_class = ProductPagination
