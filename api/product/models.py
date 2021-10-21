@@ -60,7 +60,7 @@ class ProductImage(models.Model):
         verbose_name_plural = _("product images")
 
     def __str__(self):
-        return self.image.name
+        return f"{self.product.name} - {self.image.name}"
 
     def get_absolute_url(self):
         return reverse("productimage-detail", kwargs={"pk": self.pk})
