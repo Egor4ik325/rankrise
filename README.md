@@ -146,9 +146,9 @@ The goal of this website is to help users choose the best product in their case.
 
 - [x] Test-driven development
 
-- [ ] Product CRUD
+- [x] Product CRUD
 
-- [ ] Search
+- [ ] Filtering API
 
 ## Question
 
@@ -254,4 +254,34 @@ Permissions:
 
 URL:
 
-- Image will be available under /products/images/
+- Image will be available under /products/images/ (validate product slug != images)
+
+## Filtering
+
+API should also provide ability to make filtered queries:
+
+- filter by equal, greater, etc.
+
+- search query
+
+- ordering of the result
+
+- pagination of large amount of data
+
+**Question**:
+
+- search by question title (case insensitive partial match)
+
+- order by latest/oldest ask time (default=latest)
+
+- paginate questions by 20
+
+**Product**:
+
+- search word contains in product name
+
+- full-text search by product description
+
+- filter products by price
+
+- paginate by 10

@@ -43,12 +43,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.postgres',
 
     'easy_thumbnails',
     'rest_framework',
     'dj_rest_auth',
     'autoslug',
     'imagekit',
+    'django_filters',
 
     'api',
     'authentication',
