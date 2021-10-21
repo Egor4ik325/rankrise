@@ -1,3 +1,8 @@
 {
-    "python.pythonPath": "/Users/egorzorin/.local/share/virtualenvs/api-9_QE4e67/bin/python"
+    "python.pythonPath": "/Users/egorzorin/.local/share/virtualenvs/api-9_QE4e67/bin/python",
+    "python.testing.pytestArgs": [
+        "api"
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true
 }
