@@ -148,7 +148,15 @@ The goal of this website is to help users choose the best product in their case.
 
 - [x] Product CRUD
 
-- [ ] Filtering API
+- [x] Filtering API
+
+- [ ] Option
+
+- [ ] Recommendation (voting)
+
+- [ ] Ranking
+
+- [ ] Reporting
 
 ## Question
 
@@ -285,3 +293,33 @@ API should also provide ability to make filtered queries:
 - filter products by price
 
 - paginate by 10
+
+## Options
+
+Community can suggests options which are products recommended to specific question.
+
+Model:
+
+- option connects together question and product (answer to question).
+
+Permissions:
+
+- options follow the same community rules, you can only get and create them. 
+
+- admins can delete suggested options if they are not appropriate.
+
+Relations:
+
+- If question is deleted, option should be deleted also (options).
+
+- If product is deleted, option FK to product should be set to NULL (recommendations).
+
+URL design:
+
+- Options will be nested up on question or product (`/questions/<question_id>/options/<option_id>/`)
+
+Requirements:
+
+- Pagination by 10. Ordering by rank (descending).
+
+- Question and product foreign keys should be unique together.

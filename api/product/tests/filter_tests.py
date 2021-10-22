@@ -37,6 +37,7 @@ def test_filter_by_price(setup_db, api_client, product_list_url_name):
     assert response.data["count"] == 3
 
 
+# TODO: mark skip (PostgreSQL required)
 @pytest.mark.django_db
 def test_description_full_search(setup_db, api_client, product_list_url_name):
     response = api_client.get(reverse(product_list_url_name), {"search": "Google"})

@@ -14,7 +14,7 @@ def upload_test_image():
     )
 
 
-@pytest.fixture
+@pytest.fixture(scope="module")
 def load_upload_file():
     with open(Path(__file__).parent / "media/sheep.png", "rb") as i:
         return SimpleUploadedFile("sheep.png", i.read(), content_type="image/png")
