@@ -28,19 +28,9 @@ def option_data(q, p):
 
 
 @pytest.fixture
-def max_question_id():
-    return Question.objects.aggregate(Max("id"))["id__max"]
-
-
-@pytest.fixture
-def max_product_id():
-    return Product.objects.aggregate(Max("id"))["id__max"]
-
-
-@pytest.fixture
 def reverse_list():
     return lambda **kwargs: reverse(
-        "option-list", kwargs={"question_id": kwargs["question_id"]}
+        "option-list", kwargs={"question_pk": kwargs["question_pk"]}
     )
 
 
@@ -48,11 +38,11 @@ def reverse_list():
 def reverse_detail():
     return lambda **kwargs: reverse(
         "option-detail",
-        kwargs={"question_id": kwargs["question_id"], "option_id": kwargs["option_id"]},
+        kwargs={"question_pk": kwargs["question_pk"], "pk": kwargs["pk"]},
     )
 
 
-@pytest.fixture(scope=["function"])
+@pytest.fixture(scope="function")
 def setup_database():
     q1 = Question.objects.create(title="What is the best game?")
     q2 = Question.objects.create(title="What is the best operaing system?")
@@ -81,3 +71,13 @@ def last_question(setup_database):
 @pytest.fixture
 def option_count(first_question):
     return first_question.options.count()
+
+
+@pytest.fixture
+def max_question_id(setup_database):
+    return Question.objects.aggregate(Max("id"))["id__max"]
+
+
+@pytest.fixture
+def max_product_id(setup_database):
+    return Product.objects.aggregate(Max("id"))["id__max"]

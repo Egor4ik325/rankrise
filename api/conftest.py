@@ -1,5 +1,6 @@
 import pytest
 from rest_framework.test import APIClient
+from rest_framework_simplejwt.tokens import RefreshToken
 
 
 @pytest.fixture
@@ -17,7 +18,7 @@ def test_user(django_user_model):
 @pytest.fixture
 def test_admin(django_user_model):
     return django_user_model.objects.create_user(
-        username="admin", email="admin@email.com", password="admin", is_staff=true
+        username="admin", email="admin@email.com", password="admin", is_staff=True
     )
 
 
