@@ -19,6 +19,7 @@ django-autoslug = "*"
 pillow = "*"
 django-imagekit = "*"
 django-filter = "*"
+drf-nested-routers = "*"
 
 [dev-packages]
 black = "*"

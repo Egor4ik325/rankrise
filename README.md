@@ -150,13 +150,15 @@ The goal of this website is to help users choose the best product in their case.
 
 - [x] Filtering API
 
-- [ ] Option
+- [x] Option
 
 - [ ] Recommendation (voting)
 
 - [ ] Ranking
 
 - [ ] Reporting
+
+- [ ] Product dataset
 
 ## Question
 
@@ -314,7 +316,7 @@ Relations:
 
 - If product is deleted, option FK to product should be set to NULL (recommendations).
 
-URL design:
+Routers (URL design):
 
 - Options will be nested up on question or product (`/questions/<question_id>/options/<option_id>/`)
 
