@@ -2,6 +2,8 @@
 
 The goal of this website is to help users choose the best product in their case.
 
+The technology goal is to design best-practice modern RESTful API with Django.
+
 **Idea**:
 
 - Q/A website (question answer/solution/option/recommendation)
@@ -62,11 +64,13 @@ The goal of this website is to help users choose the best product in their case.
 
 - Option score calculation
 
-- Product community specs (+proc/concomments)
+- Product community specs (+proc/con comments)
 
 - Product price (free, paid, open-source)
 
 - Recommendation community agreement
+
+- Vote against question, product, option, argument, etc.
 
 **Similar websites**:
 
@@ -100,7 +104,7 @@ The goal of this website is to help users choose the best product in their case.
   
   - Automated testing
 
-**Technology stack**:
+**Technology stack** (technologies involved in the project):
 
 - Python, Django, Django REST Framework, PostgreSQL
 
@@ -114,19 +118,19 @@ The goal of this website is to help users choose the best product in their case.
 
 - OpenAPI, Swagger
 
-- Searching in database technology
-
 - JWT authentication
 
 - Test driven development
 
-- Debug Django container
-
-- Throttling
-
 - Pagination
 
-- Search
+- Database search
+
+Nice to have:
+
+- Throttling
+- Caching
+- Container debugging
 
 **Roadmap**:
 
@@ -156,9 +160,13 @@ The goal of this website is to help users choose the best product in their case.
 
 - [ ] Ranking
 
-- [ ] Reporting
-
 - [ ] Product dataset
+
+- [ ] Categorization
+
+- [ ] Argumenting
+
+- [ ] Reporting
 
 ## Question
 
@@ -325,3 +333,43 @@ Requirements:
 - Pagination by 10. Ordering by rank (descending).
 
 - Question and product foreign keys should be unique together.
+
+## Recommendation
+
+Voting about suggested options is in the core of recommendation system.
+
+Design:
+
+- recommend or not recommend this option (upvote or downvote)
+
+- write Pro/Con argument about option usage, share opinion
+
+- like (upvote/downvote) top arguments
+
+- comment on argument comments
+
+- options will be ranked based on user votes and arguments
+
+**Vote**:
+
+- Vote should connect option and user (+ vote time)
+
+- Vote option and user data are write-only
+
+- Users can only once vote against specific option (unique together)
+
+- Vote can be either up or down (and can be switched after)
+
+- If option is deleted all votes should be too, if user is deleted all votes should stay (and set user to NULL)
+
+- Votes will be available under `*/options/<option_id>/` route
+
+- Vote displaying should be anonymous (not voter information returned) only vote rate information (up/down) (*write-only*).
+
+- Unauthenticated users can read/list, authenticated can also create, update and delete votes (admin the same).
+
+- Option should have convenient calculate fields (attributes: properties/methods.) or manager to get upvotes or downvotes count.
+
+- Filter option votes based on up or down status (rate). Like `?up=True` or `?up=False`
+
+- No API pagination for votes
