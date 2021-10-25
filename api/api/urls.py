@@ -24,4 +24,5 @@ urlpatterns = [
     path("", include("question.urls")),
     path("", include("product.urls")),
     path("", include("option.urls")),
+    path("", include("vote.routers")),
 ]

@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'question',
     'product',
     'option',
+    'vote',
 ]
 
 MIDDLEWARE = [
