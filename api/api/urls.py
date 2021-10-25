@@ -13,7 +13,7 @@ urlpatterns = [
         name="openapi_schema",
     ),
     path(
-        "swagger-ui/",
+        "ui/",
         TemplateView.as_view(
             template_name="swagger-ui.html",
             extra_context={"schema_url": "openapi_schema"},
