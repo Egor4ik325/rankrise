@@ -7,11 +7,11 @@ from vote.models import Vote
 @pytest.mark.django_db
 class TestFiedls:
     def test_create(self, o, u, v):
-        v = v.objects.get(pk=v.pk)
+        v = Vote.objects.get(pk=v.pk)
         assert v.option.pk == o.pk
         assert v.user.pk == u.pk
         assert v.up == True
-        assert v.vote_time > timezone.now()
+        assert v.vote_time < timezone.now()
 
     class TestOnDelete:
         def test_option_cascade(self, o, v):
@@ -34,5 +34,10 @@ class TestFiedls:
             u.votes.get(pk=v.pk)
 
 
+@pytest.mark.django_db
 def test_absolute_name(v, detail_url):
     assert v.get_absolute_url() == detail_url
+
+
+def test_ordering():
+    pass

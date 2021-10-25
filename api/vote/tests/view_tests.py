@@ -23,7 +23,7 @@ class TestPermission:
             assert delete_response.status_code == status.HTTP_401_UNAUTHORIZED
 
     class TestUser:
-        @pytest.fixture(scope="class")
+        @pytest.fixture
         def client(self, user_client):
             return user_client
 
@@ -43,8 +43,8 @@ class TestPermission:
             assert delete_response.status_code == status.HTTP_204_NO_CONTENT
 
     class TestAdmin:
-        @pytest.fixture(scope="class")
-        def client(admin_client):
+        @pytest.fixture
+        def client(self, admin_client):
             return admin_client
 
         def test_read(self, read_response):
@@ -64,19 +64,17 @@ class TestPermission:
 
 
 class TestRouter:
-    @pytest.fixture(scope="class")
+    @pytest.fixture
     def client(self, user_client):
         return user_client
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture
     def list_url(self, q, o):
         return f"/api/questions/{q.pk}/options/{o.pk}/votes/"
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture
     def detail_url(self, q, o, v):
-        return reverse(
-            "vote-detail", kwargs={"question_pk": q.pk, "option_pk": o.pk, "pk": v.pk}
-        )
+        return f"/api/questions/{q.pk}/options/{o.pk}/votes/{v.pk}/"
 
     @pytest.fixture(
         params=[
@@ -106,17 +104,17 @@ class TestAPI:
         assert list_response.data[0]["pk"] == v.pk
 
     def test_read(self, v, read_response):
-        assert read_response["pk"] == v.pk
-        assert read_response["up"] == v.up
-        assert read_response.get("option") is None
-        assert read_response.get("user") is None
+        assert read_response.data["pk"] == v.pk
+        assert read_response.data["up"] == v.up
+        assert read_response.data.get("option") is None
+        assert read_response.data.get("user") is None
 
-    def test_create(self, create_response, vote_data):
+    def test_create(self, create_response, v_data):
         assert Vote.objects.count() == 1
         v = Vote.objects.latest()
-        assert v.option.pk == vote_data["option"]
-        assert v.user.pk == vote_data["user"]
-        assert v.up == vote_data["up"]
+        assert v.option.pk == v_data["option"]
+        assert v.user.pk == v_data["user"]
+        assert v.up == v_data["up"]
 
     def test_update(self, v, update_response):
         v = Vote.objects.get(pk=v.pk)
@@ -129,3 +127,7 @@ class TestAPI:
     def test_delete(self, v, delete_response):
         with pytest.raises(Vote.DoesNotExist):
             Vote.objects.get(pk=v.pk)
+
+
+class TestFilters:
+    pass

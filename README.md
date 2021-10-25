@@ -130,6 +130,7 @@ Nice to have:
 
 - Throttling
 - Caching
+- Versioning
 - Container debugging
 
 **Roadmap**:
@@ -164,7 +165,7 @@ Nice to have:
 
 - [ ] Categorization
 
-- [ ] Argumenting
+- [ ] Argument
 
 - [ ] Reporting
 
@@ -363,13 +364,25 @@ Design:
 - If option is deleted all votes should be too, if user is deleted all votes should stay (and set user to NULL)
 
 - Votes will be available under `*/options/<option_id>/` route
+  
+  - Because `<option_id>` auto increment is absolute, it is not required to pass `<question_id>` in the `reverse(url_name)` 
+  
+  - `<question_id>` from URI is required and still used for additional validation.
 
 - Vote displaying should be anonymous (not voter information returned) only vote rate information (up/down) (*write-only*).
 
-- Unauthenticated users can read/list, authenticated can also create, update and delete votes (admin the same).
+- Unauthenticated users can read/list, authenticated can also create votes, update  and delete *their* votes. Admins can do anything.
 
 - Option should have convenient calculate fields (attributes: properties/methods.) or manager to get upvotes or downvotes count.
 
 - Filter option votes based on up or down status (rate). Like `?up=True` or `?up=False`
 
-- No API pagination for votes
+- No API pagination for votes, ordering by latest vote time, filtering by up/down.
+
+- Vote user should be determined automatically based on request session user.
+  
+  - vote user must be set to `request.user`
+  
+  - vote create API shouldn't display `user` in OpenAPI documentation (or note that it is get from request session)
+
+- `option` and `user` API arguments will be determined from *URL* option and *session* user (arguments in body will be ignored).
