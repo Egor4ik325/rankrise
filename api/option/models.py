@@ -18,6 +18,14 @@ class Option(models.Model):
         null=True,
     )
 
+    @property
+    def upvotes(self):
+        return self.votes.filter(up=True).count()
+
+    @property
+    def downvotes(self):
+        return self.votes.filter(up=False).count()
+
     class Meta:
         verbose_name = _("option")
         verbose_name_plural = _("options")

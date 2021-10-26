@@ -157,7 +157,7 @@ Nice to have:
 
 - [x] Option
 
-- [ ] Recommendation (voting)
+- [x] Recommendation (voting)
 
 - [ ] Ranking
 
@@ -386,3 +386,71 @@ Design:
   - vote create API shouldn't display `user` in OpenAPI documentation (or note that it is get from request session)
 
 - `option` and `user` API arguments will be determined from *URL* option and *session* user (arguments in body will be ignored).
+
+## Ranking
+
+Ranking system is used to sort options from best scored to less ones.
+
+Input:
+
+- votes
+  
+  - upvotes
+  
+  - downvotes
+
+- arguments
+  
+  - count
+  
+  - pros
+  
+  - cons
+
+- comments
+
+- etc.
+
+Ranking data math will be based on on:
+
+- JavaScript
+
+- Python
+
+- **SQL/ORM query**
+
+- UPDATE row
+
+Features:
+
+- Query upvotes and downvotes of option should be available as option properties.
+  
+  - filter and count votes
+
+- Upvotes and downvotes should be included in serializer as read-only fields.
+
+- Upvotes and downvotes should be in rendered JSON data
+
+- Score is only used to order objects
+
+- Rank is displayed in the data
+
+### Algorithm
+
+Score:
+
+$$
+score = upvotes - (downvotes * \frac{3}{4})
+$$
+
+Point:
+
+$$
+point = \frac{max(score)}{100}
+$$
+
+Rank:
+
+$$
+rank = \frac{score}{point}-\frac{downvotes}{upvotes}*10
+$$
