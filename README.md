@@ -159,7 +159,7 @@ Nice to have:
 
 - [x] Recommendation (voting)
 
-- [ ] Ranking
+- [ ] Ranking (SQL + ORM)
 
 - [ ] Product dataset
 
@@ -431,19 +431,19 @@ Features:
 
 - Upvotes and downvotes should be in rendered JSON data
 
-- Score is only used to order objects
+- Rating is only used to order objects
 
 - Rank is displayed in the data
 
 ### Algorithm
 
-Score:
+Rating:
 
 $$
-score = upvotes - (downvotes * \frac{3}{4})
+rating = upvotes - (downvotes * \frac{3}{4})
 $$
 
-Point:
+Rank point:
 
 $$
 point = \frac{max(score)}{100}
@@ -452,5 +452,5 @@ $$
 Rank:
 
 $$
-rank = \frac{score}{point}-\frac{downvotes}{upvotes}*10
+rank = \frac{rating}{point}-\frac{downvotes}{upvotes}*10
 $$

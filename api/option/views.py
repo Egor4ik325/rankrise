@@ -22,7 +22,34 @@ class QuestionOptionViewSet(viewsets.ModelViewSet):
         return get_object_or_404(Question, pk=self.kwargs["question_pk"])
 
     def get_queryset(self):
-        return Option.objects.filter(question=self.get_question())
+        """
+        Filter options based on URL-encoded question id.
+
+        Order options based on calculated rating.
+        """
+
+        return Option.objects.raw(
+            """
+        -- Order options based on calculated rating for each one
+        SELECT * FROM option_option
+        WHERE option_option.question_id = %s
+        ORDER BY
+        (
+            SELECT upvotes - (downvotes * 0.75) AS rating
+            FROM (
+                SELECT
+                    SUM(CASE WHEN vote_vote.up = true THEN 1 ELSE 0 END) AS upvotes,
+                    SUM(CASE WHEN vote_vote.up = false THEN 1 ELSE 0 END) AS downvotes
+                FROM vote_vote WHERE vote_vote.option_id = option_option.id
+            ) as t
+        ) DESC;
+        """,
+            [self.get_question().pk],
+        )
+
+    def get_object(self):
+        self.get_question()
+        return get_object_or_404(Option, pk=self.kwargs["pk"])
 
     def create(self, request, *args, **kwargs):
         data = request.data.copy()
