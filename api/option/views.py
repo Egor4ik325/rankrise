@@ -1,3 +1,4 @@
+from django.db import connection
 from rest_framework import viewsets, pagination
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -27,8 +28,8 @@ class QuestionOptionViewSet(viewsets.ModelViewSet):
 
         Order options based on calculated rating.
         """
-
-        return Option.objects.raw(
+        # 1. Order options based on rating (SQL)
+        options = Option.objects.raw(
             """
         -- Order options based on calculated rating for each one
         SELECT * FROM option_option
@@ -46,6 +47,49 @@ class QuestionOptionViewSet(viewsets.ModelViewSet):
         """,
             [self.get_question().pk],
         )
+
+        # 2. Calculate max option rating (SQL)
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+            SELECT MAX(rating) AS rating_max
+            FROM (
+                SELECT upvotes - (downvotes * 0.75) AS rating
+                FROM (
+                    SELECT
+                        option_option.id AS id,
+                        SUM(CASE WHEN vote_vote.up = true THEN 1 END) AS upvotes,
+                        SUM(CASE WHEN vote_vote.up = false THEN 1 END) AS downvotes
+                    FROM option_option INNER JOIN vote_vote ON option_option.id = vote_vote.option_id
+                    GROUP BY option_option.id
+                ) AS t
+            ) AS t;
+            """
+            )
+            rating_max = cursor.fetchone()[0]
+
+        # No rating for option at all
+        if not rating_max:
+            for o in options:
+                o.rank = 0
+            return options
+
+        # 3. Calculate rating per rank point (Python)
+        point = rating_max / 100
+
+        # 4. Annotate options with rank (Python/ORM)
+        for o in options:
+            upvotes, downvotes = o.upvotes, o.downvotes
+            rating = upvotes - (downvotes * 0.75)
+            rank = rating / point
+            if upvotes == 0:
+                rank -= downvotes * 10
+            else:
+                rank -= (downvotes * 10) / upvotes
+
+            o.rank = int(rank)
+
+        return options
 
     def get_object(self):
         self.get_question()

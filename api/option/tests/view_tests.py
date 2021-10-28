@@ -110,3 +110,12 @@ class TestPagination:
     @pytest.mark.django_db
     def test_list_pages_by_10(self, list_response, option_count):
         assert len(list_response.data["results"]) == option_count
+
+    @pytest.mark.django_db
+    def test_upvotes_downvotes(self, list_response):
+        assert list_response.data["results"][0]["upvotes"] is not None
+        assert list_response.data["results"][0]["downvotes"] is not None
+
+    @pytest.mark.django_db
+    def test_rank(self, list_response):
+        assert list_response.data["results"][0]["rank"] is not None

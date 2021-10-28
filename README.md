@@ -159,7 +159,7 @@ Nice to have:
 
 - [x] Recommendation (voting)
 
-- [ ] Ranking (SQL + ORM)
+- [x] Ranking (ORM/SQL/Python)
 
 - [ ] Product dataset
 
@@ -446,7 +446,7 @@ $$
 Rank point:
 
 $$
-point = \frac{max(score)}{100}
+point = \frac{max(rating)}{100}
 $$
 
 Rank:
@@ -454,3 +454,7 @@ Rank:
 $$
 rank = \frac{rating}{point}-\frac{downvotes}{upvotes}*10
 $$
+
+1. Calculate rating for each option? To find the MAX(rating) (SQL/ORM).
+2. Calculate score per 1 point (Python).
+3. Annotate each ordered option with the rank, display annotated rank (Python/SQL/ORM).

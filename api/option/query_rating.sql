@@ -25,3 +25,17 @@ ORDER BY
         FROM vote_vote WHERE vote_vote.option_id = option_option.id
     ) as t
 ) DESC;
+
+-- Calculate max option rating
+SELECT MAX(rating) AS rating_max
+FROM (
+    SELECT upvotes - (downvotes * 0.75) AS rating
+    FROM (
+        SELECT
+            option_option.id AS id,
+            SUM(CASE WHEN vote_vote.up = true THEN 1 END) AS upvotes,
+            SUM(CASE WHEN vote_vote.up = false THEN 1 END) AS downvotes
+        FROM option_option INNER JOIN vote_vote ON option_option.id = vote_vote.option_id
+        GROUP BY option_option.id
+    ) AS t
+) AS t;
