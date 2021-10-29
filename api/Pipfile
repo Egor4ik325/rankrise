@@ -20,6 +20,7 @@ pillow = "*"
 django-imagekit = "*"
 django-filter = "*"
 drf-nested-routers = "*"
+django-import-export = "*"
 
 [dev-packages]
 black = "*"

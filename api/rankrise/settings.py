@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'autoslug',
     'imagekit',
     'django_filters',
+    'import_export',
 
     'api',
     'authentication',
