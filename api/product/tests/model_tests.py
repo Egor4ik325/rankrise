@@ -34,6 +34,7 @@ def test_can_create_product_with_fields():
     assert p.description == "Modern programming language"
     assert p.website == "https://python.org"
     assert p.price == PriceChoices.FREE
+    assert p.category == None
 
 
 @pytest.fixture

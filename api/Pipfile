@@ -21,6 +21,7 @@ django-imagekit = "*"
 django-filter = "*"
 drf-nested-routers = "*"
 django-import-export = "*"
+django-mptt = "*"
 
 [dev-packages]
 black = "*"

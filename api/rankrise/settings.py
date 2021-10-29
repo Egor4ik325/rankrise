@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'imagekit',
     'django_filters',
     'import_export',
+    'mptt',
 
     'api',
     'authentication',
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
     'product',
     'option',
     'vote',
+    'category',
 ]
 
 MIDDLEWARE = [

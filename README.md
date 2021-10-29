@@ -165,7 +165,7 @@ Nice to have:
 
 - [x] Import product dataset
 
-- [ ] Categorization
+- [ ] Categorization (MPTT)
 
 - [ ] Caching
 
@@ -486,3 +486,19 @@ Community throttling:
 Tests:
 
 - in order to test sustainable request rate tests should mock burst rate to be the same as sustainable.
+
+## Categories
+
+Categories are content management technique for organizing products. For this API products (and questions) will be categorized hierarchically using MPTT in PostgreSQL.
+
+Model:
+
+- Category (subcategory) has id, name and reference to the parent category (to provide tree categorization).
+
+- slug?
+
+Interface:
+
+- Categories should be created, updated and deleted from admin interface.
+
+- Categories can only be listed or retrieved using API.

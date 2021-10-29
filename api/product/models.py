@@ -5,6 +5,8 @@ from autoslug import AutoSlugField
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 
+from category.models import Category
+
 
 class PriceChoices(models.TextChoices):
     FREE = "F", _("Free")
@@ -28,6 +30,14 @@ class Product(models.Model):
         max_length=1,
         choices=PriceChoices.choices,
         default=PriceChoices.FREE,
+    )
+    category = models.ForeignKey(
+        "category.Category",
+        verbose_name=_("category"),
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="products",
     )
 
     class Meta:
