@@ -5,6 +5,10 @@ from .models import Product, ProductImage
 from .permissions import CommunityPermission
 from .serializers import ProductSerializer, ProductImageSerializer
 from .pagination import ProductPagination
+from question.throttles import (
+    BurstCommunityRateThrottle,
+    SustainedCommunityRateThrottle,
+)
 
 
 class NonUpdatableViewSet(
@@ -22,6 +26,7 @@ class ProductViewSet(NonUpdatableViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [CommunityPermission]
+    throttle_classes = [BurstCommunityRateThrottle, SustainedCommunityRateThrottle]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ["name", "@description"]
     filterset_fields = ["price"]
@@ -32,4 +37,5 @@ class ProductImageViewSet(NonUpdatableViewSet):
     queryset = ProductImage.objects.all()
     serializer_class = ProductImageSerializer
     permission_classes = [CommunityPermission]
+    throttle_classes = [BurstCommunityRateThrottle, SustainedCommunityRateThrottle]
     pagination_class = ProductPagination

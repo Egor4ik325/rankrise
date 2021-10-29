@@ -2,6 +2,8 @@ import pytest
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from question.throttles import BurstCommunityRateThrottle
+
 
 @pytest.fixture
 def api_client():
@@ -45,3 +47,13 @@ def user_client(create_api_client, test_user):
 @pytest.fixture
 def admin_client(create_api_client, test_admin):
     return create_api_client(test_admin)
+
+
+@pytest.fixture
+def disable_burst_throttle(monkeypatch):
+    def mock_allow_request(self, *args, **kwargs):
+        return True
+
+    # Patch burst throttle to always allow (disable burst throttle)
+    monkeypatch.setattr(BurstCommunityRateThrottle, "allow_request", mock_allow_request)
+    yield

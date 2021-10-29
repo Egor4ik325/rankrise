@@ -153,3 +153,7 @@ class TestStaff:
         assert response.status_code == status.HTTP_204_NO_CONTENT
         with pytest.raises(ProductImage.DoesNotExist):
             ProductImage.objects.get(pk=setup_data[0].pk)
+
+
+class TestCommunityTrottle:
+    pass

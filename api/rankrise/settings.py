@@ -155,9 +155,13 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
-   "DEFAULT_AUTHENTICATION_CLASSES": [
-       "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
-   ],
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    ],
+    "DEFAULT_THROTTLE_RATES": {
+        "burst": "5/min",
+        "sustained": "100/day",
+    },
 }
 
 # Enable JWT authentication is dj-rest-auth

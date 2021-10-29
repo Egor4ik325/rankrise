@@ -132,3 +132,7 @@ class TestStaff:
         assert response.status_code == status.HTTP_204_NO_CONTENT
         with pytest.raises(Product.DoesNotExist):
             Product.objects.get(pk=setup_data[0].pk)
+
+
+class TestCommunityThrottle:
+    pass

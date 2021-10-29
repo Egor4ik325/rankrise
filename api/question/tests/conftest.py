@@ -21,6 +21,13 @@ def test_user(django_user_model):
 
 
 @pytest.fixture
+def test_user2(django_user_model):
+    return django_user_model.objects.create_user(
+        username="user2", email="user2@email.com", password="user2"
+    )
+
+
+@pytest.fixture
 def test_admin(django_user_model):
     return django_user_model.objects.create_user(
         username="admin", email="admin@email.com", password="admin", is_staff=True
@@ -40,6 +47,11 @@ def authenticate_api_client(api_client):
 @pytest.fixture
 def user_api_client(authenticate_api_client, test_user):
     return authenticate_api_client(test_user)
+
+
+@pytest.fixture
+def user_api_client2(authenticate_api_client, test_user2):
+    return authenticate_api_client(test_user2)
 
 
 @pytest.fixture

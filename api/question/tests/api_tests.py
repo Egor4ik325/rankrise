@@ -74,3 +74,93 @@ def test_user_update_user(create_question, user_api_client, detail_url):
     update_title = "New question title?"
     response = user_api_client.patch(detail_url(q.pk), {"title": update_title})
     assert response.status_code == status.HTTP_403_FORBIDDEN
+
+
+@pytest.mark.django_db
+class TestCommunityThrottle:
+    @pytest.fixture
+    def setup_questions(self, create_question):
+        q = create_question(title="Best service for hosting simple Python webapps?")
+        q2 = create_question(title="Best localization framework for webapps?")
+        return q, q2
+
+    def test_no_list_throttling(self, setup_questions, user_api_client, list_url):
+        for _ in range(10):
+            response = user_api_client.get(list_url)
+            assert response.status_code == status.HTTP_200_OK
+
+    def test_no_retrieve_throttling(self, setup_questions, user_api_client, detail_url):
+        for _ in range(10):
+            response = user_api_client.get(detail_url(setup_questions[0].pk))
+            assert response.status_code == status.HTTP_200_OK
+
+    class TestQuestionCreate:
+        @pytest.mark.xfail(reason="Fail in conjunction with other tests")
+        def test_5_per_minute(self, user_api_client, list_url):
+            for i in range(5):
+                response = user_api_client.post(
+                    list_url,
+                    {"title": f"This question should be permitted {i+1} times"},
+                )
+                assert response.status_code == status.HTTP_201_CREATED
+
+        def test_more_than_5_per_minute(self, user_api_client, list_url):
+            for i in range(5):
+                response = user_api_client.post(
+                    list_url,
+                    {"title": f"This question should be permitted {i+1} times"},
+                )
+
+            response = user_api_client.post(
+                list_url,
+                {"title": f"This question should not be permitted 6 times"},
+            )
+            assert response.status_code == status.HTTP_429_TOO_MANY_REQUESTS
+
+        @pytest.mark.xfail(reason="Fail in conjunction with other tests")
+        def test_100_sustain_requests(
+            self, disable_burst_throttle, user_api_client2, list_url
+        ):
+            for i in range(100):
+                response = user_api_client2.post(
+                    list_url,
+                    {"title": f"This question should be permitted {i+1} times"},
+                )
+                assert response.status_code == status.HTTP_201_CREATED
+
+        def test_more_than_100_per_day(
+            self, disable_burst_throttle, user_api_client, list_url
+        ):
+            """Tests sustained throttle (> 100 requests per day)."""
+            for i in range(100):
+                response = user_api_client.post(
+                    list_url,
+                    {"title": f"This question should be permitted {i+1} times"},
+                )
+
+            response = user_api_client.post(
+                list_url,
+                {"title": f"This question should be permitted {i+1} times"},
+            )
+            assert response.status_code == status.HTTP_429_TOO_MANY_REQUESTS
+
+        class TestAdmin:
+            def test_more_than_5_per_minute(self, admin_api_client, list_url):
+                for i in range(5):
+                    response = admin_api_client.post(
+                        list_url,
+                        {"title": f"This question should be permitted {i+1} times"},
+                    )
+                    assert response.status_code == status.HTTP_201_CREATED
+
+                response = admin_api_client.post(
+                    list_url,
+                    {"title": f"This question should be permitted 6 times"},
+                )
+                assert response.status_code == status.HTTP_201_CREATED
+
+            def test_more_than_100_per_day(
+                self, disable_burst_throttle, admin_api_client, list_url
+            ):
+                """Tests sustained throttle (> 100 requests per day)."""
+                pass

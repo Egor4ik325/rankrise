@@ -8,6 +8,10 @@ from question.models import Question
 from option.models import Option
 from option.serializers import OptionSerializer
 from product.permissions import CommunityPermission
+from question.throttles import (
+    BurstCommunityRateThrottle,
+    SustainedCommunityRateThrottle,
+)
 
 
 class OptionPagination(pagination.PageNumberPagination):
@@ -18,6 +22,7 @@ class QuestionOptionViewSet(viewsets.ModelViewSet):
     serializer_class = OptionSerializer
     permission_classes = [CommunityPermission]
     pagination_class = OptionPagination
+    throttle_classes = [BurstCommunityRateThrottle, SustainedCommunityRateThrottle]
 
     def get_question(self):
         return get_object_or_404(Question, pk=self.kwargs["question_pk"])

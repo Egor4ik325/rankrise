@@ -161,13 +161,21 @@ Nice to have:
 
 - [x] Ranking (ORM/SQL/Python)
 
+- [x] Throttling
+
 - [ ] Product dataset
 
 - [ ] Categorization
 
-- [ ] Argument
+- [ ] Caching
 
 - [ ] Reporting
+
+- [ ] Argument
+
+- [ ] DevOps
+
+- [ ] Front-end
 
 ## Question
 
@@ -458,3 +466,23 @@ $$
 1. Calculate rating for each option? To find the MAX(rating) (SQL/ORM).
 2. Calculate score per 1 point (Python).
 3. Annotate each ordered option with the rank, display annotated rank (Python/SQL/ORM).
+
+## Throttling
+
+This API is not very restrictive and built on top community trust and fairness. It has less restrictive throttling permissions to prevent high request rate (to save database and server from overloading).
+
+Community throttling:
+
+- forbid making more than 100 create (POST) requests in a day (authenticated users) and more than 5 POST requests in minute.
+  
+  - create views of questions, product (images), options APIs.
+  
+  - burst: 5 req/min
+  
+  - sustained: 100 req/day
+
+- no throttling for admin users (admins are not restricted to throttling).
+
+Tests:
+
+- in order to test sustainable request rate tests should mock burst rate to be the same as sustainable.
