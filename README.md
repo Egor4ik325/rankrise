@@ -163,7 +163,7 @@ Nice to have:
 
 - [x] Throttling
 
-- [ ] Product dataset
+- [x] Import product dataset
 
 - [ ] Categorization
 
