@@ -36,7 +36,7 @@ The technology goal is to design best-practice modern RESTful API with Django.
 
 - Question tags/categories (categorization)
 
-- Multilayer categories
+- Multilayer categories (MPTT)
 
 - Pros/Cons answer rating
 
@@ -129,43 +129,48 @@ The technology goal is to design best-practice modern RESTful API with Django.
 Nice to have:
 
 - Throttling
+
 - Caching
+
 - Versioning
+
 - Container debugging
+
+- MPTT structure management
 
 **Roadmap**:
 
-- [x] dockerize project + PostgreSQL (setup dev environment)
+- [x] Dockerize project + PostgreSQL (setup dev environment)
 
-- [x] migrate + custom user model
+- [x] Migrate + custom user model
 
-- [x] move from session to JWT authentication
+- [x] Move from session to JWT authentication
 
-- [x] authentication endpoints
+- [x] Authentication endpoints
 
 - [x] API documentation generation
 
 - [x] Automated testing
 
-- [x] Questioning feature
+- [x] Question
 
 - [x] Test-driven development
 
-- [x] Product CRUD
+- [x] Product
 
-- [x] Filtering API
+- [x] Filtering
 
 - [x] Option
 
-- [x] Recommendation (voting)
+- [x] Voting
 
-- [x] Ranking (ORM/SQL/Python)
+- [x] Ranking
 
 - [x] Throttling
 
 - [x] Import product dataset
 
-- [ ] Categorization (MPTT)
+- [ ] Categorization
 
 - [ ] Caching
 
@@ -399,35 +404,17 @@ Design:
 
 Ranking system is used to sort options from best scored to less ones.
 
-Input:
-
-- votes
-  
-  - upvotes
-  
-  - downvotes
-
-- arguments
-  
-  - count
-  
-  - pros
-  
-  - cons
-
-- comments
-
-- etc.
+Ranking dependes on votes (upvotes, downvotes), arugments (count, pros, cons), comments.
 
 Ranking data math will be based on on:
 
-- JavaScript
+- JavaScript (client)
 
-- Python
+- Python (server)
 
-- **SQL/ORM query**
+- **SQL/ORM query** (database)
 
-- UPDATE row
+- UPDATE row (database)
 
 Features:
 
@@ -497,8 +484,20 @@ Model:
 
 - slug?
 
-Interface:
+- when parent category is deleted all it's children should also be deleted.
+
+Product:
+
+- Category is referenced from product model, on delete - `set null` product, related name (category products) - `products`.
+
+Application Interface:
 
 - Categories should be created, updated and deleted from admin interface.
 
-- Categories can only be listed or retrieved using API.
+- Categories can only be listed or retrieved (readonly) using API (`/categories/<id:int>/`).
+
+- Categories can be search by name (through all categories), filtered by parent (get children) and paginated by 20, ordering by name.
+
+- API should be hierarchical, meaning have multiple levels. *First should be root categories*, then under this category children can be accessed like `/categories/1/children/2/children/3/`. Or get children just by filtering parent like `/categories/?parent=1` to get children of 1 category.
+
+- To get category product filtering product by category should be used like `/products?category=1`.

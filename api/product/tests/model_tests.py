@@ -3,7 +3,9 @@ from PIL import Image
 from pathlib import Path
 from django.core.files.uploadedfile import InMemoryUploadedFile, SimpleUploadedFile
 from django.urls import reverse
+
 from product.models import PriceChoices, Product, ProductImage
+from category.models import Category
 
 
 @pytest.fixture
@@ -68,3 +70,45 @@ def test_get_alsolute_url():
         website="https://python.org",
     )
     assert p.get_absolute_url() == reverse("product-detail", kwargs={"slug": p.slug})
+
+
+@pytest.fixture
+def c():
+    return Category.objects.create(name="Programming Languages")
+
+
+@pytest.fixture
+def p(c):
+    return Product.objects.create(
+        name="Python",
+        description="Modern programming language",
+        website="https://python.org",
+        price=PriceChoices.OPEN_SOURCE,
+        category=c,
+    )
+
+
+@pytest.fixture
+def p2(c):
+    return Product.objects.create(
+        name="Python",
+        description="Modern programming language",
+        website="https://python.org",
+        price=PriceChoices.OPEN_SOURCE,
+    )
+
+
+@pytest.mark.django_db
+class TestCategory:
+    def test_create_product_with_category(self, c, p):
+        assert p.category.pk == c.pk
+
+    def test_create_product_without_category(self, p2):
+        assert p2.category == None
+
+    def test_category_on_delete(self, c, p):
+        c.delete()
+        assert Product.objects.get(pk=p.pk).category == None
+
+    def test_related_name(self, c, p):
+        c.products.get(pk=p.pk)
