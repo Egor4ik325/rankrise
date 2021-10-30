@@ -486,6 +486,14 @@ Model:
 
 - when parent category is deleted all it's children should also be deleted.
 
+Validation (serializer level):
+
+- Category name can not contain numbers (model level validation, admin interface).
+
+- All model fields are read-only (only accessable from admin interface).
+  
+  - **Because everything is read-only - no validation is required** (or validation tests)
+
 Product:
 
 - Category is referenced from product model, on delete - `set null` product, related name (category products) - `products`.
@@ -494,7 +502,7 @@ Application Interface:
 
 - Categories should be created, updated and deleted from admin interface.
 
-- Categories can only be listed or retrieved (readonly) using API (`/categories/<id:int>/`).
+- Categories can only be listed or retrieved (readonly) using API (`/categories/<id:int>/`) - **read-only API**.
 
 - Categories can be search by name (through all categories), filtered by parent (get children) and paginated by 20, ordering by name.
 

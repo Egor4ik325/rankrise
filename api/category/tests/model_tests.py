@@ -1,16 +1,7 @@
 import pytest
 from django.db.utils import IntegrityError
+
 from category.models import Category
-
-
-@pytest.fixture
-def c():
-    return Category.objects.create(name="Software Development", parent=None)
-
-
-@pytest.fixture
-def c2(c):
-    return Category.objects.create(name="Databases", parent=c)
 
 
 @pytest.mark.django_db
@@ -31,3 +22,12 @@ class TestFields:
     def test_ralated_manager(self, c, c2):
         assert c.children.count() == 1
         c.children.get(pk=c2.pk)
+
+
+def test_ordering_by_name(c, c2, c3, c4):
+    categories = Category.objects.all()
+    assert len(categories) == 4
+    assert categories[0].pk == c4.pk
+    assert categories[1].pk == c2.pk
+    assert categories[2].pk == c.pk
+    assert categories[3].pk == c3.pk

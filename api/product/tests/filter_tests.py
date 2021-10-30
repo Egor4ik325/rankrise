@@ -2,17 +2,32 @@ import pytest
 from django.urls import reverse
 from django.conf import settings
 from rest_framework import status
+
 from product.models import PriceChoices
+from category.models import Category
 
 
 @pytest.fixture
-def setup_db(create_product):
+def cloud_platform():
+    return Category.objects.create(name="Cloud Platform")
+
+
+@pytest.fixture
+def search_engine():
+    return Category.objects.create(name="Search Engine")
+
+
+@pytest.fixture
+def setup_db(create_productk, cloud_platform, search_engine):
     create_product(
         name="AWS Codestar",
         description="As an alternative you can use Google Cloud platform",
         price=PriceChoices.OPEN_SOURCE,
+        category=cloud_platform,
     )
-    create_product(name="AWS Lightsail", price=PriceChoices.PAID)
+    create_product(
+        name="AWS Lightsail", price=PriceChoices.PAID, category=cloud_platform
+    )
     create_product(name="Heroku PostgreSQL", price=PriceChoices.PAID)
     create_product(
         name="Heroku Redis",
@@ -45,3 +60,17 @@ class TestSearch:
         response = api_client.get(reverse(product_list_url_name), {"search": "Google"})
         assert response.status_code == status.HTTP_200_OK
         assert response.data["count"] == 4
+
+
+class TestCategoryFilter:
+    def test(
+        self, setup_db, cloud_platform, search_engine, api_client, product_list_url_name
+    ):
+        response = api_client.get(
+            reverse(product_list_url_name), {"category": cloud_platform.pk}
+        )
+        assert (
+            response.data["count"] == 2
+        ), "Only 2 products with cloud platform category should be in response"
+        assert "AWS Codestar" in str(response.data["results"])
+        assert "AWS Lightsail" in str(response.data["results"])
