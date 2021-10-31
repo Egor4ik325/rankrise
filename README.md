@@ -509,3 +509,11 @@ Application Interface:
 - API should be hierarchical, meaning have multiple levels. *First should be root categories*, then under this category children can be accessed like `/categories/1/children/2/children/3/`. Or get children just by filtering parent like `/categories/?parent=1` to get children of 1 category.
 
 - To get category product filtering product by category should be used like `/products?category=1`.
+
+## Caching
+
+Caching will be used to save *expensive rating/ranking* queries and calculations when requesting option list.
+
+- level: per-view
+
+- cache backend: Redis (in-memory)

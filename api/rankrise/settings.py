@@ -173,3 +173,13 @@ REST_USE_JWT = True
 # JWT token names
 JWT_AUTH_COOKIE = "rankrise_token"
 JWT_AUTH_REFRESH_COOKIE = "rankrise_refresh_token"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://redis:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        },
+    }
+}

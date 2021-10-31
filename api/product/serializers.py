@@ -8,7 +8,7 @@ class ProductSerializer(serializers.ModelSerializer):
     # images = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     class Meta:
         model = Product
-        fields = ["pk", "name", "description", "website", "price", "images"]
+        fields = ["pk", "name", "description", "website", "price", "category", "images"]
         read_only_fields = ["images"]
 
     def validate_name(self, value):

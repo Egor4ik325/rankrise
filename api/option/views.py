@@ -1,4 +1,6 @@
 from django.db import connection
+from django.utils.decorators import method_decorator
+from django.views.decorators.cache import cache_page
 from rest_framework import viewsets, pagination
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -18,6 +20,7 @@ class OptionPagination(pagination.PageNumberPagination):
     page_size = 10
 
 
+@method_decorator(cache_page(60 * 5), name="list")
 class QuestionOptionViewSet(viewsets.ModelViewSet):
     serializer_class = OptionSerializer
     permission_classes = [CommunityPermission]

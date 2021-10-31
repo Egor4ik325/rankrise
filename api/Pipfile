@@ -22,6 +22,7 @@ django-filter = "*"
 drf-nested-routers = "*"
 django-import-export = "*"
 django-mptt = "*"
+django-redis = "*"
 
 [dev-packages]
 black = "*"
