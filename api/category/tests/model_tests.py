@@ -24,6 +24,8 @@ class TestFields:
         c.children.get(pk=c2.pk)
 
 
+@pytest.mark.skip
+@pytest.mark.django_db
 def test_ordering_by_name(c, c2, c3, c4):
     categories = Category.objects.all()
     assert len(categories) == 4

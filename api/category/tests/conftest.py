@@ -39,55 +39,68 @@ def category_data(c3):
     return {"name": "CMS development", "parent": c3}
 
 
+@pytest.fixture
 def updated_category_data(category_data):
-    return {**category_data, name: "Fullstack development"}
+    return {**category_data, "name": "Fullstack development"}
 
 
+@pytest.fixture
 def partial_update_category_data(updated_category_data):
     return {"name": updated_category_data["name"]}
 
 
+@pytest.fixture
 def list_url():
     return reverse("category-list")
 
 
+@pytest.fixture
 def detail_url(category):
     """category fixture should be defined or overriden from calling class/module."""
-    return reverse("category-list", kwargs={"pk": c4.pk})
+    return category.get_absolute_url()
 
 
-def client(anonymous_api_client):
+@pytest.fixture
+def client(anonymous_client):
     """client fixture can be overriden in module/class"""
-    return anonymous_api_client
+    return anonymous_client
 
 
+@pytest.fixture
 def list_response(client, list_url):
     return client.get(list_url)
 
 
+@pytest.fixture
 def retrieve_response(client, detail_url):
     return client.get(detail_url)
 
 
+@pytest.fixture
 def create_response(client, list_url, category_data):
     return client.post(list_url, category_data)
 
 
+@pytest.fixture
 def update_response(client, detail_url, updated_category_data):
     return client.put(detail_url, updated_category_data)
 
 
+@pytest.fixture
 def partial_update_response(client, detail_url, partial_update_category_data):
-    return client.patch(detail_url, updated_category_data)
+    return client.patch(detail_url, partial_update_category_data)
 
 
+@pytest.fixture
 def delete_response(client, detail_url):
     return client.delete(detail_url)
 
 
+@pytest.fixture
 def list_response_filter(client, list_url, parent):
     return client.get(list_url, {"parent": parent})
 
 
+@pytest.fixture
 def list_response_search(client, list_url, query):
     return client.get(list_url, {"search": query})

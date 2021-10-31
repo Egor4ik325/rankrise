@@ -29,7 +29,7 @@ class ProductViewSet(NonUpdatableViewSet):
     throttle_classes = [BurstCommunityRateThrottle, SustainedCommunityRateThrottle]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
     search_fields = ["name", "@description"]
-    filterset_fields = ["price"]
+    filterset_fields = ["price", "category"]
     pagination_class = ProductPagination
 
 

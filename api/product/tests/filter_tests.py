@@ -18,7 +18,7 @@ def search_engine():
 
 
 @pytest.fixture
-def setup_db(create_productk, cloud_platform, search_engine):
+def setup_db(create_product, cloud_platform, search_engine):
     create_product(
         name="AWS Codestar",
         description="As an alternative you can use Google Cloud platform",
@@ -62,9 +62,10 @@ class TestSearch:
         assert response.data["count"] == 4
 
 
+@pytest.mark.django_db
 class TestCategoryFilter:
     def test(
-        self, setup_db, cloud_platform, search_engine, api_client, product_list_url_name
+        self, setup_db, cloud_platform, api_client, product_list_url_name
     ):
         response = api_client.get(
             reverse(product_list_url_name), {"category": cloud_platform.pk}

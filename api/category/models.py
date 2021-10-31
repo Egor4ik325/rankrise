@@ -1,4 +1,6 @@
 from django.db import models
+from django.urls import reverse
+from django.db.models.functions import Upper
 from mptt.models import MPTTModel, TreeForeignKey
 from django.utils.translation import gettext as _
 
@@ -17,6 +19,7 @@ class Category(MPTTModel):
     class Meta:
         verbose_name = _("category")
         verbose_name_plural = _("categories")
+        ordering = [Upper("name")]
 
     class MPTTMeta:
         order_insertion_by = ["name"]

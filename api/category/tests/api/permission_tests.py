@@ -6,7 +6,7 @@ from rest_framework import status
 
 
 @pytest.fixture
-def category(self, c4):
+def category(c4):
     return c4
 
 
@@ -21,6 +21,7 @@ def category(self, c4):
         ("delete_response", status.HTTP_405_METHOD_NOT_ALLOWED),
     ],
 )
+@pytest.mark.django_db
 class TestRole:
     class TestAnonymous:
         """Test unauthenticated client has or hasn't specific resource access.

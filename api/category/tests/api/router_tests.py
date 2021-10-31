@@ -1,3 +1,4 @@
+import pytest
 from rest_framework import status
 
 
@@ -21,11 +22,12 @@ def client(anonymous_client):
     return anonymous_client
 
 
+@pytest.mark.django_db
 class TestUrlConf:
     """Test URL patterns exist (are found) and are right."""
 
     def test_list_url(self, list_response):
-        assert list_response.status_code == status.HTTP_404_NOT_FOUND
+        assert list_response.status_code != status.HTTP_404_NOT_FOUND
 
     def test_detail_url(self, retrieve_response):
-        assert list_response.status_code == status.HTTP_404_NOT_FOUND
+        assert retrieve_response.status_code != status.HTTP_404_NOT_FOUND
