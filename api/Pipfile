@@ -28,6 +28,7 @@ django-redis = "*"
 black = "*"
 pylint = "*"
 isort = "*"
+debugpy = "*"
 
 [requires]
 python_version = "3.9"

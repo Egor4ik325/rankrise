@@ -4,6 +4,31 @@ The goal of this website is to help users choose the best product in their case.
 
 The technology goal is to design best-practice modern RESTful API with Django.
 
+## Setup projects
+
+When installing new pip package run the following commands inside `api` folder:
+
+```shell
+pipenv install package_name # adds to Pipfile
+
+# Lock dependencies
+# If prerelease error occurs add --pre flag
+pipenv lock --pre # generates Pipfile.lock
+
+# Lock dependencies in requirements.txt format (includes both prerelease and development packages)
+pipenv lock --pre --dev --requirements > requirements.txt
+
+# Option 1: Enter Django container shell
+docker exec -it container_id sh
+pip install -r requirements.txt
+
+# Option 2: Rebuild containers
+docker compose -f docker-compose.dev.yml down
+docker compose -f docker-compose.dev.yml up --build -d
+```
+
+## Description
+
 **Idea**:
 
 - Q/A website (question answer/solution/option/recommendation)
@@ -138,7 +163,7 @@ Nice to have:
 
 - MPTT structure management
 
-**Roadmap**:
+## Roadmap
 
 - [x] Dockerize project + PostgreSQL (setup dev environment)
 
@@ -170,9 +195,11 @@ Nice to have:
 
 - [x] Import product dataset
 
-- [ ] Categorization
+- [x] Categorization
 
-- [ ] Caching
+- [x] Caching
+
+- [x] Debugging
 
 - [ ] Reporting
 
@@ -180,7 +207,7 @@ Nice to have:
 
 - [ ] DevOps
 
-- [ ] Front-end
+- [ ] Frontend
 
 ## Question
 
@@ -517,3 +544,7 @@ Caching will be used to save *expensive rating/ranking* queries and calculations
 - level: per-view
 
 - cache backend: Redis (in-memory)
+
+## Debugging
+
+I need to debug Django running (`./manage.py runserver`) inside Docker container from VSCode. I will use `pydebug` PyPA package from Microsoft.
