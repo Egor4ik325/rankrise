@@ -23,6 +23,7 @@ drf-nested-routers = "*"
 django-import-export = "*"
 django-mptt = "*"
 django-redis = "*"
+django-debug-toolbar = "*"
 
 [dev-packages]
 black = "*"

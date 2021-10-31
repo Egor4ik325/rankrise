@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'django_filters',
     'import_export',
     'mptt',
+    'debug_toolbar',
 
     'api',
     'authentication',
@@ -64,6 +65,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -183,3 +185,9 @@ CACHES = {
         },
     }
 }
+
+if DEBUG:
+    import os
+    import socket
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1', '10.0.2.2']

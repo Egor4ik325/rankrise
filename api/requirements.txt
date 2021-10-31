@@ -22,6 +22,7 @@ diff-match-patch==20200713; python_version >= '2.7'
 dj-rest-auth==2.1.11
 django-appconf==1.0.5; python_version >= '3.6'
 django-autoslug==1.9.8
+django-debug-toolbar==3.2.2
 django-environ==0.8.1
 django-filter==21.1
 django-imagekit==4.0.2
