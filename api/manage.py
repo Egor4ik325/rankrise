@@ -26,7 +26,7 @@ def main():
 
             # Run server for any IP address on port 3000
             debugpy.listen(("0.0.0.0", 3000))
-            debugpy.wait_for_client()
+            # debugpy.wait_for_client()
             logging.debug("Attached!")
 
     # Execute managment command (e.g. runserver)

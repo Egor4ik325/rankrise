@@ -4,6 +4,8 @@ The goal of this website is to help users choose the best product in their case.
 
 The technology goal is to design best-practice modern RESTful API with Django.
 
+![Swagger UI screenshot](img/swagger_ui.png)
+
 ## Setup projects
 
 When installing new pip package run the following commands inside `api` folder:
@@ -19,12 +21,11 @@ pipenv lock --pre # generates Pipfile.lock
 pipenv lock --pre --dev --requirements > requirements.txt
 
 # Option 1: Enter Django container shell
-docker exec -it container_id sh
-pip install -r requirements.txt
+docker-compose -f docker-compose.dev.yml exec api pip install -r requirements.txt
 
 # Option 2: Rebuild containers
-docker compose -f docker-compose.dev.yml down
-docker compose -f docker-compose.dev.yml up --build -d
+docker-compose -f docker-compose.dev.yml down
+docker-compose -f docker-compose.dev.yml up --build -d
 ```
 
 ## Description
@@ -201,13 +202,17 @@ Nice to have:
 
 - [x] Debugging
 
+- [ ] S3 storage
+
+- [ ] Cloud deployment
+
+- [ ] Internationalization
+
 - [ ] Reporting
 
 - [ ] Argument
 
-- [ ] DevOps
-
-- [ ] Frontend
+- [ ] Single-page Application
 
 ## Question
 
@@ -548,3 +553,13 @@ Caching will be used to save *expensive rating/ranking* queries and calculations
 ## Debugging
 
 I need to debug Django running (`./manage.py runserver`) inside Docker container from VSCode. I will use `pydebug` PyPA package from Microsoft.
+
+## Storage
+
+> Static files (image) are files that aren't changed/updated/modified (database).
+
+Amazon S3 will be used as a filesystem storage service. The following will be stored:
+
+- Content delivery network (static files: CSS, JS, JPEG, PNG)
+
+- User uploads (media files: JPEG, PNG)
