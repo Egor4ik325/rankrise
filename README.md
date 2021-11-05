@@ -202,7 +202,7 @@ Nice to have:
 
 - [x] Debugging
 
-- [ ] S3 storage
+- [x] S3 storage
 
 - [ ] Cloud deployment
 
@@ -560,6 +560,6 @@ I need to debug Django running (`./manage.py runserver`) inside Docker container
 
 Amazon S3 will be used as a filesystem storage service. The following will be stored:
 
-- Content delivery network (static files: CSS, JS, JPEG, PNG)
+- Content delivery network - static files (CSS, JS, JPEG, PNG)
 
-- User uploads (media files: JPEG, PNG)
+- User uploads - static upload files (JPEG, PNG)

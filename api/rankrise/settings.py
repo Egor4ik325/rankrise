@@ -146,9 +146,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 STATIC_ROOT = str(BASE_DIR / "staticfiles") # directory for collect static
 STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+
+MEDIA_URL = "/media/"
+MEDIA_ROOT = str(BASE_DIR / "mediafiles")
+DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
 
 if env.bool("USE_S3", default=False):
     # AWS settings
@@ -162,7 +166,11 @@ if env.bool("USE_S3", default=False):
     # S3 settings
     AWS_LOCATION = "static"
     STATIC_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{AWS_LOCATION}/"
-    STATICFILES_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    STATICFILES_STORAGE = "rankrise.storage_backends.StaticStorage"
+
+    PUBLIC_MEDIA_LOCATION = "media"
+    MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/{PUBLIC_MEDIA_LOCATION}/"
+    DEFAULT_FILE_STORAGE = "rankrise.storage_backends.PublicMediaStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -170,9 +178,6 @@ if env.bool("USE_S3", default=False):
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = "authentication.UserModel"
-
-MEDIA_ROOT = BASE_DIR / 'media/'
-MEDIA_URL = '/media/'
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
