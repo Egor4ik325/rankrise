@@ -109,6 +109,11 @@ DATABASES = {
     }
 }
 
+database = env.db_url("DATABASE_URL")
+
+if database:
+    DATABASES["default"] = database
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

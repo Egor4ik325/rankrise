@@ -1,0 +1,12 @@
+setup:
+  addons:
+    - plan: heroku-postgres
+build:
+  docker:
+    web: ./api/Dockerfile
+release:
+  image: web
+  command:
+    - python ./api/manage.py collectstatic --no-input
+run:
+  web: python ./api/manage.py runserver 0.0.0.0:8000
