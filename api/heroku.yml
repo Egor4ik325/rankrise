@@ -9,4 +9,4 @@ release:
   command:
     - python manage.py collectstatic --no-input
 run:
-  web: python manage.py runserver 0.0.0.0:8000
+  web: python manage.py runserver 0.0.0.0:$PORT

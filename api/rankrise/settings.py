@@ -109,7 +109,7 @@ DATABASES = {
     }
 }
 
-database = env.db_url("DATABASE_URL")
+database = env.db_url("DATABASE_URL", default=None)
 
 if database:
     DATABASES["default"] = database
