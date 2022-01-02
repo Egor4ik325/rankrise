@@ -204,9 +204,7 @@ Nice to have:
 
 - [x] S3 storage
 
-- [ ] Cloud deployment
-
-- [ ] Internationalization
+- [x] Cloud deployment
 
 - [ ] Reporting
 
@@ -563,3 +561,48 @@ Amazon S3 will be used as a filesystem storage service. The following will be st
 - Content delivery network - static files (CSS, JS, JPEG, PNG)
 
 - User uploads - static upload files (JPEG, PNG)
+
+
+## Reports
+
+To prevent inappropriate/bad questions, production, answers and comments the reporting system
+will be developed.
+
+- users sent reports about the objects
+- admins review report and decide to do something with that
+
+Report contains:
+
+- title
+- description
+- resource/object type
+- object pk/slug
+- created
+- id
+- reporter (user or admin)
+
+> If object gets destroyed, all reports should be also
+
+Users can only create reports with following fields:
+
+- title
+- description
+- resource/content type
+- object slug
+
+For admins all fields will be visible + actions:
+
+- create (admins saw themselfs)
+- list
+- retrieve
+- destroy (inappropriate report)
+
+No filters, search nor ordering => enough.
+
+Slug vs id:
+
+- question - id
+- production - slug
+- option - id
+- comment - id
+- report - uuid

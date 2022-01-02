@@ -6,13 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('product', '0002_alter_product_website'),
+        ("product", "0002_alter_product_website"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='product',
-            name='name',
-            field=models.CharField(help_text='The name of the product is set only once when creating', max_length=50, unique=True, verbose_name='name'),
+            model_name="product",
+            name="name",
+            field=models.CharField(
+                help_text="The name of the product is set only once when creating",
+                max_length=50,
+                unique=True,
+                verbose_name="name",
+            ),
         ),
     ]

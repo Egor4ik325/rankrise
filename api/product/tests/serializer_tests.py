@@ -32,7 +32,9 @@ def test_name_unique(test_data):
     serializer.is_valid()
     serializer.save()
     serializer2 = ProductSerializer(data=test_data)
-    assert not serializer2.is_valid(), "Should not be able to create same instance twice"
+    assert (
+        not serializer2.is_valid()
+    ), "Should not be able to create same instance twice"
 
 
 @pytest.mark.parametrize("price", PriceChoices.values)

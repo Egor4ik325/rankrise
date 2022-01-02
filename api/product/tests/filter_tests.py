@@ -64,9 +64,7 @@ class TestSearch:
 
 @pytest.mark.django_db
 class TestCategoryFilter:
-    def test(
-        self, setup_db, cloud_platform, api_client, product_list_url_name
-    ):
+    def test(self, setup_db, cloud_platform, api_client, product_list_url_name):
         response = api_client.get(
             reverse(product_list_url_name), {"category": cloud_platform.pk}
         )

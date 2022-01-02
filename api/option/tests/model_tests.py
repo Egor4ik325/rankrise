@@ -87,7 +87,9 @@ class TestOptionScore:
             assert options[1]["id"] == o2.pk
             assert options[2]["id"] == o3.pk
 
-        def test_1_without_votes(self, q, o1, o2, o3, client, reverse_list, upvote, downvote):
+        def test_1_without_votes(
+            self, q, o1, o2, o3, client, reverse_list, upvote, downvote
+        ):
             upvote(o1, 12)
             downvote(o1, 3)
             upvote(o3, 10)

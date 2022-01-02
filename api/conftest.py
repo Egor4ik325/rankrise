@@ -1,8 +1,11 @@
 import pytest
+from django.contrib.contenttypes.models import ContentType
 from rest_framework.test import APIClient
 from rest_framework_simplejwt.tokens import RefreshToken
 
+from question.models import Question
 from question.throttles import BurstCommunityRateThrottle
+from reports.models import Report
 
 
 @pytest.fixture
@@ -57,3 +60,49 @@ def disable_burst_throttle(monkeypatch):
     # Patch burst throttle to always allow (disable burst throttle)
     monkeypatch.setattr(BurstCommunityRateThrottle, "allow_request", mock_allow_request)
     yield
+
+
+@pytest.fixture
+def rq(user_client):
+    """Request instance fixture."""
+    request = user_client.get("/mock-path")
+    return request
+
+
+# Factory, instance and data fixtures
+
+
+@pytest.fixture
+def user(test_user):
+    return test_user
+
+
+@pytest.fixture
+def question():
+    return Question.objects.create(title="Some test question?")
+
+
+@pytest.fixture
+def report_dict(user, question):
+    """Report in dictionary view."""
+
+    return {
+        "title": "Test report title",
+        "description": "Some description of the problem",
+        "reporter": user.pk,
+        "content_type": ContentType.objects.get_for_model(Question),
+        "object_pk": question.pk,
+    }
+
+
+@pytest.fixture
+def report(report_dict):
+
+    rd = report_dict.copy()
+    reporter_id = rd.pop("reporter")
+    return Report(rd | {"reporter_id": reporter_id})
+
+
+# def make_user():
+#     def make(**kwargs):
+#         return

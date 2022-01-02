@@ -9,5 +9,5 @@ class CommunityPermission(permissions.BasePermission):
             return request.user.is_authenticated
         if view.action in ["destroy"]:
             return request.user.is_staff
-        
+
         return False

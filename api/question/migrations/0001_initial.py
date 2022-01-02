@@ -7,20 +7,30 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Question',
+            name="Question",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=100, verbose_name='title')),
-                ('ask_time', models.DateTimeField(auto_now_add=True, verbose_name='ask time')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=100, verbose_name="title")),
+                (
+                    "ask_time",
+                    models.DateTimeField(auto_now_add=True, verbose_name="ask time"),
+                ),
             ],
             options={
-                'verbose_name': 'question',
-                'verbose_name_plural': 'questions',
+                "verbose_name": "question",
+                "verbose_name_plural": "questions",
             },
         ),
     ]

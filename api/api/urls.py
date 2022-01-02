@@ -1,6 +1,8 @@
-from django.urls import path, include
-from rest_framework.schemas import get_schema_view
+from django.urls import include, path
 from django.views.generic import TemplateView
+from reports.views import ReportViewSet
+from rest_framework.routers import DefaultRouter
+from rest_framework.schemas import get_schema_view
 
 urlpatterns = [
     path(
@@ -27,3 +29,8 @@ urlpatterns = [
     path("", include("vote.routers")),
     path("", include("category.routers")),
 ]
+
+
+router = DefaultRouter()
+router.register("reports", ReportViewSet)
+urlpatterns += router.urls
