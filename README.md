@@ -70,7 +70,7 @@ docker-compose -f docker-compose.dev.yml up --build -d
 
 - Answer name, website link, images, videos (links)
 
-- Answer rank (rating) calculation/*algorithm*
+- Answer rank (rating) calculation/_algorithm_
 
 - Questing/answer search
 
@@ -119,16 +119,16 @@ docker-compose -f docker-compose.dev.yml up --build -d
 - Automated testing + test coverage
 
 - CRUD components API
-  
-  - Model
-  
-  - Serializer
-  
-  - API view/view set
-  
-  - Manual testing
-  
-  - Automated testing
+
+- Model
+
+- Serializer
+
+- API view/view set
+
+- Manual testing
+
+- Automated testing
 
 **Technology stack** (technologies involved in the project):
 
@@ -206,11 +206,27 @@ Nice to have:
 
 - [x] Cloud deployment
 
-- [ ] Reporting
+- [x] Reporting
 
 - [ ] Argument
 
 - [ ] Single-page Application
+
+**Single-page app**:
+
+- [x] create-react-app
+
+- [x] modern development setup (formatter, linter, etc.)
+
+- [ ] design complexity-based file/code/project/directory structure and organization
+
+- [ ] design API client (resources)
+
+- [ ] design website frontend (colors, font, header, footer, etc.)
+
+- [ ] basic authentication (signup, login, email) (functional + design style)
+
+- [ ] crud/app pages (func + style)
 
 ## Question
 
@@ -218,7 +234,7 @@ Questions are the core of API.
 
 API:
 
-- Users (authenticated) can only ask questions. There should be some kind of throttling to prevent users from spamming a lot of questions. 
+- Users (authenticated) can only ask questions. There should be some kind of throttling to prevent users from spamming a lot of questions.
 
 - Any one can only list and retrieve questions.
 
@@ -238,7 +254,7 @@ Models:
 
 ## Product
 
-Product represent some product or service that can be recommended as an option to specific question. Usually it is online/software or Internet service/product. 
+Product represent some product or service that can be recommended as an option to specific question. Usually it is online/software or Internet service/product.
 
 - id
 
@@ -248,11 +264,11 @@ Product represent some product or service that can be recommended as an option t
 
 - description
 
-- images (links or *filesystem storage*: Django package)
+- images (links or _filesystem storage_: Django package)
 
 - product website link
 
-- price/cost (*choices* from: open source, free, paid)
+- price/cost (_choices_ from: open source, free, paid)
 
 Validation/Model:
 
@@ -303,11 +319,11 @@ Image of the product, has the have API permissions as product.
 Model:
 
 - image field
-  
+
   - 300x200
-  
+
   - JPEG
-  
+
   - 80% source quality
 
 Permissions:
@@ -358,7 +374,7 @@ Model:
 
 Permissions:
 
-- options follow the same community rules, you can only get and create them. 
+- options follow the same community rules, you can only get and create them.
 
 - admins can delete suggested options if they are not appropriate.
 
@@ -407,14 +423,14 @@ Design:
 - If option is deleted all votes should be too, if user is deleted all votes should stay (and set user to NULL)
 
 - Votes will be available under `*/options/<option_id>/` route
-  
-  - Because `<option_id>` auto increment is absolute, it is not required to pass `<question_id>` in the `reverse(url_name)` 
-  
+
+  - Because `<option_id>` auto increment is absolute, it is not required to pass `<question_id>` in the `reverse(url_name)`
+
   - `<question_id>` from URI is required and still used for additional validation.
 
-- Vote displaying should be anonymous (not voter information returned) only vote rate information (up/down) (*write-only*).
+- Vote displaying should be anonymous (not voter information returned) only vote rate information (up/down) (_write-only_).
 
-- Unauthenticated users can read/list, authenticated can also create votes, update  and delete *their* votes. Admins can do anything.
+- Unauthenticated users can read/list, authenticated can also create votes, update and delete _their_ votes. Admins can do anything.
 
 - Option should have convenient calculate fields (attributes: properties/methods.) or manager to get upvotes or downvotes count.
 
@@ -423,12 +439,12 @@ Design:
 - No API pagination for votes, ordering by latest vote time, filtering by up/down.
 
 - Vote user should be determined automatically based on request session user.
-  
+
   - vote user must be set to `request.user`
-  
+
   - vote create API shouldn't display `user` in OpenAPI documentation (or note that it is get from request session)
 
-- `option` and `user` API arguments will be determined from *URL* option and *session* user (arguments in body will be ignored).
+- `option` and `user` API arguments will be determined from _URL_ option and _session_ user (arguments in body will be ignored).
 
 ## Ranking
 
@@ -449,7 +465,7 @@ Ranking data math will be based on on:
 Features:
 
 - Query upvotes and downvotes of option should be available as option properties.
-  
+
   - filter and count votes
 
 - Upvotes and downvotes should be included in serializer as read-only fields.
@@ -491,11 +507,11 @@ This API is not very restrictive and built on top community trust and fairness. 
 Community throttling:
 
 - forbid making more than 100 create (POST) requests in a day (authenticated users) and more than 5 POST requests in minute.
-  
+
   - create views of questions, product (images), options APIs.
-  
+
   - burst: 5 req/min
-  
+
   - sustained: 100 req/day
 
 - no throttling for admin users (admins are not restricted to throttling).
@@ -521,7 +537,7 @@ Validation (serializer level):
 - Category name can not contain numbers (model level validation, admin interface).
 
 - All model fields are read-only (only accessable from admin interface).
-  
+
   - **Because everything is read-only - no validation is required** (or validation tests)
 
 Product:
@@ -536,13 +552,13 @@ Application Interface:
 
 - Categories can be search by name (through all categories), filtered by parent (get children) and paginated by 20, ordering by name.
 
-- API should be hierarchical, meaning have multiple levels. *First should be root categories*, then under this category children can be accessed like `/categories/1/children/2/children/3/`. Or get children just by filtering parent like `/categories/?parent=1` to get children of 1 category.
+- API should be hierarchical, meaning have multiple levels. _First should be root categories_, then under this category children can be accessed like `/categories/1/children/2/children/3/`. Or get children just by filtering parent like `/categories/?parent=1` to get children of 1 category.
 
 - To get category product filtering product by category should be used like `/products?category=1`.
 
 ## Caching
 
-Caching will be used to save *expensive rating/ranking* queries and calculations when requesting option list.
+Caching will be used to save _expensive rating/ranking_ queries and calculations when requesting option list.
 
 - level: per-view
 
@@ -561,7 +577,6 @@ Amazon S3 will be used as a filesystem storage service. The following will be st
 - Content delivery network - static files (CSS, JS, JPEG, PNG)
 
 - User uploads - static upload files (JPEG, PNG)
-
 
 ## Reports
 
