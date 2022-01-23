@@ -13,18 +13,17 @@ export class Resource {
     });
   }
 
-  _request(config) {
-    let headers = {};
-
+  async _request(config) {
     // token property can be changed after authentication => check on every request
     const token = this.getToken();
     if (token) {
-      headers.Authorization = `Bearer ${this.token}`;
+      config.headers.Authorization = `Bearer ${this.token}`;
     }
 
     try {
-      return this._client.request({ ...config, headers: headers });
+      return await this._client.request(config);
     } catch (error) {
+      // Exceptions are handled by specific resource classes
       throw error;
     }
   }

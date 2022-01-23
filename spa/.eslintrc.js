@@ -19,5 +19,7 @@ module.exports = {
     sourceType: "module",
   },
   plugins: ["react"],
-  rules: {},
+  rules: {
+    "no-useless-catch": ["off"]
+  },
 };
