@@ -1,5 +1,20 @@
 // Integration test
 
+/*
+Testing with Jest.
+
+jest.mock - works (must be global at the top of all tests)
+but using changin
+
+Doesn't work:
+
+// Mock the axios module (with module factory and mocked/spy implementation function)
+jest.mock("axios");
+const axiosCreate = axios.create;g return value after doesn't (mockResolvedValue, mockImplementation)
+
+*/
+
+// import axios from "axios"; // eslint-disable-line
 import api from "..";
 
 // Example API response fake data
@@ -9,26 +24,18 @@ const data = {
   refresh_token:
     "eyJ0eXiJIUzI1NiJ9.eyJ0b2taWQiOjF9.cpehIM_1R9tYgr-gePO89982398239898rw",
 };
-
-// Mock the axios module (with module factory and mocked/spy implementation function)
 jest.mock("axios", () => ({
-  create: () => ({
-    request: () => {
-      // Mocked axios response
-      const resp = {
-        data,
-        status: 200,
-        statusText: "OK",
-      };
-      return resp;
-    },
-  }),
+  create: jest.fn(() => ({
+    request: () => ({ data, status: 200, statusText: "OK" }),
+  })),
 }));
 
-test("api client login doesn't return error", async () => {
-  const response = await api.authentication.login({
-    username: "mock",
-    password: "mock",
+describe("api client resources", () => {
+  it("api client login doesn't return error", async () => {
+    const response = await api.authentication.login({
+      username: "mock",
+      password: "mock",
+    });
+    expect(response.accessToken).toBe(data.access_token);
   });
-  expect(response.accessToken).toBe(data.access_token);
 });

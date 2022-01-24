@@ -8,6 +8,7 @@ export default class Authentication extends Resource {
   async login({ username, password }) {
     try {
       const response = await this._request({
+        method: "post",
         url: reverse("login"),
         data: { username, password },
       });

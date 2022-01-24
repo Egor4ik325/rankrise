@@ -208,6 +208,8 @@ Nice to have:
 
 - [x] Reporting
 
+- [ ] Try using python/pipenv task runner (vs Make vs Django custom commands)
+
 - [ ] Argument
 
 - [ ] Single-page Application
@@ -218,9 +220,9 @@ Nice to have:
 
 - [x] modern development setup (formatter, linter, etc.)
 
-- [ ] design complexity-based file/code/project/directory structure and organization
+- [x] design complexity-based file/code/project/directory structure and organization
 
-- [ ] design API client (resources)
+- [x] design API client (resources)
 
 - [ ] design website frontend (colors, font, header, footer, etc.)
 
@@ -621,3 +623,29 @@ Slug vs id:
 - option - id
 - comment - id
 - report - uuid
+
+## Frontend project structure design
+
+### API client library
+
+Because of the big number of API CRUD resources the proper design and OOP practices are needed.
+
+The following resources should be mirrored in API client:
+
+- authentication
+- questions
+- products
+- product images
+- options
+- votes
+- categories
+- reports
+
+Website frontend pages:
+
+- landing/home page
+- login page
+- signup page
+- profile page
+- search page
+- detail page

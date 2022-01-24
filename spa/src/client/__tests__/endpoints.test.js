@@ -5,5 +5,7 @@ it("reverses login url", () => {
 });
 
 it("reverses voit detail with args", () => {
-  expect(reverse("voteDetail", {questionPk: 1, optionPk: 2, id: 3})).toEqual("http://localhost/api/questions/1/options/2/votes/3/")
-})
+  expect(reverse("voteDetail", { questionPk: 1, optionPk: 2, id: 3 })).toEqual(
+    "http://localhost/api/questions/1/options/2/votes/3/"
+  );
+});
