@@ -1,0 +1,36 @@
+// Color pallette (real color names)
+//
+$kombu-green: #344638;
+$roman-silver: #7d8e95;
+$bisque: #fbe0c3;
+$macaroni-and-cheese: #ffbb98;
+
+// Override semantic colors
+//
+$primary: $kombu-green;
+$secondary: $roman-silver;
+$tertiary: $bisque;
+
+// Gray scale colors
+$light: $gray-100;
+$dark: $gray-900;
+
+// Message colors (error, success, warning, informational)
+$success: $green;
+$info: $cyan;
+$warning: $yellow;
+$error: $red;
+
+$theme-colors: (
+  // Component colors
+  "primary": $primary,
+  "secondary": $secondary,
+  "tertiary": $tertiary,
+  "light": $light,
+  "dark": $dark,
+  // Message colors
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "error": $error
+);

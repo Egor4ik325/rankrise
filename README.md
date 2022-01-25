@@ -643,9 +643,16 @@ The following resources should be mirrored in API client:
 
 Website frontend pages:
 
-- landing/home page
-- login page
-- signup page
-- profile page
-- search page
-- detail page
+- home page + recent questions list
+- search results (question/product) page
+- question detail page
+- login page, signup page, user profile page
+
+### Web design
+
+The web design of the website will be made in Figma but inspired by Slant.co design.
+
+- Favicon: "RR"
+- Color scheme: ?
+- Typography: Outfit (Regular, Bold)
+- Central goal: search for question and find the best option
