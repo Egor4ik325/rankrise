@@ -7,7 +7,7 @@ import Login from "./Login";
 import NotFound from "./NotFound";
 
 import { UserContextProvider } from "../hooks/UserContext";
-// import { MessagesContextProvider } from "../hooks/MessagesContext";
+import { MessagesContextProvider } from "../hooks/MessagesContext";
 
 import api from "../client";
 import { NotAuthenticatedError } from "../client/errors";
@@ -43,13 +43,15 @@ const App = () => {
 
   return (
     <UserContextProvider value={[user, setUser]}>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="login" element={<Login onLogin={fetchUser} />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
+      <MessagesContextProvider>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="login" element={<Login onLogin={fetchUser} />} />
+            <Route path="*" element={<NotFound />} />
+          </Route>
+        </Routes>
+      </MessagesContextProvider>
     </UserContextProvider>
   );
 };
