@@ -30,7 +30,7 @@ export default class APIClient {
 
     // Verify token is valid (not expired) otherwise renew access token with refresh token
     // when the client object is constructed (user opens the website)
-    this.validateTokens();
+    // this.validateTokens();
   }
 
   async validateTokens() {

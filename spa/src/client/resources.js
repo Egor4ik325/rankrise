@@ -36,7 +36,7 @@ export class Resource {
     // token property can be changed after authentication => check on every request
     const token = this.getAccessToken();
     if (token) {
-      _.set(config, "headers.Authorization", `Bearer ${this.token}`);
+      _.set(config, "headers.Authorization", `Bearer ${token}`);
     }
 
     try {

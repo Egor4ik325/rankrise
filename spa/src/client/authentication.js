@@ -36,7 +36,7 @@ export default class Authentication extends Resource {
           throw new ServerError();
         }
 
-        throw new OtherError();
+        throw new OtherError(error.response);
       }
 
       throw error;
@@ -56,6 +56,17 @@ export default class Authentication extends Resource {
         handleResponseError(error.response);
       }
 
+      throw error;
+    }
+  }
+
+  async logout() {
+    try {
+      // Request an API to response with Set-Cookie="" (clear cookies)
+      await this._request({ method: "post", url: reverse("logout") });
+      this.removeAccessToken();
+      this.removeRefreshToken();
+    } catch (error) {
       throw error;
     }
   }
