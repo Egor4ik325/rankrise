@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "debug_toolbar",
     "storages",
     "django_extensions",
+    "corsheaders",
     "api",
     "authentication",
     "question",
@@ -68,6 +69,7 @@ MIDDLEWARE = [
     "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -232,6 +234,12 @@ REST_AUTH_TOKEN_MODEL = None
 JWT_AUTH_COOKIE = None
 JWT_AUTH_REFRESH_COOKIE = None
 JWT_AUTH_COOKIE_USE_CSRF = False
+
+# CORS settings
+CORS_ALLOWED_ORIGINS = ["https://localhost:3000"]
+# CORS_ALLOWED_ORIGIN_REGEXES
+# CORS_ALLOW_ALL_ORIGINS
+CORS_URLS_REGEX = r"^/api/.*$"
 
 CACHES = {
     "default": {

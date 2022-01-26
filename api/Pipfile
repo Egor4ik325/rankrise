@@ -28,6 +28,7 @@ django-storages = "*"
 boto3 = "*"
 django-model-utils = "*"
 django-extensions = "*"
+django-cors-headers = "*"
 
 [dev-packages]
 black = "*"

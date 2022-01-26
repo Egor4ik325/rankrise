@@ -28,6 +28,22 @@ docker-compose -f docker-compose.dev.yml down
 docker-compose -f docker-compose.dev.yml up --build -d
 ```
 
+Install a new package:
+
+```sh
+# Stop and remove container + anonymous volume + image
+docker compose -f docker-compose.dev.yml rm -sv api
+docker image rm rankrise_api
+
+# Install and lock
+pipenv install package
+pipenv lock -d -r > requirements.txt
+
+# Rebuild and run
+docker compose -f docker-compose.dev.yml build api
+docker compose -f docker-compose.dev.yml up api
+```
+
 ## Description
 
 **Idea**:
