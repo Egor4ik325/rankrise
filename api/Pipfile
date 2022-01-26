@@ -27,6 +27,7 @@ django-debug-toolbar = "*"
 django-storages = "*"
 boto3 = "*"
 django-model-utils = "*"
+django-extensions = "*"
 
 [dev-packages]
 black = "*"

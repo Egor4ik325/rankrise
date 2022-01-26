@@ -1,9 +1,13 @@
 export const apiServerBaseUrl = "http://localhost/api/";
 
-const endpoints = {
+const urls = {
+  // Authentication and management
   login: () => `auth/login/`,
   tokenVerify: () => `auth/token/verify/`,
   tokenRefresh: () => `auth/token/refresh/`,
+  user: () => `auth/user/`,
+  logout: () => `auth/logout/`,
+  // Resources
   questionList: () => `questions/`,
   questionDetail: ({ id }) => `questions/${id}/`,
   productList: () => `products/`,
@@ -22,6 +26,6 @@ const endpoints = {
 };
 
 export const reverse = (name, args) => {
-  const url = endpoints[name](args);
+  const url = urls[name](args);
   return `${apiServerBaseUrl}${url}`;
 };
