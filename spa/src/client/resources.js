@@ -34,7 +34,7 @@ export class Resource {
 
   async _request(config) {
     // token property can be changed after authentication => check on every request
-    const token = this.getAccessToken();
+    let token = this.getAccessToken();
     if (token) {
       _.set(config, "headers.Authorization", `Bearer ${token}`);
     }
@@ -45,16 +45,21 @@ export class Resource {
       // Validating, verifying and refreshing tokens (token auto renewal)
       if (error?.response?.data?.code === "token_not_valid") {
         if (this.getRefreshToken()) {
-          // this.removeAccessToken();
+          this.removeAccessToken();
           try {
-            console.log("try to renew");
             await this._renewAccessToken();
-            console.log("renewed");
+
+            // Replace old token with new
+            token = this.getAccessToken();
+            if (token) {
+              _.set(config, "headers.Authorization", `Bearer ${token}`);
+            } else {
+              // Delete property or null (if not set)
+              delete config?.headers?.Authorization;
+            }
 
             return await this._client.request(config);
           } catch (error) {
-            console.log(error);
-            console.log("renew error");
             // If the refresh token has expired that user is have to login again
             if (error?.response?.data?.code === "token_not_valid") {
               this._clearTokens();
@@ -77,20 +82,14 @@ export class Resource {
 
   async _renewAccessToken() {
     try {
-      const response = await this._client.post({
-        method: "post",
-        url: reverse("tokenRefresh"),
-        data: { refresh: this.getRefreshToken() },
+      // Authorization header free request
+      const response = await this._client.post(reverse("tokenRefresh"), {
+        refresh: this.getRefreshToken(),
       });
 
       const accessToken = response.data.access;
       this.setAccessToken(accessToken);
     } catch (error) {
-      // If API error raise API error
-      if (error.response) {
-        handleResponseError(error.response);
-      }
-
       throw error;
     }
   }
@@ -153,4 +152,21 @@ export class Options extends Resource {
   list() {}
 
   retrieve() {}
+
+  async create({ questionId, productId }) {
+    try {
+      await this._request({
+        method: "post",
+        url: reverse("optionList", { questionPk: questionId }),
+        data: { product: productId },
+      });
+    } catch (error) {
+      // If API error raise API error
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
 }

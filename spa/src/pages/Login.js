@@ -36,6 +36,8 @@ const Login = ({ onLogin }) => {
       // Refetch the user (after logging-in)
       onLogin();
 
+      setMessages([]);
+
       // Redirect to the home page
       navigate("/", { replace: true });
     } catch (error) {
