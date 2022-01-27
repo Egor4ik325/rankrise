@@ -1,22 +1,42 @@
 import { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Layout from "../components/Layout";
 import Home from "./Home";
 import Login from "./Login";
 import NotFound from "./NotFound";
 
-import { UserContextProvider } from "../hooks/UserContext";
+import { UserContextProvider, useUserContext } from "../hooks/UserContext";
 import { MessagesContextProvider } from "../hooks/MessagesContext";
 
 import api from "../client";
 import { NotAuthenticatedError } from "../client/errors";
+import routes from "../routes";
 
 // Utility hook for force updating component by changing arbitrary state
 // const useForceUpdate = () => {
 //   const [value, setValue] = useState(0);
 //   return () => setValue(value + 1);
 // };
+const NotAuthenticatedOnly = ({ children }) => {
+  const [user, setUser] = useUserContext();
+
+  if (user) {
+    return <Navigate to={routes.home} replace />;
+  }
+
+  return children;
+};
+
+const AuthenticatedRequired = ({ children }) => {
+  const [user, setUser] = useUserContext();
+
+  if (!user) {
+    return <Navigate to={routes.login} replace />;
+  }
+
+  return children;
+};
 
 // App == Router
 const App = () => {
@@ -47,7 +67,14 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="login" element={<Login onLogin={fetchUser} />} />
+            <Route
+              path="login"
+              element={
+                <NotAuthenticatedOnly>
+                  <Login onLogin={fetchUser} />
+                </NotAuthenticatedOnly>
+              }
+            />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

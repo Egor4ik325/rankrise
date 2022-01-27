@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { Button } from "react-bootstrap";
 
 import api from "../client";
+import routes from "../routes";
 
 const Navbar = () => {
   return <nav>Nav</nav>;
@@ -19,10 +20,12 @@ const Profile = () => {
 
   return (
     <div className="profile">
-      Hi, {user.username}
-      <Button onClick={logout} variant="tertiary">
-        Logout
-      </Button>
+      Hi, {user.username}. Your email is {user.email}
+      <div>
+        <Button onClick={logout} variant="tertiary">
+          Logout
+        </Button>
+      </div>
     </div>
   );
 };
@@ -44,7 +47,7 @@ const Header = () => {
           <>Loading...</>
         ) : user === null ? (
           <div className="login">
-            <Link to="/login">Login</Link>
+            <Link to={routes.login}>Login</Link>
           </div>
         ) : (
           <Profile />

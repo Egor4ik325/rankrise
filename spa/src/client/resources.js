@@ -132,7 +132,7 @@ export class Questions extends Resource {
 
   async create({ title }) {
     try {
-      const response = await self._request({
+      const response = await this._request({
         method: "post",
         url: reverse("questionList"),
         data: { title },

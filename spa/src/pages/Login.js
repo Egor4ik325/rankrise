@@ -7,6 +7,7 @@ import { useMessages } from "../hooks/MessagesContext";
 
 import api from "../client";
 import { LoginError } from "../client/errors";
+import routes from "../routes";
 
 const Login = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ const Login = ({ onLogin }) => {
       setMessages([]);
 
       // Redirect to the home page
-      navigate("/", { replace: true });
+      navigate(routes.home, { replace: true });
     } catch (error) {
       if (error instanceof LoginError) {
         // Display login failed message
