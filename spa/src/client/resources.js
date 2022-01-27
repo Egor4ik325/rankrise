@@ -42,36 +42,40 @@ export class Resource {
     try {
       return await this._client.request(config);
     } catch (error) {
+      // Validating, verifying and refreshing tokens (token auto renewal)
+      if (error?.response?.data?.code === "token_not_valid") {
+        if (this.getRefreshToken()) {
+          // this.removeAccessToken();
+          try {
+            console.log("try to renew");
+            await this._renewAccessToken();
+            console.log("renewed");
+
+            return await this._client.request(config);
+          } catch (error) {
+            console.log(error);
+            console.log("renew error");
+            // If the refresh token has expired that user is have to login again
+            if (error?.response?.data?.code === "token_not_valid") {
+              this._clearTokens();
+            }
+          }
+        } else {
+          this._clearTokens();
+        }
+      }
+
       // Exceptions are handled by specific resource classes
       throw error;
     }
   }
-}
 
-// Utility resource for validating, verifying and refreshing tokens
-export class Tokens extends Resource {
-  async verifyAccessToken() {
-    try {
-      this._client.post({
-        method: "post",
-        url: reverse("tokenVerify"),
-        data: { token: this.getAccessToken() },
-      });
-      return true;
-    } catch (error) {
-      if (error.response) {
-        if (error.response.status === 401 || error.response.status === 400) {
-          return false;
-        }
-
-        handleResponseError(error.response);
-      }
-
-      throw error;
-    }
+  _clearTokens() {
+    this.removeAccessToken();
+    this.removeRefreshToken();
   }
 
-  async renewAccessToken() {
+  async _renewAccessToken() {
     try {
       const response = await this._client.post({
         method: "post",
@@ -82,6 +86,7 @@ export class Tokens extends Resource {
       const accessToken = response.data.access;
       this.setAccessToken(accessToken);
     } catch (error) {
+      // If API error raise API error
       if (error.response) {
         handleResponseError(error.response);
       }
