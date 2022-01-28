@@ -97,11 +97,11 @@ export class Resource {
 
 export class Questions extends Resource {
   // Page should be 0 if user passes undefined or {}
-  async list({ page = 0 } = { page: 0 }) {
+  async list({ page = 1, page_size = 5 } = { page: 1, page_size: 5 }) {
     try {
       const response = await this._request({
         url: reverse("questionList"),
-        params: { p: page },
+        params: { page, page_size },
       });
 
       return new QuestionsResponse(response.data);
@@ -143,6 +143,24 @@ export class Questions extends Resource {
       if (error.response) {
         throw new InvalidDataError(error.response.data);
       }
+      throw error;
+    }
+  }
+
+  async search({ query, page = 1, page_size = 5 }) {
+    try {
+      const response = await this._request({
+        url: reverse("questionList"),
+        params: { search: query, page, page_size },
+      });
+
+      return new QuestionsResponse(response.data);
+    } catch (error) {
+      // If API error handle as API error (convert status to error class/object)
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+      // Don't handle non-API errors
       throw error;
     }
   }

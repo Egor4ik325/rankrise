@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button, Container, Form } from "react-bootstrap";
 import moment from "moment";
 import { unstable_HistoryRouter, useNavigate } from "react-router-dom";
@@ -72,9 +72,12 @@ const QuestionCreateModal = ({ show, onHide, onQuestionCreate }) => {
 
 const Questions = () => {
   const [user, ,] = useUserContext();
+  const navigate = useNavigate();
+
   const [questionResponse, setQuestionResponse] = useState(undefined);
   const [showQuestionCreateModal, setShowQuestionCreateModal] = useState(false);
-  const navigate = useNavigate();
+  const page = useRef(1);
+  const [fetchingMore, setFetchingMore] = useState(false);
 
   const fetchQuestions = async () => {
     try {
@@ -116,8 +119,30 @@ const Questions = () => {
   const handleQuestionCreate = (question) => {
     setQuestionResponse({
       ...questionResponse,
+      count: questionResponse.count + 1,
       results: [question].concat(questionResponse.results),
     });
+  };
+
+  const handleLoadMore = async () => {
+    page.current += 1;
+
+    setFetchingMore(true);
+    try {
+      const moreQuestionsResponse = await api.questions.list({
+        page: page.current,
+      });
+
+      // Add more questions to the older response
+      setQuestionResponse({
+        ...questionResponse,
+        next: moreQuestionsResponse.next,
+        results: questionResponse.results.concat(moreQuestionsResponse.results),
+      });
+    } catch (error) {
+      throw error;
+    }
+    setFetchingMore(false);
   };
 
   return (
@@ -126,15 +151,18 @@ const Questions = () => {
         List of question{" "}
         {
           // Render count only when question response is neither undefined or null
-          (questionResponse ?? false) && <>({questionResponse.count})</>
+          (questionResponse ?? false) && <>(total {questionResponse.count})</>
         }
         :
       </p>
       {render()}
+      {fetchingMore && <i>Fetching more...</i>}
       <div>
-        <Button variant="link" block>
-          Load more
-        </Button>
+        {questionResponse?.next && (
+          <Button variant="link" onClick={handleLoadMore}>
+            Load more
+          </Button>
+        )}
       </div>
       <Button variant="tertiary" onClick={handleOpenQuestionCreateModal}>
         Create new question

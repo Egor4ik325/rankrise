@@ -62,17 +62,6 @@ export class OtherError extends APIError {
   }
 }
 
-// Generic error handler (response status dispatcher)
-
-// Handle all other responses with appropriate API errors (boilerplate handling)
-export const handleResponseError = (response) => {
-  if (response.status >= 500 && response.status < 600) {
-    throw new ServerError();
-  }
-
-  throw new OtherError(response);
-};
-
 export class NotAuthenticatedError extends APIError {
   constructor() {
     super(
@@ -80,3 +69,26 @@ export class NotAuthenticatedError extends APIError {
     );
   }
 }
+
+// Generic error handler (response status dispatcher)
+
+// Handle all other responses with appropriate API errors (boilerplate handling)
+export const handleResponseError = (response) => {
+  if (response.status === 400) {
+    throw new InvalidDataError(response.data);
+  }
+
+  if (response.status === 401) {
+    throw new NotAuthenticatedError();
+  }
+
+  if (response.status === 404) {
+    throw new DoesNotExistsError();
+  }
+
+  if (response.status >= 500 && response.status < 600) {
+    throw new ServerError();
+  }
+
+  throw new OtherError(response);
+};

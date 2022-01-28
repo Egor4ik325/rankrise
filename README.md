@@ -240,11 +240,21 @@ Nice to have:
 
 - [x] design API client (resources)
 
-- [ ] design website frontend (colors, font, header, footer, etc.)
+- [x] foundational website design (colors, font, header, footer, etc.)
 
-- [ ] basic authentication (signup, login, email) (functional + design style)
+- [x] basic authentication (signup, login, email) (functional)
+
+- [x] questions list/create (func)
+
+- [x] questions search page, results, list
+
+- [ ] question detailed page
+
+- [ ] search time results list
 
 - [ ] crud/app pages (func + style)
+
+- [ ] do web design of the website
 
 ## Question
 

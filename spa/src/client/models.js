@@ -1,6 +1,6 @@
 export class QuestionsResponse {
   constructor(data) {
-    this.count = data.count;
+    this.count = data.count; // number of results on all pages
     this.next = data.next;
     this.previous = data.previous;
     this.results = data.results.map((result) => new Question(result));

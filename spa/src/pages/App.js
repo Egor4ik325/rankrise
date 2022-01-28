@@ -5,6 +5,7 @@ import Layout from "../components/Layout";
 import Home from "./Home";
 import Login from "./Login";
 import NotFound from "./NotFound";
+import Search from "./Search";
 
 import { UserContextProvider, useUserContext } from "../hooks/UserContext";
 import { MessagesContextProvider } from "../hooks/MessagesContext";
@@ -75,6 +76,7 @@ const App = () => {
                 </NotAuthenticatedOnly>
               }
             />
+            <Route path="search" element={<Search />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>
