@@ -6,6 +6,7 @@ import Home from "./Home";
 import Login from "./Login";
 import NotFound from "./NotFound";
 import Search from "./Search";
+import Question from "./Question";
 
 import { UserContextProvider, useUserContext } from "../hooks/UserContext";
 import { MessagesContextProvider } from "../hooks/MessagesContext";
@@ -77,6 +78,8 @@ const App = () => {
               }
             />
             <Route path="search" element={<Search />} />
+            <Route path="questions/:id" element={<Question />} />
+            <Route path="404" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
           </Route>
         </Routes>

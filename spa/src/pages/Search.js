@@ -36,7 +36,7 @@ const Search = () => {
     if (query) {
       fetchQuestions();
     }
-  }, [page]);
+  }, [query, page]);
 
   const renderResults = () => {
     if (!query) {

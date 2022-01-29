@@ -1,5 +1,5 @@
 import Authentication from "./authentication";
-import { Questions } from "./resources";
+import { Options, Products, Questions } from "./resources";
 
 // Wrapper around API recourses
 export default class APIClient {
@@ -25,5 +25,7 @@ export default class APIClient {
     // Pass all dependency token functions
     this.authentication = new Authentication(tokenFunctions);
     this.questions = new Questions(tokenFunctions);
+    this.options = new Options(tokenFunctions);
+    this.products = new Products(tokenFunctions);
   }
 }

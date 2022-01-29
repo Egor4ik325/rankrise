@@ -1,14 +1,14 @@
-from rest_framework import viewsets, mixins, filters
 from django_filters.rest_framework import DjangoFilterBackend
-
-from .models import Product, ProductImage
-from .permissions import CommunityPermission
-from .serializers import ProductSerializer, ProductImageSerializer
-from .pagination import ProductPagination
 from question.throttles import (
     BurstCommunityRateThrottle,
     SustainedCommunityRateThrottle,
 )
+from rest_framework import filters, mixins, viewsets
+
+from .models import Product, ProductImage
+from .pagination import ProductPagination
+from .permissions import CommunityPermission
+from .serializers import ProductImageSerializer, ProductSerializer
 
 
 class NonUpdatableViewSet(
@@ -22,7 +22,7 @@ class NonUpdatableViewSet(
 
 
 class ProductViewSet(NonUpdatableViewSet):
-    lookup_field = "slug"
+    lookup_field = "pk"
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [CommunityPermission]

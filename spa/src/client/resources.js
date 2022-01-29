@@ -7,7 +7,7 @@ import {
   handleResponseError,
   InvalidDataError,
 } from "./errors";
-import { Question, QuestionsResponse } from "./models";
+import { Question, QuestionsResponse, OptionsModel, Product } from "./models";
 
 // Resource represents an interface to some part of API
 export class Resource {
@@ -167,7 +167,21 @@ export class Questions extends Resource {
 }
 
 export class Options extends Resource {
-  list() {}
+  async list({ questionId }) {
+    try {
+      const response = await this._request({
+        url: reverse("optionList", { questionPk: questionId }),
+      });
+
+      return new OptionsModel(response.data);
+    } catch (error) {
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
 
   retrieve() {}
 
@@ -180,6 +194,25 @@ export class Options extends Resource {
       });
     } catch (error) {
       // If API error raise API error
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      // Otherwise don't handle error (reraise)
+      throw error;
+    }
+  }
+}
+
+export class Products extends Resource {
+  async retrieve({ id }) {
+    try {
+      const response = await this._request({
+        url: reverse("productDetail", { id }),
+      });
+
+      return new Product(response.data);
+    } catch (error) {
       if (error.response) {
         handleResponseError(error.response);
       }
