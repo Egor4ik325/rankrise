@@ -88,5 +88,14 @@ export class Product {
     this.description = data.description;
     this.website = data.website;
     this.price = new Price(data.price);
+    this.images = data.images;
+  }
+}
+
+export class ProductImage {
+  constructor(data) {
+    this.pk = data.pk;
+    this.product = data.product;
+    this.url = data.image;
   }
 }

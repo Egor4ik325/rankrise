@@ -23,5 +23,6 @@ module.exports = {
   plugins: ["react", "jest"],
   rules: {
     "no-useless-catch": ["off"],
+    "react/prop-types": ["off"],
   },
 };

@@ -7,6 +7,14 @@ import api from "../client";
 import routes from "../routes";
 import { useState } from "react";
 
+const Logo = () => {
+  return (
+    <div>
+      <Link to={routes.home}>RankRise</Link>
+    </div>
+  );
+};
+
 const Navbar = () => {
   return <nav>Nav</nav>;
 };
@@ -77,11 +85,9 @@ Profile.propTypes = {
 const Header = () => {
   return (
     <header>
-      <div>RankRise</div>
+      <Logo />
       <Navbar />
-
       <Search />
-
       <div className="right-side">
         <Profile />
       </div>

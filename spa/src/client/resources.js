@@ -7,7 +7,13 @@ import {
   handleResponseError,
   InvalidDataError,
 } from "./errors";
-import { Question, QuestionsResponse, OptionsModel, Product } from "./models";
+import {
+  Question,
+  QuestionsResponse,
+  OptionsModel,
+  Product,
+  ProductImage,
+} from "./models";
 
 // Resource represents an interface to some part of API
 export class Resource {
@@ -212,6 +218,48 @@ export class Products extends Resource {
       });
 
       return new Product(response.data);
+    } catch (error) {
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
+}
+
+export class ProductImages extends Resource {
+  async retrieve({ id }) {
+    try {
+      const response = await this._request({
+        url: reverse("productImageDetail", { id }),
+      });
+
+      return new ProductImage(response.data);
+    } catch (error) {
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
+
+  async upload({ productId, image }) {
+    // Construct form-data from image blob and product id
+    const formData = new FormData();
+    formData.append("product", productId);
+    formData.append("image", image);
+
+    try {
+      const response = await this._request({
+        method: "post",
+        url: reverse("productImageList"),
+        data: formData,
+        headers: { "content-type": "multipart/form-data" },
+      });
+
+      return new ProductImage(response.data);
     } catch (error) {
       if (error.response) {
         handleResponseError(error.response);

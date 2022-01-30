@@ -674,6 +674,22 @@ Website frontend pages:
 - question detail page
 - login page, signup page, user profile page
 
+### HTTP and binary data / REST
+
+HTTP is usually used to transfer HTML document or other textual information inside the body (such a XML, JSON).
+
+There multiple types of HTTP bodies:
+
+- Text (JSON, HTML, YAML, ...)
+- Structured (form-data - contains multiple other content types, ...)
+- Binary (file, image, video, ...)
+
+Binary files can be only send in serialized (test) form => use base64 (+33% of data size due to using only 64 of 128 characters).
+
+- `http://someserver.org/images/image.png` will return a resource with media type `image/png` which tells browser to interpreter body as PNG file.
+
+- `http://someapi.org/api/products` will return JSON document with media type (`content-type` header) `application/json`.
+
 ### Web design
 
 The web design of the website will be made in Figma but inspired by Slant.co design.

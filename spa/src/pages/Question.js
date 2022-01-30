@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../client";
 import { APIError, DoesNotExistsError } from "../client/errors";
 import moment from "moment";
@@ -41,6 +41,12 @@ const Option = ({ option }) => {
   return (
     <div>
       <div>ID: {option.id}</div>
+      {product !== null ? (
+        <Link to={routes.product(product.pk)}>Detail</Link>
+      ) : (
+        <div>Loading...</div>
+      )}
+
       <div>{product !== null ? product.name : <>Loading...</>}</div>
       <div>Rank: {option.rank}</div>
       <div>
