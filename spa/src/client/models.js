@@ -99,3 +99,11 @@ export class ProductImage {
     this.url = data.image;
   }
 }
+
+export class Products extends ListResponse {
+  constructor(data) {
+    super(data);
+
+    this.results = data.results.map((result) => new Product(result));
+  }
+}

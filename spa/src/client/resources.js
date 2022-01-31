@@ -13,6 +13,7 @@ import {
   OptionsModel,
   Product,
   ProductImage,
+  Products as ProductsModel,
 } from "./models";
 
 // Resource represents an interface to some part of API
@@ -218,6 +219,23 @@ export class Products extends Resource {
       });
 
       return new Product(response.data);
+    } catch (error) {
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
+
+  async search({ query, page = 1 }) {
+    try {
+      const response = await this._request({
+        url: reverse("productList"),
+        params: { search: query, page },
+      });
+
+      return new ProductsModel(response.data);
     } catch (error) {
       if (error.response) {
         handleResponseError(error.response);

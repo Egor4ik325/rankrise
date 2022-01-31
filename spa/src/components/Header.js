@@ -96,6 +96,8 @@ const SearchBar = () => {
 
     const form = e.target;
     form.reset();
+
+    setQuery(null);
   };
 
   const handleSearchResultClick = () => {
