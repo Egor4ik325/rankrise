@@ -1,10 +1,14 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import api from "../client";
 import { APIError, DoesNotExistsError } from "../client/errors";
+import Modal from "../components/Modal";
 import moment from "moment";
-
+import { Button } from "react-bootstrap";
 import routes from "../routes";
+import Model from "../components/Modal";
+// import Select from "react-select";
+import AsyncSelect from "react-select/async";
 
 const Headline = ({ question }) => {
   if (question === undefined) {
@@ -25,6 +29,7 @@ const Headline = ({ question }) => {
 
 const Option = ({ option }) => {
   const [product, setProduct] = useState(null);
+  const [firstProductImage, setFirstProductImage] = useState(null);
 
   const fetchProduct = async () => {
     try {
@@ -38,6 +43,22 @@ const Option = ({ option }) => {
     fetchProduct();
   }, [option]);
 
+  const fetchFirstImage = async () => {
+    try {
+      setFirstProductImage(
+        await api.productImages.retrieve({ id: product.images[0] })
+      );
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    if (product?.images[0]) {
+      fetchFirstImage();
+    }
+  }, [product]);
+
   return (
     <div>
       <div>ID: {option.id}</div>
@@ -48,6 +69,7 @@ const Option = ({ option }) => {
       )}
 
       <div>{product !== null ? product.name : <>Loading...</>}</div>
+      {firstProductImage && <img src={firstProductImage.url} />}
       <div>Rank: {option.rank}</div>
       <div>
         👍 Upvotes: {option.upvotes} | 👎 Downvotes: {option.downvotes}
@@ -85,6 +107,90 @@ const Options = ({ question }) => {
   return options.results.map((option) => (
     <Option key={option.id} option={option} />
   ));
+};
+
+const ProductSuggestModal = ({ question, onSuggest }) => {
+  const [shown, setShown] = useState(false);
+  const [selectedValue, setSelectedValue] = useState(null);
+  const fetchTimeoutId = useRef(null);
+
+  const fetchProducts = async (inputValue) => {
+    try {
+      return await api.products.search({ query: inputValue });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleInputChange = (value) => {
+    if (value) {
+      setSelectedValue(value);
+    }
+  };
+
+  const loadOptions = (inputValue, callback) => {
+    // if (!query) {
+    //   callback([]);
+    // }
+
+    // Clear set timeout on previous loadOptions call
+    if (fetchTimeoutId.current !== null) {
+      clearTimeout(fetchTimeoutId.current);
+    }
+
+    fetchTimeoutId.current = setTimeout(async () => {
+      const products = await fetchProducts(inputValue);
+
+      const options = products.results.map((product) => ({
+        value: product.pk,
+        label: product.name,
+      }));
+      callback(options);
+    }, 1000);
+  };
+
+  const createOption = async () => {
+    try {
+      console.log(`Question: ${question.pk}, Product: ${selectedValue.value}`);
+      await api.options.create({
+        questionId: question.pk,
+        productId: selectedValue.value,
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleSuggestOption = async () => {
+    if (selectedValue) {
+      await createOption();
+
+      setShown(false);
+      onSuggest();
+    }
+  };
+
+  return (
+    <>
+      <Button onClick={() => setShown(true)}>Suggest</Button>
+      <Model
+        header={<div>Suggest an Option</div>}
+        show={shown}
+        onHide={() => setShown(false)}
+      >
+        <p>Select existing product</p>
+        <AsyncSelect
+          // cacheOptions
+          loadOptions={loadOptions}
+          onInputChange={handleInputChange}
+          onChange={(newSelectedValue) => setSelectedValue(newSelectedValue)}
+        />
+        <Button onClick={handleSuggestOption}>Suggest</Button>
+        <p>Or</p>
+        <Button>Create new</Button>
+      </Model>
+    </>
+  );
 };
 
 const Question = () => {
@@ -125,6 +231,7 @@ const Question = () => {
       <Headline question={question} />
       {render()}
       {question ? <Options question={question} /> : <>Loading...</>}
+      <ProductSuggestModal question={question} onSuggest={fetchQuestion} />
     </div>
   );
 };
