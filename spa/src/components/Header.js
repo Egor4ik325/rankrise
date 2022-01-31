@@ -1,11 +1,11 @@
 import { useUserContext } from "../hooks/UserContext";
 import PropTypes from "prop-types";
 import { Link, useNavigate, createSearchParams } from "react-router-dom";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, ListGroup, ListGroupItem } from "react-bootstrap";
 
 import api from "../client";
 import routes from "../routes";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const Logo = () => {
   return (
@@ -19,9 +19,70 @@ const Navbar = () => {
   return <nav>Nav</nav>;
 };
 
-const Search = () => {
+const SearchResults = ({ query, onClick }) => {
+  const [questions, setQuestions] = useState(null);
+  const timeoutId = useRef(null);
+
+  const fetchResults = async () => {
+    try {
+      setQuestions(await api.questions.search({ query }));
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    // Clear all results and all scheduled function for fetching results
+    setQuestions(null);
+    if (timeoutId.current !== null) {
+      clearTimeout(timeoutId);
+    }
+
+    // If query is not empty or invalid (null/undefined)
+    if (query) {
+      // Schedule result fetch in 2 seconds (save scheduled id into ref)
+      timeoutId.current = setTimeout(fetchResults, 500);
+    }
+
+    // All scheduled timeouts should be clears the the component de mounts (not visible)
+    return () => {
+      if (timeoutId.current !== null) {
+        clearTimeout(timeoutId.current);
+      }
+    };
+  }, [query]);
+
+  if (questions === null) {
+    return null;
+  }
+
+  const handleSearchResultClick = () => {
+    setQuestions(null);
+    onClick();
+  };
+
+  // questions
+  return (
+    <ListGroup>
+      {questions.results.map((result, index) => (
+        <ListGroupItem
+          as={Link}
+          key={index}
+          to={`${routes.questions}/${result.pk}`}
+          // Hide query results on result click
+          onClick={handleSearchResultClick}
+        >
+          {result.title}
+        </ListGroupItem>
+      ))}
+    </ListGroup>
+  );
+};
+
+const SearchBar = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState(null);
+  const formRef = useRef(null);
 
   const handleQueryChange = (e) => setQuery(e.target.value);
 
@@ -32,17 +93,30 @@ const Search = () => {
       pathname: routes.search,
       search: `?${createSearchParams({ query: query })}`,
     });
+
+    const form = e.target;
+    form.reset();
+  };
+
+  const handleSearchResultClick = () => {
+    // Reset the form => clear the query => remove the results
+    formRef.current?.reset();
   };
 
   return (
-    <Form onSubmit={handleSearchSubmit}>
-      <Form.Control
-        type="text"
-        name="query"
-        placeholder="What is the best ..."
-        onChange={handleQueryChange}
-      />
-    </Form>
+    <div className="searchbar">
+      <Form ref={formRef} onSubmit={handleSearchSubmit}>
+        <Form.Control
+          type="text"
+          name="query"
+          placeholder="What is the best ...?"
+          onChange={handleQueryChange}
+          autoFocus
+          autoComplete="off"
+        />
+      </Form>
+      <SearchResults query={query} onClick={handleSearchResultClick} />
+    </div>
   );
 };
 
@@ -87,7 +161,7 @@ const Header = () => {
     <header>
       <Logo />
       <Navbar />
-      <Search />
+      <SearchBar />
       <div className="right-side">
         <Profile />
       </div>
