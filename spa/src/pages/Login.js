@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import { useMessages } from "../hooks/MessagesContext";
 
@@ -11,6 +11,10 @@ import routes from "../routes";
 
 const Login = ({ onLogin }) => {
   const navigate = useNavigate();
+  const location = useLocation();
+  // Location to redirect to after login
+  const to = location.state?.from?.pathname || routes.home;
+
   const [username, setUsername] = useState(null);
   const [password, setPassword] = useState(null);
   const [messages, setMessages] = useMessages();
@@ -40,7 +44,7 @@ const Login = ({ onLogin }) => {
       setMessages([]);
 
       // Redirect to the home page
-      navigate(routes.home, { replace: true });
+      navigate(to, { replace: true });
     } catch (error) {
       if (error instanceof LoginError) {
         // Display login failed message

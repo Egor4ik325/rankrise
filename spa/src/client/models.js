@@ -63,7 +63,8 @@ export class OptionsModel extends ListResponse {
 // product1.price.presentation // Free
 // product1.price.value === Price.Free
 
-class Price {
+// Enumeration
+export class Price {
   // Mapping for convenient comparison of prices
   static Free = "F";
   static Paid = "P";
@@ -89,6 +90,7 @@ export class Product {
     this.website = data.website;
     this.price = new Price(data.price);
     this.images = data.images;
+    this.category = data.category;
   }
 }
 

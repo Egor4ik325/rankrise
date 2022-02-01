@@ -8,6 +8,7 @@ import NotFound from "./NotFound";
 import Search from "./Search";
 import Question from "./Question";
 import Product from "./Product";
+import ProductAdd from "./ProductAdd";
 
 import { UserContextProvider, useUserContext } from "../hooks/UserContext";
 import { MessagesContextProvider } from "../hooks/MessagesContext";
@@ -81,6 +82,14 @@ const App = () => {
             <Route path="search" element={<Search />} />
             <Route path="questions/:id" element={<Question />} />
             <Route path="products/:id" element={<Product />} />
+            <Route
+              path="products/add"
+              element={
+                <AuthenticatedRequired>
+                  <ProductAdd />
+                </AuthenticatedRequired>
+              }
+            />
             <Route path="404" element={<NotFound />} />
             <Route path="*" element={<NotFound />} />
           </Route>

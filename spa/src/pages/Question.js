@@ -1,13 +1,12 @@
 import { useState, useEffect, useRef } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import api from "../client";
 import { APIError, DoesNotExistsError } from "../client/errors";
-import Modal from "../components/Modal";
 import moment from "moment";
 import { Button } from "react-bootstrap";
 import routes from "../routes";
 import Model from "../components/Modal";
-// import Select from "react-select";
+import { useUserContext } from "../hooks/UserContext";
 import AsyncSelect from "react-select/async";
 
 const Headline = ({ question }) => {
@@ -113,6 +112,21 @@ const ProductSuggestModal = ({ question, onSuggest }) => {
   const [shown, setShown] = useState(false);
   const [selectedValue, setSelectedValue] = useState(null);
   const fetchTimeoutId = useRef(null);
+  const [user, setUser] = useUserContext();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleSuggestClick = () => {
+    if (user === undefined) {
+      return;
+    }
+
+    if (user === null) {
+      navigate(routes.login, { state: { from: location, replace: true } });
+    }
+
+    setShown(true);
+  };
 
   const fetchProducts = async (inputValue) => {
     try {
@@ -172,7 +186,7 @@ const ProductSuggestModal = ({ question, onSuggest }) => {
 
   return (
     <>
-      <Button onClick={() => setShown(true)}>Suggest</Button>
+      <Button onClick={handleSuggestClick}>Suggest</Button>
       <Model
         header={<div>Suggest an Option</div>}
         show={shown}

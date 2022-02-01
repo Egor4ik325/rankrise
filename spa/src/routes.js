@@ -4,6 +4,7 @@ const routes = {
   search: "/search",
   notFound: "/404",
   questions: "/questions",
+  productAdd: "/products/add",
   product: (id) => `/products/${id}`,
 };
 

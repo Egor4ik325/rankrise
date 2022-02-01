@@ -244,6 +244,37 @@ export class Products extends Resource {
       throw error;
     }
   }
+
+  async create({ name, description, website, price }) {
+    try {
+      const data = {};
+      if (name) {
+        data.name = name;
+      }
+      if (description) {
+        data.description = description;
+      }
+      if (website) {
+        data.website = website;
+      }
+      if (price) {
+        data.price = price;
+      }
+      const response = await this._request({
+        method: "post",
+        url: reverse("productList"),
+        data,
+      });
+
+      return new Product(response.data);
+    } catch (error) {
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
 }
 
 export class ProductImages extends Resource {
