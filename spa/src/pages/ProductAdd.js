@@ -38,7 +38,7 @@ const ProductAdd = () => {
       }, 5000);
       setMessages([...messages, "Successfully added new product!"]);
 
-      navigate(from);
+      navigate(from, { state: { from: location } });
     } catch (error) {
       throw error;
     }
@@ -71,6 +71,8 @@ const ProductAdd = () => {
             name="name"
             required
             onChange={handleInputChange}
+            autoComplete="off"
+            autoFocus="on"
           />
         </Form.Group>
         <Form.Group>
@@ -80,6 +82,7 @@ const ProductAdd = () => {
             placeholder="Web browser created by Mozilla organization."
             name="description"
             onChange={handleInputChange}
+            autoComplete="off"
           />
         </Form.Group>
         <Form.Group>
@@ -89,6 +92,7 @@ const ProductAdd = () => {
             placeholder="https://www.mozilla.org/en-US/firefox/"
             name="website"
             onChange={handleInputChange}
+            autoComplete="off"
           />
         </Form.Group>
         <Form.Group>

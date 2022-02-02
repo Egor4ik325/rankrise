@@ -10,6 +10,7 @@ const ImageForm = ({ product, onSubmit }) => {
   const [user, ,] = useUserContext();
   const navigate = useNavigate();
   const [messages, setMessages] = useMessages();
+  const [uploading, setUploading] = useState(false);
 
   const handleInputClick = (e) => {
     if (user === null) {
@@ -26,6 +27,8 @@ const ImageForm = ({ product, onSubmit }) => {
     // Clear file input
     e.target.value = null;
 
+    setUploading(true);
+
     try {
       await api.productImages.upload({
         productId: product.pk,
@@ -38,8 +41,18 @@ const ImageForm = ({ product, onSubmit }) => {
       setMessages([...messages, "Successfully added new image!"]);
     } catch (error) {
       throw error;
+    } finally {
+      setUploading(false);
     }
   };
+
+  if (uploading) {
+    return (
+      <div>
+        <i>Uploading...</i>
+      </div>
+    );
+  }
 
   return (
     <Form>

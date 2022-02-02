@@ -44,7 +44,7 @@ const Login = ({ onLogin }) => {
       setMessages([]);
 
       // Redirect to the home page
-      navigate(to, { replace: true });
+      navigate(to, { state: { from: location }, replace: true });
     } catch (error) {
       if (error instanceof LoginError) {
         // Display login failed message

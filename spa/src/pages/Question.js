@@ -108,11 +108,11 @@ const Options = ({ question }) => {
   ));
 };
 
-const ProductSuggestModal = ({ question, onSuggest }) => {
-  const [shown, setShown] = useState(false);
+const ProductSuggestModal = ({ defaultShow, question, onSuggest }) => {
+  const [shown, setShown] = useState(defaultShow);
   const [selectedValue, setSelectedValue] = useState(null);
   const fetchTimeoutId = useRef(null);
-  const [user, setUser] = useUserContext();
+  const [user] = useUserContext();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -143,10 +143,6 @@ const ProductSuggestModal = ({ question, onSuggest }) => {
   };
 
   const loadOptions = (inputValue, callback) => {
-    // if (!query) {
-    //   callback([]);
-    // }
-
     // Clear set timeout on previous loadOptions call
     if (fetchTimeoutId.current !== null) {
       clearTimeout(fetchTimeoutId.current);
@@ -179,9 +175,15 @@ const ProductSuggestModal = ({ question, onSuggest }) => {
     if (selectedValue) {
       await createOption();
 
+      // Navigate to the same page to clear location.state
+      navigate(location.pathname, { replace: true });
       setShown(false);
       onSuggest();
     }
+  };
+
+  const handleAddNewClick = () => {
+    navigate(routes.productAdd, { state: { from: location } });
   };
 
   return (
@@ -201,7 +203,7 @@ const ProductSuggestModal = ({ question, onSuggest }) => {
         />
         <Button onClick={handleSuggestOption}>Suggest</Button>
         <p>Or</p>
-        <Button>Create new</Button>
+        <Button onClick={handleAddNewClick}>Add new</Button>
       </Model>
     </>
   );
@@ -210,6 +212,10 @@ const ProductSuggestModal = ({ question, onSuggest }) => {
 const Question = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname;
+  console.log("From: ", from);
+  delete location.state?.from;
   const [question, setQuestion] = useState(undefined);
 
   const fetchQuestion = async () => {
@@ -240,12 +246,27 @@ const Question = () => {
     return <div>Question #{id}</div>;
   };
 
+  const handleOptionSuggest = () => {
+    // Trigger question state change + refetch
+    setQuestion(undefined);
+  };
+
+  useEffect(() => {
+    if (question === undefined) {
+      fetchQuestion();
+    }
+  }, [question]);
+
   return (
     <div>
       <Headline question={question} />
       {render()}
       {question ? <Options question={question} /> : <>Loading...</>}
-      <ProductSuggestModal question={question} onSuggest={fetchQuestion} />
+      <ProductSuggestModal
+        defaultShow={from === routes.productAdd}
+        question={question}
+        onSuggest={handleOptionSuggest}
+      />
     </div>
   );
 };
