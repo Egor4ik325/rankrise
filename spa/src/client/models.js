@@ -109,3 +109,13 @@ export class Products extends ListResponse {
     this.results = data.results.map((result) => new Product(result));
   }
 }
+
+export class Vote {
+  constructor(data) {
+    this.id = data.pk;
+    this.option = data.option;
+    this.user = data.user;
+    this.up = data.up;
+    this.voteTime = data.vote_time;
+  }
+}

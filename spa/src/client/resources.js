@@ -14,6 +14,7 @@ import {
   Product,
   ProductImage,
   Products as ProductsModel,
+  Vote,
 } from "./models";
 
 // Resource represents an interface to some part of API
@@ -309,6 +310,92 @@ export class ProductImages extends Resource {
       });
 
       return new ProductImage(response.data);
+    } catch (error) {
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
+}
+
+export class Votes extends Resource {
+  // Vote for some option
+  async create({ questionId, optionId, up }) {
+    try {
+      const response = await this._request({
+        method: "post",
+        url: reverse("voteList", {
+          questionPk: questionId,
+          optionPk: optionId,
+        }),
+        data: { up },
+      });
+
+      return new Vote(response.data);
+    } catch (error) {
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
+
+  // List user's votes for particular option
+  async list({ questionId, optionId }) {
+    try {
+      const response = await this._request({
+        url: reverse("voteList", {
+          questionPk: questionId,
+          optionPk: optionId,
+        }),
+      });
+
+      return response.data.map((vote) => new Vote(vote));
+    } catch (error) {
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
+
+  // Unvote for some option
+  async delete({ questionId, optionId, voteId }) {
+    try {
+      await this._request({
+        url: reverse("voteDetail", {
+          method: "delete",
+          questionPk: questionId,
+          optionPk: optionId,
+          id: voteId,
+        }),
+      });
+    } catch (error) {
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
+
+  async update({ questionId, optionId, voteId, up }) {
+    try {
+      const response = await this._request({
+        method: "patch",
+        url: reverse("voteDetail", {
+          questionPk: questionId,
+          optionPk: optionId,
+          id: voteId,
+        }),
+        data: { up },
+      });
+
+      return new Vote(response.data);
     } catch (error) {
       if (error.response) {
         handleResponseError(error.response);

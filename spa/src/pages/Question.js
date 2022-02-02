@@ -26,9 +26,18 @@ const Headline = ({ question }) => {
   );
 };
 
-const Option = ({ option }) => {
+const Option = ({ question, option, onVote }) => {
   const [product, setProduct] = useState(null);
   const [firstProductImage, setFirstProductImage] = useState(null);
+  const [vote, setVote] = useState(null);
+  // Computed
+  const votedUp = vote?.at(0)?.up === true;
+  const votedDown = vote?.at(0)?.up === false;
+  const voteId = vote?.at(0)?.id || null;
+
+  const [user, setUser] = useUserContext();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const fetchProduct = async () => {
     try {
@@ -58,6 +67,119 @@ const Option = ({ option }) => {
     }
   }, [product]);
 
+  const fetchVote = async () => {
+    try {
+      const votes = await api.votes.list({
+        questionId: question.pk,
+        optionId: option.id,
+      });
+
+      setVote(votes);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    fetchVote();
+  }, [option]);
+
+  const createVote = async (up) => {
+    try {
+      const vote = await api.votes.create({
+        questionId: question.pk,
+        optionId: option.id,
+        up: true,
+      });
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleUserNotAuthenticated = () => {
+    if (user === null) {
+      navigate(routes.login, { state: { from: location } });
+    }
+  };
+
+  const handleUpvoteClick = async () => {
+    handleUserNotAuthenticated();
+    if (user === undefined) {
+      return;
+    }
+
+    if (votedUp) {
+      await api.votes.delete({
+        questionId: question.pk,
+        optionId: option.id,
+        voteId: voteId,
+      });
+
+      onVote(false, null);
+
+      return;
+    }
+
+    if (votedDown) {
+      // Change downvote to upvote
+      await api.votes.update({
+        questionId: question.pk,
+        optionId: option.id,
+        voteId: voteId,
+        up: true,
+      });
+
+      onVote(true, false);
+      return;
+    }
+
+    try {
+      await createVote(true);
+      onVote(true);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const handleDownvoteClick = async () => {
+    handleUserNotAuthenticated();
+    if (user === undefined) {
+      return;
+    }
+
+    if (votedUp) {
+      // Change downvote to upvote
+      await api.votes.update({
+        questionId: question.pk,
+        optionId: option.id,
+        voteId: voteId,
+        up: false,
+      });
+
+      onVote(false, true);
+      return;
+    }
+
+    if (votedDown) {
+      await api.votes.delete({
+        questionId: question.pk,
+        optionId: option.id,
+        voteId: voteId,
+      });
+
+      onVote(null, false);
+
+      return;
+    }
+
+    try {
+      await createVote(false);
+      onVote(false);
+    } catch (error) {
+      throw error;
+    }
+  };
+
   return (
     <div>
       <div>ID: {option.id}</div>
@@ -66,12 +188,29 @@ const Option = ({ option }) => {
       ) : (
         <div>Loading...</div>
       )}
-
       <div>{product !== null ? product.name : <>Loading...</>}</div>
       {firstProductImage && <img src={firstProductImage.url} />}
       <div>Rank: {option.rank}</div>
       <div>
-        👍 Upvotes: {option.upvotes} | 👎 Downvotes: {option.downvotes}
+        👍{" "}
+        <Button
+          variant="link"
+          className={`text-dark text-decoration-none ${votedUp && " fw-bold"}`}
+          onClick={handleUpvoteClick}
+        >
+          Upvotes
+        </Button>
+        {option.upvotes} | 👎{" "}
+        <Button
+          variant="link"
+          className={`text-dark text-decoration-none ${
+            votedDown && " fw-bold"
+          }`}
+          onClick={handleDownvoteClick}
+        >
+          Downvotes
+        </Button>
+        {option.downvotes}
       </div>
       <div>
         Price: {product !== null ? product.price.presentation : <>Loading...</>}
@@ -97,14 +236,40 @@ const Options = ({ question }) => {
     fetchOptions();
   }, [question]);
 
+  // Voting
+
+  const handleVote = (up = null, down = null, optionIndex) => {
+    const optionsCopy = JSON.parse(JSON.stringify(options));
+    if (up !== null) {
+      if (up) {
+        optionsCopy.results[optionIndex].upvotes += 1;
+      } else {
+        optionsCopy.results[optionIndex].upvotes -= 1;
+      }
+    }
+    if (down !== null) {
+      if (down) {
+        optionsCopy.results[optionIndex].downvotes += 1;
+      } else {
+        optionsCopy.results[optionIndex].downvotes -= 1;
+      }
+    }
+    setOptions(optionsCopy);
+  };
+
   // --- Rendering ---
 
   if (options === null) {
     return <div>Loading...</div>;
   }
 
-  return options.results.map((option) => (
-    <Option key={option.id} option={option} />
+  return options.results.map((option, index) => (
+    <Option
+      key={option.id}
+      question={question}
+      option={option}
+      onVote={(upvote, downvote) => handleVote(upvote, downvote, index)}
+    />
   ));
 };
 
@@ -214,7 +379,6 @@ const Question = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname;
-  console.log("From: ", from);
   delete location.state?.from;
   const [question, setQuestion] = useState(undefined);
 
