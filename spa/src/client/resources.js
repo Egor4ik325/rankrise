@@ -383,7 +383,7 @@ export class Votes extends Resource {
     }
   }
 
-  async update({ questionId, optionId, voteId, up }) {
+  async update({ questionId, optionId, voteId, up, experience = null }) {
     try {
       const response = await this._request({
         method: "patch",
@@ -392,7 +392,9 @@ export class Votes extends Resource {
           optionPk: optionId,
           id: voteId,
         }),
-        data: { up },
+        data: _.assign({ up }, experience && { experience }),
+        // or
+        // data: { up, ...experience && { experience }}
       });
 
       return new Vote(response.data);

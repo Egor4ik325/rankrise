@@ -116,6 +116,7 @@ export class Vote {
     this.option = data.option;
     this.user = data.user;
     this.up = data.up;
+    this.experience = data.experience;
     this.voteTime = data.vote_time;
   }
 }

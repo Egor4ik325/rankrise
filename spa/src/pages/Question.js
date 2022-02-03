@@ -3,9 +3,9 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import api from "../client";
 import { APIError, DoesNotExistsError } from "../client/errors";
 import moment from "moment";
-import { Button } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import routes from "../routes";
-import Model from "../components/Modal";
+import Modal from "../components/Modal";
 import { useUserContext } from "../hooks/UserContext";
 import AsyncSelect from "react-select/async";
 
@@ -26,10 +26,55 @@ const Headline = ({ question }) => {
   );
 };
 
+const ShareExperienceModal = ({
+  show = false,
+  question,
+  option,
+  vote,
+  setVote,
+  onHide,
+}) => {
+  const [experience, setExperience] = useState(null);
+
+  const handleChange = (e) => {
+    setExperience(e.target.value);
+  };
+
+  const handleShare = async (e) => {
+    e.preventDefault();
+
+    try {
+      await api.votes.update({
+        questionId: question.pk,
+        optionId: option.id,
+        voteId: vote?.at(0)?.id,
+        up: vote?.at(0)?.up,
+        experience: experience,
+      });
+
+      setVote([{ ...vote?.at(0), experience }]);
+      onHide();
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  return (
+    <Modal header={<>Share experience</>} show={show} onHide={onHide}>
+      <p>Let others know why you like or dislike a particular option.</p>
+      <Form onSubmit={handleShare}>
+        <Form.Control as="textarea" name="experience" onChange={handleChange} />
+        <Button type="submit">Share</Button>
+      </Form>
+    </Modal>
+  );
+};
+
 const Option = ({ question, option, onVote }) => {
   const [product, setProduct] = useState(null);
   const [firstProductImage, setFirstProductImage] = useState(null);
   const [vote, setVote] = useState(null);
+  const [shareShown, setShareShown] = useState(false);
   // Computed
   const votedUp = vote?.at(0)?.up === true;
   const votedDown = vote?.at(0)?.up === false;
@@ -181,42 +226,57 @@ const Option = ({ question, option, onVote }) => {
   };
 
   return (
-    <div>
-      <div>ID: {option.id}</div>
-      {product !== null ? (
-        <Link to={routes.product(product.pk)}>Detail</Link>
-      ) : (
-        <div>Loading...</div>
-      )}
-      <div>{product !== null ? product.name : <>Loading...</>}</div>
-      {firstProductImage && <img src={firstProductImage.url} />}
-      <div>Rank: {option.rank}</div>
+    <>
       <div>
-        👍{" "}
-        <Button
-          variant="link"
-          className={`text-dark text-decoration-none ${votedUp && " fw-bold"}`}
-          onClick={handleUpvoteClick}
-        >
-          Upvotes
-        </Button>
-        {option.upvotes} | 👎{" "}
-        <Button
-          variant="link"
-          className={`text-dark text-decoration-none ${
-            votedDown && " fw-bold"
-          }`}
-          onClick={handleDownvoteClick}
-        >
-          Downvotes
-        </Button>
-        {option.downvotes}
+        <div>ID: {option.id}</div>
+        {product !== null ? (
+          <Link to={routes.product(product.pk)}>Detail</Link>
+        ) : (
+          <div>Loading...</div>
+        )}
+        <div>{product !== null ? product.name : <>Loading...</>}</div>
+        {firstProductImage && <img src={firstProductImage.url} />}
+        <div>Rank: {option.rank}</div>
+        <div>
+          👍{" "}
+          <Button
+            variant="link"
+            className={`text-dark text-decoration-none ${
+              votedUp && " fw-bold"
+            }`}
+            onClick={handleUpvoteClick}
+          >
+            Upvotes
+          </Button>
+          {option.upvotes} | 👎{" "}
+          <Button
+            variant="link"
+            className={`text-dark text-decoration-none ${
+              votedDown && " fw-bold"
+            }`}
+            onClick={handleDownvoteClick}
+          >
+            Downvotes
+          </Button>
+          {option.downvotes}
+        </div>
+        <div>Experience: {vote?.at(0)?.experience}</div>
+        <div>
+          Price:{" "}
+          {product !== null ? product.price.presentation : <>Loading...</>}
+        </div>
+        {product?.website && <a href={product?.website}>See</a>}
+        <Button onClick={() => setShareShown(true)}>Share</Button>
       </div>
-      <div>
-        Price: {product !== null ? product.price.presentation : <>Loading...</>}
-      </div>
-      {product?.website && <a href={product?.website}>See</a>}
-    </div>
+      <ShareExperienceModal
+        show={shareShown}
+        question={question}
+        option={option}
+        vote={vote}
+        setVote={setVote}
+        onHide={() => setShareShown(false)}
+      />
+    </>
   );
 };
 
@@ -354,7 +414,7 @@ const ProductSuggestModal = ({ defaultShow, question, onSuggest }) => {
   return (
     <>
       <Button onClick={handleSuggestClick}>Suggest</Button>
-      <Model
+      <Modal
         header={<div>Suggest an Option</div>}
         show={shown}
         onHide={() => setShown(false)}
@@ -369,7 +429,7 @@ const ProductSuggestModal = ({ defaultShow, question, onSuggest }) => {
         <Button onClick={handleSuggestOption}>Suggest</Button>
         <p>Or</p>
         <Button onClick={handleAddNewClick}>Add new</Button>
-      </Model>
+      </Modal>
     </>
   );
 };
