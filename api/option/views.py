@@ -1,26 +1,26 @@
+from decimal import Decimal
+
 from django.db import connection
 from django.utils.decorators import method_decorator
 from django.views.decorators.cache import cache_page
-from rest_framework import viewsets, pagination
-from rest_framework.generics import get_object_or_404
-from rest_framework.response import Response
-from rest_framework import status
-
-from question.models import Question
 from option.models import Option
 from option.serializers import OptionSerializer
 from product.permissions import CommunityPermission
+from question.models import Question
 from question.throttles import (
     BurstCommunityRateThrottle,
     SustainedCommunityRateThrottle,
 )
+from rest_framework import pagination, status, viewsets
+from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
 
 
 class OptionPagination(pagination.PageNumberPagination):
     page_size = 10
 
 
-@method_decorator(cache_page(60 * 5), name="list")
+@method_decorator(cache_page(1), name="list")
 class QuestionOptionViewSet(viewsets.ModelViewSet):
     serializer_class = OptionSerializer
     permission_classes = [CommunityPermission]
@@ -89,11 +89,11 @@ class QuestionOptionViewSet(viewsets.ModelViewSet):
         for o in options:
             upvotes, downvotes = o.upvotes, o.downvotes
             rating = upvotes - (downvotes * 0.75)
-            rank = rating / point
+            rank = Decimal(rating) / point
             if upvotes == 0:
-                rank -= downvotes * 10
+                rank -= Decimal(downvotes * 10)
             else:
-                rank -= (downvotes * 10) / upvotes
+                rank -= Decimal((downvotes * 10) / upvotes)
 
             o.rank = int(rank)
 
@@ -113,6 +113,3 @@ class QuestionOptionViewSet(viewsets.ModelViewSet):
         return Response(
             serializer.data, status=status.HTTP_201_CREATED, headers=headers
         )
-
-
-# TODO: ProductOptionViewSet

@@ -1,7 +1,6 @@
-from rest_framework import serializers
-
-from option.models import Option
 from authentication.models import UserModel
+from option.models import Option
+from rest_framework import serializers
 from vote.models import Vote
 
 serializers.CurrentUserDefault()
@@ -18,7 +17,7 @@ class VoteSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Vote
-        fields = ["pk", "option", "user", "up", "vote_time"]
+        fields = ["pk", "option", "user", "up", "experience", "vote_time"]
         # Remove UniqueTogether validator for option and user
         validators = []
         # TODO: option and user should be hidden and set by view or serializer

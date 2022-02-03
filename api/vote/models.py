@@ -18,6 +18,9 @@ class Vote(models.Model):
         null=True,
     )
     up = models.BooleanField(_("upvote"))
+    experience = models.CharField(
+        verbose_name=_("Experience"), max_length=500, blank=True
+    )
     vote_time = models.DateTimeField(_("vote time"), auto_now_add=True)
 
     class Meta:
