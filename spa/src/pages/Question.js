@@ -8,6 +8,8 @@ import routes from "../routes";
 import Modal from "../components/Modal";
 import { useUserContext } from "../hooks/UserContext";
 import AsyncSelect from "react-select/async";
+import ReportModal from "../components/ReportModal";
+import { ObjectModel } from "../client/models";
 
 const Headline = ({ question }) => {
   if (question === undefined) {
@@ -441,6 +443,7 @@ const Question = () => {
   const from = location.state?.from?.pathname;
   delete location.state?.from;
   const [question, setQuestion] = useState(undefined);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const fetchQuestion = async () => {
     try {
@@ -482,16 +485,28 @@ const Question = () => {
   }, [question]);
 
   return (
-    <div>
-      <Headline question={question} />
-      {render()}
-      {question ? <Options question={question} /> : <>Loading...</>}
-      <ProductSuggestModal
-        defaultShow={from === routes.productAdd}
-        question={question}
-        onSuggest={handleOptionSuggest}
+    <>
+      <div>
+        <Headline question={question} />
+        <Button variant="light" onClick={() => setShowReportModal(true)}>
+          Report
+        </Button>
+
+        {render()}
+        {question ? <Options question={question} /> : <>Loading...</>}
+        <ProductSuggestModal
+          defaultShow={from === routes.productAdd}
+          question={question}
+          onSuggest={handleOptionSuggest}
+        />
+      </div>
+      <ReportModal
+        show={showReportModal}
+        onHide={() => setShowReportModal(false)}
+        model={ObjectModel.Question}
+        id={id}
       />
-    </div>
+    </>
   );
 };
 

@@ -4,6 +4,7 @@ import {
   ProductImages,
   Products,
   Questions,
+  Reports,
   Votes,
 } from "./resources";
 
@@ -35,5 +36,6 @@ export default class APIClient {
     this.products = new Products(tokenFunctions);
     this.productImages = new ProductImages(tokenFunctions);
     this.votes = new Votes(tokenFunctions);
+    this.reports = new Reports(tokenFunctions);
   }
 }

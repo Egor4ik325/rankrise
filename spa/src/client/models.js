@@ -117,6 +117,24 @@ export class Vote {
     this.user = data.user;
     this.up = data.up;
     this.experience = data.experience;
-    this.voteTime = data.vote_time;
+    this.voteTime = new Date(data.vote_time);
+  }
+}
+
+export class ObjectModel {
+  static Question = "question";
+  static Product = "product";
+  static Option = "option";
+  static Comment = "comment";
+}
+
+export class Report {
+  constructor(data) {
+    this.title = data.title;
+    this.description = data.description;
+    this.objectModel = data.object_model;
+    this.objectId = data.object_pk;
+    this.reporter = data.reporter;
+    this.created = new Date(data.created);
   }
 }

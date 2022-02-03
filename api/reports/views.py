@@ -1,7 +1,11 @@
 from dj_rest_auth.jwt_auth import JWTAuthentication
 from rest_framework import status
-from rest_framework.mixins import (CreateModelMixin, DestroyModelMixin,
-                                   ListModelMixin, RetrieveModelMixin)
+from rest_framework.mixins import (
+    CreateModelMixin,
+    DestroyModelMixin,
+    ListModelMixin,
+    RetrieveModelMixin,
+)
 from rest_framework.permissions import SAFE_METHODS
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet, ViewSet
@@ -46,5 +50,5 @@ class ReportViewSet(
         return self.queryset
 
     def create(self, *args, **kwargs):
-        super().create(*args, **kwargs)
+        return super().create(*args, **kwargs)
         # return Response({"detail": "Thanks for reporting!"}, status.HTTP_201_CREATED)

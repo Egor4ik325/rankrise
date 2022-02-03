@@ -23,6 +23,8 @@ const urls = {
     `questions/${questionPk}/options/${optionPk}/votes/${id}/`,
   categoryList: () => `categories/`,
   categoryDetail: ({ id }) => `categories/${id}/`,
+  reportList: () => `reports/`,
+  reportDetail: ({ id }) => `reports/${id}/`,
 };
 
 export const reverse = (name, args) => {

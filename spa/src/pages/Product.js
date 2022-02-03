@@ -5,6 +5,8 @@ import { useUserContext } from "../hooks/UserContext";
 import { useMessages } from "../hooks/MessagesContext";
 import routes from "../routes";
 import api from "../client";
+import ReportModal from "../components/ReportModal";
+import { ObjectModel } from "../client/models";
 
 const ImageForm = ({ product, onSubmit }) => {
   const [user, ,] = useUserContext();
@@ -76,6 +78,8 @@ const Product = () => {
   const [images, setImages] = useState(null);
   const [user, ,] = useUserContext();
 
+  const [showReportModal, setShowReportModal] = useState(false);
+
   const fetchProduct = async () => {
     try {
       setProduct(await api.products.retrieve({ id }));
@@ -133,22 +137,33 @@ const Product = () => {
     }
 
     return (
-      <div>
-        <h2>{product.name}</h2>
-        {product.category && <div>Category: {product.category}</div>}
-        <p>{product.description}</p>
-        <div>Price: {product.price.presentation}</div>
-        {product.website && <a href={product.website}>Check Out</a>}
+      <>
         <div>
-          <h5>Images:</h5>
-          <div>{renderImages()}</div>
-          {user === undefined ? (
-            <div>Loading...</div>
-          ) : (
-            <ImageForm product={product} onSubmit={handleImageSubmit} />
-          )}
+          <h2>{product.name}</h2>
+          <Button variant="light" onClick={() => setShowReportModal(true)}>
+            Report
+          </Button>
+          {product.category && <div>Category: {product.category}</div>}
+          <p>{product.description}</p>
+          <div>Price: {product.price.presentation}</div>
+          {product.website && <a href={product.website}>Check Out</a>}
+          <div>
+            <h5>Images:</h5>
+            <div>{renderImages()}</div>
+            {user === undefined ? (
+              <div>Loading...</div>
+            ) : (
+              <ImageForm product={product} onSubmit={handleImageSubmit} />
+            )}
+          </div>
         </div>
-      </div>
+        <ReportModal
+          show={showReportModal}
+          onHide={() => setShowReportModal(false)}
+          model={ObjectModel.Product}
+          id={id}
+        />
+      </>
     );
   };
 

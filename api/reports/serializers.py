@@ -28,7 +28,9 @@ class ReportDeserializer(serializers.ModelSerializer):
     object_model = serializers.SlugRelatedField(
         source="content_type",
         slug_field="model",
-        queryset=ContentType.objects.filter(model__in=["question", "product", "option", "comment"]),  # validation (by filter/choices)
+        queryset=ContentType.objects.filter(
+            model__in=["question", "product", "option", "comment"]
+        ),  # validation (by filter/choices)
     )
 
     class Meta:
@@ -43,12 +45,15 @@ class ReportDeserializer(serializers.ModelSerializer):
         ]
 
     def to_internal_value(self, data):
-        data["object_model"] = data["object_model"].lower() # convert object model to lower
+        data["object_model"] = data[
+            "object_model"
+        ].lower()  # convert object model to lower
         return super().to_internal_value(data)
+
 
 class ReportSerializer(ReportDeserializer):
     """
     Serializer from report object to dict.
     """
 
-    reporter = ReadOnlyField()
+    reporter = ReadOnlyField(source="reporter.username")

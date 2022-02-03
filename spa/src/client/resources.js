@@ -15,6 +15,7 @@ import {
   ProductImage,
   Products as ProductsModel,
   Vote,
+  Report,
 } from "./models";
 
 // Resource represents an interface to some part of API
@@ -398,6 +399,31 @@ export class Votes extends Resource {
       });
 
       return new Vote(response.data);
+    } catch (error) {
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
+}
+
+export class Reports extends Resource {
+  async create({ objectModel, objectId, title, description }) {
+    try {
+      const response = await this._request({
+        method: "post",
+        url: reverse("reportList"),
+        data: {
+          object_model: objectModel,
+          object_pk: objectId,
+          title,
+          ...(description && { description }),
+        },
+      });
+
+      return new Report(response.data);
     } catch (error) {
       if (error.response) {
         handleResponseError(error.response);
