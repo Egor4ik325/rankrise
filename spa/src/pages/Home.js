@@ -12,6 +12,7 @@ import api from "../client";
 import { APIError, InvalidDataError } from "../client/errors";
 
 import routes from "../routes";
+import CategorySelect from "../components/CategorySelect";
 
 const Hero = () => {
   return <>Hero: RankRise</>;
@@ -19,6 +20,7 @@ const Hero = () => {
 
 const QuestionCreateModal = ({ show, onHide, onQuestionCreate }) => {
   const [title, setTitle] = useState(null);
+  const [category, setCategory] = useState(null);
   const [messages, setMessages] = useMessages();
   const [invalid, setInvalid] = useState(false);
 
@@ -26,7 +28,7 @@ const QuestionCreateModal = ({ show, onHide, onQuestionCreate }) => {
 
   const handleFormSubmit = async () => {
     try {
-      const question = await api.questions.create({ title });
+      const question = await api.questions.create({ title, category });
       onQuestionCreate(question);
       onHide();
     } catch (error) {
@@ -64,6 +66,10 @@ const QuestionCreateModal = ({ show, onHide, onQuestionCreate }) => {
             required
             isInvalid={invalid}
           />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Category</Form.Label>
+          <CategorySelect onChange={(value) => setCategory(value)} />
         </Form.Group>
       </Form>
     </Modal>

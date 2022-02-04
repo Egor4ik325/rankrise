@@ -17,6 +17,7 @@ import {
   Vote,
   Report,
   Categories as CategoriesModel,
+  Category,
 } from "./models";
 
 // Resource represents an interface to some part of API
@@ -140,12 +141,12 @@ export class Questions extends Resource {
     }
   }
 
-  async create({ title }) {
+  async create({ title, category }) {
     try {
       const response = await this._request({
         method: "post",
         url: reverse("questionList"),
-        data: { title },
+        data: { title, category },
       });
       return new Question(response.data);
     } catch (error) {
@@ -258,7 +259,7 @@ export class Products extends Resource {
     }
   }
 
-  async create({ name, description, website, price }) {
+  async create({ name, description, category, website, price }) {
     try {
       const data = {};
       if (name) {
@@ -266,6 +267,9 @@ export class Products extends Resource {
       }
       if (description) {
         data.description = description;
+      }
+      if (category) {
+        data.category = category;
       }
       if (website) {
         data.website = website;
@@ -460,6 +464,41 @@ export class Categories extends Resource {
       });
 
       return new CategoriesModel(response.data);
+    } catch (error) {
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
+
+  async search({ query = null }) {
+    try {
+      const response = await this._request({
+        url: reverse("categoryList"),
+        params: {
+          ...(query && { search: query }),
+        },
+      });
+
+      return new CategoriesModel(response.data);
+    } catch (error) {
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
+
+  async retrieve({ id }) {
+    try {
+      const response = await this._request({
+        url: reverse("categoryDetail", { id }),
+      });
+
+      return new Category(response.data);
     } catch (error) {
       if (error.response) {
         handleResponseError(error.response);

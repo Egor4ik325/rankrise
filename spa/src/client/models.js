@@ -11,6 +11,7 @@ export class Question {
   constructor(data) {
     this.pk = data.pk;
     this.title = data.title;
+    this.category = data.category;
     this.askTime = new Date(data.ask_time);
   }
 }

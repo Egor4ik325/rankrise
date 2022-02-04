@@ -4,6 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import Select from "react-select";
 import api from "../client";
 import { Price } from "../client/models";
+import CategorySelect from "../components/CategorySelect";
 import { useMessages } from "../hooks/MessagesContext";
 
 const ProductAdd = () => {
@@ -16,6 +17,7 @@ const ProductAdd = () => {
     description: null,
     website: null,
     price: null,
+    category: null,
   });
 
   const handleInputChange = (e) => {
@@ -24,6 +26,13 @@ const ProductAdd = () => {
     setForm({
       ...form,
       [name]: value,
+    });
+  };
+
+  const handleCategoryChange = (value) => {
+    setForm({
+      ...form,
+      category: value,
     });
   };
 
@@ -84,6 +93,10 @@ const ProductAdd = () => {
             onChange={handleInputChange}
             autoComplete="off"
           />
+        </Form.Group>
+        <Form.Group>
+          <Form.Label>Category</Form.Label>
+          <CategorySelect onChange={handleCategoryChange} />
         </Form.Group>
         <Form.Group>
           <Form.Label>Website</Form.Label>

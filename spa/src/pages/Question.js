@@ -28,6 +28,28 @@ const Headline = ({ question }) => {
   );
 };
 
+const Category = ({ question }) => {
+  const [category, setCategory] = useState(null);
+
+  const fetchCategory = async () => {
+    try {
+      setCategory(await api.categories.retrieve({ id: question.category }));
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
+  if (category === null) {
+    return <div>Category: loading...</div>;
+  }
+
+  return <div>Category: {category.name}</div>;
+};
+
 const ShareExperienceModal = ({
   show = false,
   question,
@@ -491,6 +513,7 @@ const Question = () => {
         <Button variant="light" onClick={() => setShowReportModal(true)}>
           Report
         </Button>
+        {question && <Category question={question} />}
 
         {render()}
         {question ? <Options question={question} /> : <>Loading...</>}
