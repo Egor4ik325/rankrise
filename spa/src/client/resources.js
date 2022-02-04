@@ -1,5 +1,5 @@
 import axios from "axios";
-import _ from "lodash";
+import _, { filter } from "lodash";
 
 import { apiServerBaseUrl, reverse } from "./urls";
 import {
@@ -16,6 +16,7 @@ import {
   Products as ProductsModel,
   Vote,
   Report,
+  Categories as CategoriesModel,
 } from "./models";
 
 // Resource represents an interface to some part of API
@@ -424,6 +425,31 @@ export class Reports extends Resource {
       });
 
       return new Report(response.data);
+    } catch (error) {
+      if (error.response) {
+        handleResponseError(error.response);
+      }
+
+      throw error;
+    }
+  }
+}
+
+export class Categories extends Resource {
+  async list(filters = {}) {
+    filters = _.defaults(filters, {
+      parent: null,
+    });
+
+    try {
+      const response = await this._request({
+        url: reverse("categoryList"),
+        params: {
+          ...(filters.parent && { parent: filters.parent }),
+        },
+      });
+
+      return new CategoriesModel(response.data);
     } catch (error) {
       if (error.response) {
         handleResponseError(error.response);

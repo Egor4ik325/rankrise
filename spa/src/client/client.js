@@ -6,6 +6,7 @@ import {
   Questions,
   Reports,
   Votes,
+  Categories,
 } from "./resources";
 
 // Wrapper around API recourses
@@ -37,5 +38,6 @@ export default class APIClient {
     this.productImages = new ProductImages(tokenFunctions);
     this.votes = new Votes(tokenFunctions);
     this.reports = new Reports(tokenFunctions);
+    this.categories = new Categories(tokenFunctions);
   }
 }

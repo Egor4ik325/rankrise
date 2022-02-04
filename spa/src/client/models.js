@@ -138,3 +138,19 @@ export class Report {
     this.created = new Date(data.created);
   }
 }
+
+export class Category {
+  constructor(data) {
+    this.id = data.pk;
+    this.name = data.name;
+    this.parent = data.parent;
+  }
+}
+
+export class Categories extends ListResponse {
+  constructor(data) {
+    super(data);
+
+    this.results = data.results.map((result) => new Category(result));
+  }
+}

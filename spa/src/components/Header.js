@@ -2,10 +2,10 @@ import { useUserContext } from "../hooks/UserContext";
 import PropTypes from "prop-types";
 import { Link, useNavigate, createSearchParams } from "react-router-dom";
 import { Button, Form, ListGroup, ListGroupItem } from "react-bootstrap";
-
 import api from "../client";
 import routes from "../routes";
 import { useEffect, useRef, useState } from "react";
+import Categories from "./Categories";
 
 const Logo = () => {
   return (
@@ -164,6 +164,7 @@ const Header = () => {
       <Logo />
       <Navbar />
       <SearchBar />
+      <Categories />
       <div className="right-side">
         <Profile />
       </div>
