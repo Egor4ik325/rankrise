@@ -25,7 +25,8 @@ const SearchProduct = ({ product }) => {
 const Search = () => {
   // External states
   const [params] = useSearchParams();
-  const query = params.get("query");
+  const query = params.get("query") || "";
+  const categories = params.get("categories")?.split(",") || null;
 
   // Internal states
   const [fetching, setFetching] = useState(false);
@@ -36,7 +37,7 @@ const Search = () => {
   const fetchQuestions = async () => {
     setFetching(true);
     try {
-      const response = await api.questions.search({ query, page });
+      const response = await api.questions.search({ query, categories, page });
 
       // Append response to the array
       setResponses([...(responses || []), response]);
@@ -49,7 +50,7 @@ const Search = () => {
   const fetchProducts = async () => {
     setFetching(true);
     try {
-      const response = await api.products.search({ query, page });
+      const response = await api.products.search({ query, categories, page });
 
       // Array of responses for each search results page (page container <= 5 results)
       setResponses([...(responses || []), response]);
@@ -61,11 +62,11 @@ const Search = () => {
 
   const fetchResults = () => {
     // Fetch only if query is valid
-    if (query) {
+    if (query || categories) {
       console.log(
         `Fetching for ${
           questionSearch ? "Questions" : "Products"
-        } , query: ${query}, page: ${page}, results before:`,
+        } , query: ${query}, categories: ${categories}, page: ${page}, results before:`,
         responses
       );
       if (questionSearch) {
@@ -85,11 +86,11 @@ const Search = () => {
 
     // Start fetching responses from first page
     setPage(1);
-  }, [query]);
+  }, [params]);
 
   // Responses state changes happen only when query state changes happen
   useEffect(() => {
-    console.log("Fetch query search results on responses change.");
+    // console.log("Fetch query search results on responses change.");
 
     // When the query changes it should always be null
     if (responses === null) {
@@ -98,11 +99,11 @@ const Search = () => {
   }, [responses]);
 
   useEffect(() => {
-    console.log("Results after fetching: ", responses);
+    // console.log("Results after fetching: ", responses);
   }, [responses]);
 
   const renderResults = () => {
-    if (!query) {
+    if (!query && !categories) {
       return <>Invalid query!</>;
     }
 
@@ -133,7 +134,7 @@ const Search = () => {
   // On page changes
 
   useEffect(() => {
-    console.log("Fetch new responses on page change.");
+    // console.log("Fetch new responses on page change.");
 
     // Don't run this initially (when responses is empty)
     if (responses !== null) {
@@ -142,7 +143,7 @@ const Search = () => {
   }, [page]);
 
   useEffect(() => {
-    console.log("Filter has been switched");
+    // console.log("Filter has been switched");
 
     setResponses(null); // trigger refetch
     setPage(1); // should not trigger refetch
@@ -186,7 +187,7 @@ const Search = () => {
       </Form>
       <p>
         Search results {renderSearchResultsCount()} for query &quot;{query}
-        &quot; with {page} pages:
+        &quot; and categories ({categories?.join(", ")}) with {page} pages:
       </p>
       <div className="results">{renderResults()}</div>
       {fetching && <i className="d-block">Fetching...</i>}

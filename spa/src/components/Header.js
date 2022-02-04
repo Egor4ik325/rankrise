@@ -79,7 +79,7 @@ const SearchResults = ({ query, onClick }) => {
   );
 };
 
-const SearchBar = () => {
+const SearchBar = ({ selectedCategories, setSelectedCategories }) => {
   const navigate = useNavigate();
   const [query, setQuery] = useState(null);
   const formRef = useRef(null);
@@ -91,13 +91,19 @@ const SearchBar = () => {
 
     navigate({
       pathname: routes.search,
-      search: `?${createSearchParams({ query: query })}`,
+      search: `?${createSearchParams({
+        ...(query && { query }),
+        ...(selectedCategories.length > 0 && {
+          categories: selectedCategories.toString(),
+        }),
+      })}`,
     });
 
     const form = e.target;
     form.reset();
 
     setQuery(null);
+    setSelectedCategories([]);
   };
 
   const handleSearchResultClick = () => {
@@ -159,12 +165,20 @@ Profile.propTypes = {
 };
 
 const Header = () => {
+  const [selectedCategories, setSelectedCategories] = useState(null);
+
   return (
     <header>
       <Logo />
       <Navbar />
-      <SearchBar />
-      <Categories />
+      <SearchBar
+        selectedCategories={selectedCategories}
+        setSelectedCategories={setSelectedCategories}
+      />
+      <Categories
+        selectedItems={selectedCategories}
+        setSelectedItems={setSelectedCategories}
+      />
       <div className="right-side">
         <Profile />
       </div>

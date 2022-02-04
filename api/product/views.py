@@ -1,4 +1,4 @@
-from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.rest_framework import DjangoFilterBackend, FilterSet
 from question.throttles import (
     BurstCommunityRateThrottle,
     SustainedCommunityRateThrottle,
@@ -21,6 +21,15 @@ class NonUpdatableViewSet(
     pass
 
 
+class ProductFilter(FilterSet):
+    class Meta:
+        model = Product
+        fields = {
+            "price": ["exact"],
+            "category": ["exact", "in"],
+        }
+
+
 class ProductViewSet(NonUpdatableViewSet):
     lookup_field = "pk"
     queryset = Product.objects.all()
@@ -28,8 +37,8 @@ class ProductViewSet(NonUpdatableViewSet):
     permission_classes = [CommunityPermission]
     throttle_classes = [BurstCommunityRateThrottle, SustainedCommunityRateThrottle]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_class = ProductFilter
     search_fields = ["name", "@description"]
-    filterset_fields = ["price", "category"]
     pagination_class = ProductPagination
 
 

@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
-import {
-  UncontrolledTreeEnvironment,
-  Tree,
-  StaticTreeDataProvider,
-} from "react-complex-tree";
+import { ControlledTreeEnvironment, Tree } from "react-complex-tree";
 import "react-complex-tree/lib/style.css";
 import api from "../client";
 
-const Categories = () => {
+const Categories = ({ selectedItems, setSelectedItems }) => {
   const [items, setItems] = useState(null);
+  const [focusedItem, setFocusedItem] = useState();
+  const [expandedItems, setExpandedItems] = useState([]);
+  // const [selectedItems, setSelectedItems] = useState([]);
 
   const fetchCategories = async () => {
     try {
@@ -50,19 +49,37 @@ const Categories = () => {
     fetchCategories();
   }, []);
 
-  const handleFocusItem = (item, treeId) => {
-    console.log(item);
+  const handleFocusItem = (item) => {
+    setFocusedItem(item.index);
   };
 
   const handleExpandItem = async (item) => {
-    console.log("Expand: ", item);
+    // If children are already loaded
+    if (items[item.index].children.length > 0) {
+      setExpandedItems([...expandedItems, item.index]);
+    }
 
     // Load children
     try {
       const children = await api.categories.list({ parent: item.index });
 
+      // If no children make non-expandable
+      if (children.count === 0) {
+        setItems({
+          ...items,
+          [item.index]: {
+            ...items[item.index],
+            hasChildren: false,
+          },
+        });
+
+        return;
+      }
+
+      // Update items state dynamically
       setItems(
         children.results.reduce(
+          // Add children to the items list
           (previous, child) => ({
             ...previous,
             [child.id]: {
@@ -76,69 +93,60 @@ const Categories = () => {
               canRename: false,
             },
           }),
+          // Add children to the parent list
           {
             ...items,
-            root: {
-              ...items?.root,
-              children: items.root.children.concat(
-                children.results.map((child) => child.id)
-              ),
+            [item.index]: {
+              ...items[item.index],
+              children: children.results.map((child) => child.id),
             },
           }
         )
       );
+
+      // Expanded target item
+      setExpandedItems([...expandedItems, item.index]);
     } catch (error) {
       throw error;
     }
   };
+
+  const handleCollapseItem = (item) => {
+    setExpandedItems(
+      // Remove collapse item from expanded
+      expandedItems.filter(
+        (expandedItemIndex) => expandedItemIndex !== item.index
+      )
+    );
+  };
+
+  const handleSelectItems = (items) => setSelectedItems(items);
 
   const render = () => {
     if (items === null) {
       return <div>Loading...</div>;
     }
 
-    console.log(items);
-
-    // const items = {
-    //   root: {
-    //     index: "root",
-    //     canMove: true,
-    //     hasChildren: true,
-    //     children: ["child1", "child2"],
-    //     data: "Root item",
-    //     canRename: true,
-    //   },
-    //   child1: {
-    //     index: "child1",
-    //     canMove: true,
-    //     hasChildren: false,
-    //     children: [],
-    //     data: "Child item 1",
-    //     canRename: true,
-    //   },
-    //   child2: {
-    //     index: "child2",
-    //     canMove: true,
-    //     hasChildren: false,
-    //     children: [],
-    //     data: "Child item 2",
-    //     canRename: true,
-    //   },
-    // };
-
-    const dataProvider = new StaticTreeDataProvider(items, (item, data) => ({
-      ...item,
-      data,
-    }));
+    // console.log(items);
 
     return (
       <div>
-        <UncontrolledTreeEnvironment
-          dataProvider={dataProvider}
+        <ControlledTreeEnvironment
+          items={items}
           getItemTitle={(item) => item.data}
-          viewState={{}}
+          // Tree view state
+          viewState={{
+            ["categories-tree"]: {
+              focusedItem,
+              expandedItems,
+              selectedItems,
+            },
+          }}
+          // Handle tree events
           onFocusItem={handleFocusItem}
           onExpandItem={handleExpandItem}
+          onCollapseItem={handleCollapseItem}
+          onSelectItems={handleSelectItems}
           // Settings
           canDragAndDrop={false}
           canDropOnItemWithChildren={false}
@@ -152,7 +160,7 @@ const Categories = () => {
             rootItem="root"
             treeLabel="Categories Tree"
           />
-        </UncontrolledTreeEnvironment>
+        </ControlledTreeEnvironment>
       </div>
     );
   };

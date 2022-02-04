@@ -157,11 +157,16 @@ export class Questions extends Resource {
     }
   }
 
-  async search({ query, page = 1, page_size = 5 }) {
+  async search({ query, categories = null, page = 1, page_size = 5 }) {
     try {
       const response = await this._request({
         url: reverse("questionList"),
-        params: { search: query, page, page_size },
+        params: {
+          ...(query && { search: query }),
+          ...(categories && { category__in: categories.toString() }),
+          page,
+          page_size,
+        },
       });
 
       return new QuestionsResponse(response.data);
@@ -231,11 +236,16 @@ export class Products extends Resource {
     }
   }
 
-  async search({ query, page = 1 }) {
+  async search({ query, categories = null, page = 1 }) {
+    console.log("QUERY: ", query, ", CATEGORIES: ", categories);
     try {
       const response = await this._request({
         url: reverse("productList"),
-        params: { search: query, page },
+        params: {
+          page,
+          ...(query && { search: query }),
+          ...(categories && { category__in: categories.toString() }),
+        },
       });
 
       return new ProductsModel(response.data);
