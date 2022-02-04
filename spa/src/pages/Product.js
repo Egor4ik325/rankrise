@@ -72,6 +72,28 @@ const ImageForm = ({ product, onSubmit }) => {
   );
 };
 
+const Category = ({ product }) => {
+  const [category, setCategory] = useState(null);
+
+  const fetchCategory = async () => {
+    try {
+      setCategory(await api.categories.retrieve({ id: product.category }));
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
+  if (category === null) {
+    return <div>Category: loading...</div>;
+  }
+
+  return <div>Category: {category.name}</div>;
+};
+
 const Product = () => {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
@@ -143,7 +165,7 @@ const Product = () => {
           <Button variant="light" onClick={() => setShowReportModal(true)}>
             Report
           </Button>
-          {product.category && <div>Category: {product.category}</div>}
+          {product.category && <Category product={product} />}
           <p>{product.description}</p>
           <div>Price: {product.price.presentation}</div>
           {product.website && <a href={product.website}>Check Out</a>}
