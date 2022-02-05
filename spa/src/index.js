@@ -4,13 +4,15 @@ import reportWebVitals from "./reportWebVitals";
 
 import App from "./pages/App";
 
-// Customized bootstrap (components, layout, utilities, ...)
+/*
+ * Import stylesheets separately to prevent long recompiling.
+ */
+
+// Customized/overridden bootstrap (components, layout, utilities, ...)
 import "./scss/bootstrap.scss";
 
-// Core styles
+// Core styles (everything)
 import "./scss/index.scss";
-
-// vendor styles
 
 render(
   <HashRouter>

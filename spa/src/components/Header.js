@@ -1,22 +1,33 @@
 import { useUserContext } from "../hooks/UserContext";
 import PropTypes from "prop-types";
 import { Link, useNavigate, createSearchParams } from "react-router-dom";
-import { Button, Form, ListGroup, ListGroupItem } from "react-bootstrap";
+import {
+  Container,
+  Button,
+  Form,
+  ListGroup,
+  ListGroupItem,
+} from "react-bootstrap";
 import api from "../client";
 import routes from "../routes";
 import { useEffect, useRef, useState } from "react";
 import Categories from "./Categories";
+import logo from "../assets/img/icons/logo.png";
+import { faSearch, faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Logo = () => {
   return (
-    <div>
-      <Link to={routes.home}>RankRise</Link>
+    <div className="logo d-flex align-items-center">
+      <img src={logo} height={48} className="me-2" />
+      <Link
+        to={routes.home}
+        className="text-white text-decoration-none fs-3 fw-bold"
+      >
+        RankRise
+      </Link>
     </div>
   );
-};
-
-const Navbar = () => {
-  return <nav>Nav</nav>;
 };
 
 const SearchResults = ({ query, onClick }) => {
@@ -112,15 +123,16 @@ const SearchBar = ({ selectedCategories, setSelectedCategories }) => {
   };
 
   return (
-    <div className="searchbar">
+    <div className="search-bar">
       <Form ref={formRef} onSubmit={handleSearchSubmit}>
+        <FontAwesomeIcon icon={faSearch} className="search-icon" />
         <Form.Control
           type="text"
           name="query"
           placeholder="What is the best ...?"
           onChange={handleQueryChange}
-          autoFocus
           autoComplete="off"
+          className="search-control"
         />
       </Form>
       <SearchResults query={query} onClick={handleSearchResultClick} />
@@ -129,16 +141,21 @@ const SearchBar = ({ selectedCategories, setSelectedCategories }) => {
 };
 
 const Profile = () => {
-  const [user, setUser] = useUserContext();
+  // const [user, setUser] = useUserContext();
+  const user = { username: "Egor", email: "nezort11@gmail.com" };
 
   if (user === undefined) {
     return <>Loading...</>;
   }
 
+  // Not authenticated component
   if (user == null) {
     return (
-      <div className="login">
-        <Link to={routes.login}>Login</Link>
+      <div className="account">
+        <Button variant="outline-tertiary" className="me-2">
+          Login
+        </Button>
+        <Button variant="tertiary">Sign up</Button>
       </div>
     );
   }
@@ -148,15 +165,20 @@ const Profile = () => {
     setUser(null);
   };
 
+  // Authenticated rendering
   return (
     <div className="profile">
-      Hi, {user.username}. Your email is {user.email}
-      <div>
-        <Button onClick={logout} variant="tertiary">
-          Logout
-        </Button>
-      </div>
+      <div className="username">{user.username}</div>
+      <FontAwesomeIcon icon={faUserCircle} className="profile-icon" />
     </div>
+    // <div className="profile">
+    //   Hi, {user.username}. Your email is {user.email}
+    //   <div>
+    //     <Button onClick={logout} variant="tertiary">
+    //       Logout
+    //     </Button>
+    //   </div>
+    // </div>
   );
 };
 
@@ -168,20 +190,19 @@ const Header = () => {
   const [selectedCategories, setSelectedCategories] = useState(null);
 
   return (
-    <header>
-      <Logo />
-      <Navbar />
-      <SearchBar
-        selectedCategories={selectedCategories}
-        setSelectedCategories={setSelectedCategories}
-      />
-      <Categories
-        selectedItems={selectedCategories}
-        setSelectedItems={setSelectedCategories}
-      />
-      <div className="right-side">
+    <header className="header py-2">
+      <Container>
+        <Logo />
+        <SearchBar
+          selectedCategories={selectedCategories}
+          setSelectedCategories={setSelectedCategories}
+        />
+        {/* <Categories
+          selectedItems={selectedCategories}
+          setSelectedItems={setSelectedCategories}
+        /> */}
         <Profile />
-      </div>
+      </Container>
     </header>
   );
 };

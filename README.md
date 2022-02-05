@@ -228,7 +228,9 @@ Nice to have:
 
 - [ ] Argument
 
-- [ ] Single-page Application
+- [x] Frontend
+
+- [ ] Web design
 
 **Single-page app**:
 
@@ -248,13 +250,19 @@ Nice to have:
 
 - [x] questions search page, results, list
 
-- [ ] question detailed page
+- [x] question detailed page
 
-- [ ] search time results list
+- [x] search time results list
 
-- [ ] crud/app pages (func + style)
+- [x] crud/app pages (func + style)
 
-- [ ] do web design of the website
+**Website design**:
+
+- [ ] Header
+
+- [ ] Hero/Home
+
+- [ ] Footer
 
 ## Question
 
