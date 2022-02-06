@@ -5,17 +5,49 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-  }
 
-  .logo-categories {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+    .logo-categories {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+
+      @include media-breakpoint-down(lg) {
+        gap: 10px;
+      }
+    }
+
+    @include media-breakpoint-down(md) {
+      display: grid;
+      gap: 10px;
+
+      .logo {
+        grid-row-start: 1;
+        grid-row-end: 1;
+        grid-column-start: 1;
+        grid-column-end: 1;
+      }
+
+      .profile {
+        grid-row-start: 1;
+        grid-row-start: 1;
+        grid-row-end: 1;
+        grid-column-start: 2;
+        grid-column-end: 2;
+      }
+
+      .search-bar {
+        grid-column-start: 1;
+        grid-column-end: 3;
+        width: 95%;
+      }
+    }
   }
 }
 
 .search-bar {
-  width: 50%;
+  width: 65%;
+  margin: 0 10px;
+  position: relative;
 
   .search-control {
     border-radius: 10px;
@@ -71,6 +103,9 @@
     font-size: 1.2rem;
     font-weight: 600;
     margin-right: 10px;
+    @include media-breakpoint-down(lg) {
+      margin-right: 5px;
+    }
   }
 
   &-menu-toggle {
@@ -91,6 +126,10 @@
     :hover {
       background-color: $macaroni-and-cheese !important;
     }
+  }
+
+  .dropdown-header {
+    font-size: 1rem;
   }
 
   &-icon {

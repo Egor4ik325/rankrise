@@ -1,14 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;500;600;700&display=swap");
-
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
-@import "~bootstrap/scss/utilities";
-
-@import "variables";
+@import "./base";
 
 @import "./components/header";
 @import "./components/hero";
 @import "./components/categories-tree";
+@import "./components/search-results";
+@import "./components/card";
+@import "./components/footer";
 
 @import "./pages/home";

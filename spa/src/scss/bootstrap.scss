@@ -1,11 +1,4 @@
-// Bootstrap configuration styles
-@import "~bootstrap/scss/functions";
-@import "~bootstrap/scss/variables";
-@import "~bootstrap/scss/mixins";
-@import "~bootstrap/scss/utilities";
-
-// Override configuration styles
-@import "variables";
+@import "./base";
 
 // Bootstrap layout, components and utilities styles
 @import "~bootstrap/scss/root";

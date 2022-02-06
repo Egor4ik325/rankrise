@@ -1,0 +1,30 @@
+.search-results {
+  background-color: white;
+  position: absolute;
+  width: 100%;
+  // width: 650px;
+  margin-top: 5px;
+
+  font-size: 1.1rem;
+
+  border: 1px solid $gray-400;
+  border-radius: 10px;
+
+  &-header {
+    font-size: 0.95rem;
+    color: $gray-800;
+  }
+
+  .list-group-item {
+    border: none;
+    padding: 10px 30px;
+  }
+
+  .ask-question {
+    margin-top: 10px;
+
+    .btn {
+      box-shadow: 2px 2px 2px 0px $gray-300;
+    }
+  }
+}

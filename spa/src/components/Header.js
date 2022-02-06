@@ -75,7 +75,8 @@ const SearchResults = ({ query, onClick }) => {
 
   // questions
   return (
-    <ListGroup>
+    <ListGroup className="search-results">
+      <ListGroupItem className="search-results-header">Results</ListGroupItem>
       {questions.results.map((result, index) => (
         <ListGroupItem
           as={Link}
@@ -87,6 +88,9 @@ const SearchResults = ({ query, onClick }) => {
           {result.title}
         </ListGroupItem>
       ))}
+      <ListGroupItem className="ask-question">
+        <Button variant="tertiary">Ask your question</Button>
+      </ListGroupItem>
     </ListGroup>
   );
 };
