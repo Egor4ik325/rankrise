@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { ControlledTreeEnvironment, Tree } from "react-complex-tree";
-import "react-complex-tree/lib/style.css";
+import { Dropdown } from "react-bootstrap";
+// import "react-complex-tree/lib/style.css";
 import api from "../client";
+import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Categories = ({ selectedItems, setSelectedItems }) => {
   const [items, setItems] = useState(null);
   const [focusedItem, setFocusedItem] = useState();
   const [expandedItems, setExpandedItems] = useState([]);
-  // const [selectedItems, setSelectedItems] = useState([]);
 
   const fetchCategories = async () => {
     try {
@@ -130,38 +132,44 @@ const Categories = ({ selectedItems, setSelectedItems }) => {
     // console.log(items);
 
     return (
-      <div>
-        <ControlledTreeEnvironment
-          items={items}
-          getItemTitle={(item) => item.data}
-          // Tree view state
-          viewState={{
-            ["categories-tree"]: {
-              focusedItem,
-              expandedItems,
-              selectedItems,
-            },
-          }}
-          // Handle tree events
-          onFocusItem={handleFocusItem}
-          onExpandItem={handleExpandItem}
-          onCollapseItem={handleCollapseItem}
-          onSelectItems={handleSelectItems}
-          // Settings
-          canDragAndDrop={false}
-          canDropOnItemWithChildren={false}
-          canReorderItems={false}
-          canSearch={false}
-          canSearchByStartingTyping={false}
-          canRename={false}
-        >
-          <Tree
-            treeId="categories-tree"
-            rootItem="root"
-            treeLabel="Categories Tree"
-          />
-        </ControlledTreeEnvironment>
-      </div>
+      <Dropdown className="categories">
+        <Dropdown.Toggle className="categories-dropdown-toggle">
+          <FontAwesomeIcon icon={faCaretDown} />
+        </Dropdown.Toggle>
+        <Dropdown.Menu className="categories-menu mt-2">
+          <Dropdown.Header>Categories</Dropdown.Header>
+          <ControlledTreeEnvironment
+            items={items}
+            getItemTitle={(item) => item.data}
+            // Tree view state
+            viewState={{
+              ["categories-tree"]: {
+                focusedItem,
+                expandedItems,
+                selectedItems,
+              },
+            }}
+            // Handle tree events
+            onFocusItem={handleFocusItem}
+            onExpandItem={handleExpandItem}
+            onCollapseItem={handleCollapseItem}
+            onSelectItems={handleSelectItems}
+            // Settings
+            canDragAndDrop={false}
+            canDropOnItemWithChildren={false}
+            canReorderItems={false}
+            canSearch={false}
+            canSearchByStartingTyping={false}
+            canRename={false}
+          >
+            <Tree
+              treeId="categories-tree"
+              rootItem="root"
+              treeLabel="Categories Tree"
+            />
+          </ControlledTreeEnvironment>
+        </Dropdown.Menu>
+      </Dropdown>
     );
   };
 

@@ -6,6 +6,12 @@
     justify-content: space-between;
     align-items: center;
   }
+
+  .logo-categories {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
 }
 
 .search-bar {
@@ -64,7 +70,27 @@
   .username {
     font-size: 1.2rem;
     font-weight: 600;
-    margin-right: 20px;
+    margin-right: 10px;
+  }
+
+  &-menu-toggle {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+
+  &-menu {
+    width: 220px;
+  }
+
+  .dropdown-email {
+    font-size: 1.1rem;
+    font-weight: 550;
+  }
+
+  .dropdown-logout {
+    :hover {
+      background-color: $macaroni-and-cheese !important;
+    }
   }
 
   &-icon {

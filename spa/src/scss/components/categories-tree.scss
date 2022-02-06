@@ -1,0 +1,79 @@
+.categories {
+  &-dropdown-toggle {
+    &:after {
+      content: none;
+    }
+  }
+
+  &-menu {
+    width: 320px;
+  }
+}
+
+.rct-tree-root {
+  margin: 0px 15px;
+}
+
+// Items container
+.rct-tree-items-container {
+  margin: 0;
+  padding: 0;
+}
+
+.rct-tree-item-li {
+  font-size: 1.1rem;
+  list-style-type: none;
+  margin: 5px 0;
+}
+
+.rct-tree-item-title-container {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  border-radius: 10px;
+}
+
+.rct-tree-item-button {
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  background-color: transparent;
+  font-family: inherit;
+  font-size: inherit;
+  border: none;
+  width: 100%;
+  text-align: left;
+  color: inherit;
+  outline: none;
+
+  height: 26px;
+  margin-left: 10px;
+}
+
+.rct-tree-item-button-hasChildren {
+  margin-left: 8.5px;
+}
+
+.rct-tree-item-arrow {
+  width: 16px;
+}
+
+.rct-tree-item-arrow svg {
+  width: 16px;
+}
+
+.rct-tree-item-arrow-path {
+  fill: $gray-600;
+}
+
+// Selected item (focused)
+.rct-tree-root.rct-tree-root-focus .rct-tree-item-title-container-selected {
+  background-color: $gray-200;
+}
+
+// Selected item (not focused)
+.rct-tree-root:not(.rct-tree-root-focus)
+  .rct-tree-item-title-container-selected {
+  background-color: $gray-200;
+}

@@ -7,6 +7,7 @@ import {
   Form,
   ListGroup,
   ListGroupItem,
+  Dropdown,
 } from "react-bootstrap";
 import api from "../client";
 import routes from "../routes";
@@ -141,8 +142,7 @@ const SearchBar = ({ selectedCategories, setSelectedCategories }) => {
 };
 
 const Profile = () => {
-  // const [user, setUser] = useUserContext();
-  const user = { username: "Egor", email: "nezort11@gmail.com" };
+  const [user, setUser] = useUserContext();
 
   if (user === undefined) {
     return <>Loading...</>;
@@ -152,7 +152,12 @@ const Profile = () => {
   if (user == null) {
     return (
       <div className="account">
-        <Button variant="outline-tertiary" className="me-2">
+        <Button
+          as={Link}
+          variant="outline-tertiary"
+          className="me-2"
+          to={routes.login}
+        >
           Login
         </Button>
         <Button variant="tertiary">Sign up</Button>
@@ -169,16 +174,24 @@ const Profile = () => {
   return (
     <div className="profile">
       <div className="username">{user.username}</div>
-      <FontAwesomeIcon icon={faUserCircle} className="profile-icon" />
+      <Dropdown>
+        <Dropdown.Toggle className="profile-menu-toggle">
+          <FontAwesomeIcon icon={faUserCircle} className="profile-icon" />
+        </Dropdown.Toggle>
+        <Dropdown.Menu className="profile-menu mt-2">
+          <Dropdown.Header>Profile</Dropdown.Header>
+          <div className="dropdown-email pb-2 ms-3">{user.email}</div>
+          <Dropdown.Divider />
+          <Button
+            variant="tertiary"
+            className="dropdown-logout ms-3"
+            onClick={logout}
+          >
+            Logout
+          </Button>
+        </Dropdown.Menu>
+      </Dropdown>
     </div>
-    // <div className="profile">
-    //   Hi, {user.username}. Your email is {user.email}
-    //   <div>
-    //     <Button onClick={logout} variant="tertiary">
-    //       Logout
-    //     </Button>
-    //   </div>
-    // </div>
   );
 };
 
@@ -192,15 +205,17 @@ const Header = () => {
   return (
     <header className="header py-2">
       <Container>
-        <Logo />
+        <div className="logo-categories">
+          <Logo />
+          <Categories
+            selectedItems={selectedCategories}
+            setSelectedItems={setSelectedCategories}
+          />
+        </div>
         <SearchBar
           selectedCategories={selectedCategories}
           setSelectedCategories={setSelectedCategories}
         />
-        {/* <Categories
-          selectedItems={selectedCategories}
-          setSelectedItems={setSelectedCategories}
-        /> */}
         <Profile />
       </Container>
     </header>

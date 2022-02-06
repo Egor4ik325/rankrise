@@ -17,9 +17,9 @@ $dark: $gray-900;
 
 // Message colors (error, success, warning, informational)
 $success: $green;
-$info: $cyan;
 $warning: $yellow;
 $error: $red;
+$info: $cyan;
 
 $theme-colors: (
   // Component colors
@@ -30,11 +30,18 @@ $theme-colors: (
   "dark": $dark,
   // Message colors
   "success": $success,
-  "info": $info,
   "warning": $warning,
-  "error": $error
+  "error": $error,
+  "info": $info
 );
 
 // Header
 
 $search-box-shadow-color: #fbe0c3;
+
+$btn-border-radius: 10px;
+
+$dropdown-header-color: $gray-700;
+$dropdown-border-radius: 8px;
+/* offset-x | offset-y | blur-radius | spread-radius | color */
+$dropdown-box-shadow: 0px 2px 5px 1px $gray-500;
