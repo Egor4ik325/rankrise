@@ -1,0 +1,39 @@
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: $primary;
+  color: $white;
+  // margin-top: auto;
+  padding: 20px 20px;
+
+  @include media-breakpoint-down(md) {
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  .right-side {
+    display: flex;
+    align-items: center;
+    font-size: 1.1rem;
+  }
+
+  .copyright {
+    margin-right: 30px;
+  }
+
+  .social-media {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 1.3rem;
+  }
+
+  a {
+    color: $white;
+  }
+
+  a:hover {
+    color: $gray-300;
+  }
+}

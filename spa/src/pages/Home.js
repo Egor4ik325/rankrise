@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
-import { Button, Container, Form } from "react-bootstrap";
+import { Button, Container, Form, Card } from "react-bootstrap";
 import moment from "moment";
-import { unstable_HistoryRouter, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import Modal from "../components/Modal";
 
@@ -14,8 +14,24 @@ import { APIError, InvalidDataError } from "../client/errors";
 import routes from "../routes";
 import CategorySelect from "../components/CategorySelect";
 
+import standOut from "../assets/img/illustrations/stand-out.svg";
+
 const Hero = () => {
-  return <>Hero: RankRise</>;
+  return (
+    <Container className="hero">
+      <div>
+        <h1 className="hero-heading">
+          Find Best Products Quickly and Reliably
+        </h1>
+        <p className="hero-paragraph">
+          RankRise is built by community questions and answers. We are driven by
+          people like you on the internet.
+        </p>
+        <Button className="hero-contribute">Contribute</Button>
+      </div>
+      <img src={standOut} className="hero-illustration" />
+    </Container>
+  );
 };
 
 const QuestionCreateModal = ({ show, onHide, onQuestionCreate }) => {
@@ -107,10 +123,16 @@ const Questions = () => {
     }
 
     return questionResponse.results.map((question, index) => (
-      <div key={index}>
-        <b>{question.title}</b>
-        <p>{moment(question.askTime).fromNow()}</p>
-      </div>
+      <Card key={index} className="question">
+        <div className="question-title">
+          <Link to={`${routes.questions}/${question.pk}`}>
+            {question.title}
+          </Link>
+        </div>
+        <div className="question-ask-time">
+          {moment(question.askTime).fromNow()}
+        </div>
+      </Card>
     ));
   };
 
@@ -152,25 +174,20 @@ const Questions = () => {
   };
 
   return (
-    <div>
-      <p>
-        List of question{" "}
-        {
-          // Render count only when question response is neither undefined or null
-          (questionResponse ?? false) && <>(total {questionResponse.count})</>
-        }
-        :
-      </p>
+    <div className="latest-questions">
+      <h1 className="latest-questions-heading">
+        Latest <span className="hot">Hot</span> Questions
+      </h1>
       {render()}
       {fetchingMore && <i>Fetching more...</i>}
       <div>
         {questionResponse?.next && (
-          <Button variant="link" onClick={handleLoadMore}>
+          <Button className="load-more" variant="link" onClick={handleLoadMore}>
             Load more
           </Button>
         )}
       </div>
-      <Button variant="tertiary" onClick={handleOpenQuestionCreateModal}>
+      <Button className="ask-question" variant="tertiary" onClick={handleOpenQuestionCreateModal}>
         Create new question
       </Button>
       <QuestionCreateModal
@@ -184,12 +201,13 @@ const Questions = () => {
 
 const Home = () => {
   return (
-    <Container>
+    <div className="home">
       <Hero />
+      <hr />
       <main>
         <Questions />
       </main>
-    </Container>
+    </div>
   );
 };
 

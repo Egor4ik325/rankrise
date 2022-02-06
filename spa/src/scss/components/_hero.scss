@@ -1,0 +1,54 @@
+.hero {
+  display: flex;
+  align-items: center;
+  margin-top: 70px;
+  margin-bottom: 80px;
+
+  @include media-breakpoint-down(lg) {
+    flex-direction: column;
+    margin-top: 30px;
+  }
+
+  &-heading {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+  }
+
+  &-paragraph {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+  }
+
+  &-contribute {
+    font-size: 1.5rem;
+    font-weight: 500;
+    background-color: $tertiary;
+    color: $black;
+    border-radius: 50px;
+    border: none;
+    padding: 10px 20px;
+
+    &:hover {
+      background-color: $macaroni-and-cheese;
+    }
+  }
+
+  &-illustration {
+    width: 100%;
+    height: 450px;
+    pointer-events: none;
+
+    @include media-breakpoint-only(xl) {
+      width: 600px;
+    }
+
+    @include media-breakpoint-only(lg) {
+      width: 450px;
+    }
+
+    @include media-breakpoint-down(md) {
+      margin-top: 20px;
+    }
+  }
+}
