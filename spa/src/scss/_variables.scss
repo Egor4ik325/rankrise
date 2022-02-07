@@ -1,9 +1,22 @@
 // Color pallette (real color names)
 //
-$kombu-green: #344638;
+$kombu-green: #344648;
 $roman-silver: #7d8e95;
 $bisque: #fbe0c3;
 $macaroni-and-cheese: #ffbb98;
+
+// Tint
+$bisque-100: tint-color($bisque, 80%);
+$bisque-200: tint-color($bisque, 60%);
+$bisque-300: tint-color($bisque, 40%);
+$bisque-400: tint-color($bisque, 20%);
+// Color
+$bisque-500: $bisque;
+// Shade
+$bisque-600: shade-color($bisque, 20%);
+$bisque-700: shade-color($bisque, 40%);
+$bisque-800: shade-color($bisque, 60%);
+$bisque-900: shade-color($bisque, 80%);
 
 // Override semantic colors
 //

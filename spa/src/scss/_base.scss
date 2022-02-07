@@ -1,12 +1,6 @@
 /*
  * Base stylesheet for both bootstrap and rankrise.
  */
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;500;600;700&display=swap");
-
-html * {
-  font-family: Outfit !important;
-}
-
 // Bootstrap configuration styles
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
@@ -15,3 +9,9 @@ html * {
 
 // Override configuration styles
 @import "variables";
+
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;500;600;700&display=swap");
+
+html * {
+  font-family: Outfit !important;
+}

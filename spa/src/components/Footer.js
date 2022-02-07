@@ -1,6 +1,6 @@
 import routes from "../routes";
 import logo from "../assets/img/icons/logo.png";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   faGithub,
   faLinkedin,
@@ -9,15 +9,30 @@ import {
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Logo = () => {
+  const handleClick = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+  const location = useLocation();
+
   return (
     <div className="logo d-flex align-items-center">
       <img src={logo} height={48} className="me-2" />
-      <Link
-        to={routes.home}
-        className="text-white text-decoration-none fs-3 fw-bold"
-      >
-        RankRise
-      </Link>
+
+      {location.pathname == routes.home ? (
+        <div
+          className="text-white text-decoration-none fs-3 fw-bold"
+          onClick={handleClick}
+        >
+          RankRise
+        </div>
+      ) : (
+        <Link
+          to={routes.home}
+          className="text-white text-decoration-none fs-3 fw-bold"
+        >
+          RankRise
+        </Link>
+      )}
     </div>
   );
 };

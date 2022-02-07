@@ -1,0 +1,47 @@
+.messages {
+  font-size: 1.1rem;
+
+  .message {
+    background-color: $gray-100;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+    margin-bottom: 2px;
+
+    &-success {
+      .message-icon {
+        color: $success;
+      }
+    }
+
+    &-warning {
+      .message-icon {
+        color: $warning;
+      }
+    }
+
+    &-error {
+      .message-icon {
+        color: $error;
+      }
+    }
+
+    &-info {
+      .message-icon {
+        color: $info;
+      }
+    }
+  }
+
+  .message-icon {
+    font-size: 1.5rem;
+    margin-right: 10px;
+  }
+
+  .btn {
+    margin-left: auto;
+    box-shadow: none;
+  }
+}

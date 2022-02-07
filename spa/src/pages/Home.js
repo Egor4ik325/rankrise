@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { Button, Container, Form, Card } from "react-bootstrap";
+import { Button, Container, Form, Card, Spinner } from "react-bootstrap";
 import moment from "moment";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -115,7 +115,7 @@ const Questions = () => {
 
   const render = () => {
     if (questionResponse === undefined) {
-      return <>Loading...</>;
+      return <Spinner animation="border" className="mb-4" />;
     }
 
     if (questionResponse === []) {
@@ -187,7 +187,11 @@ const Questions = () => {
           </Button>
         )}
       </div>
-      <Button className="ask-question" variant="tertiary" onClick={handleOpenQuestionCreateModal}>
+      <Button
+        className="ask-question"
+        variant="tertiary"
+        onClick={handleOpenQuestionCreateModal}
+      >
         Create new question
       </Button>
       <QuestionCreateModal

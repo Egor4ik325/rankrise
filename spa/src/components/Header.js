@@ -8,6 +8,7 @@ import {
   ListGroup,
   ListGroupItem,
   Dropdown,
+  Spinner,
 } from "react-bootstrap";
 import api from "../client";
 import routes from "../routes";
@@ -149,7 +150,7 @@ const Profile = () => {
   const [user, setUser] = useUserContext();
 
   if (user === undefined) {
-    return <>Loading...</>;
+    return <Spinner animation="border" variant="light" />;
   }
 
   // Not authenticated component

@@ -1,20 +1,18 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
-
-import { useMessages } from "../hooks/MessagesContext";
+import Messages from "./Messages";
+import routes from "../routes";
 
 const Layout = () => {
-  const [messages, ,] = useMessages();
+  const location = useLocation();
 
   return (
     <>
-      {messages.map((message, i) => (
-        <div key={i}>{message}</div>
-      ))}
-      <Header />
+      <Messages />
+      {location.pathname !== routes.login && <Header />}
       <Outlet />
-      <Footer />
+      {location.pathname !== routes.login && <Footer />}
     </>
   );
 };

@@ -5,14 +5,15 @@ import reportWebVitals from "./reportWebVitals";
 import App from "./pages/App";
 
 /*
- * Import stylesheets separately to prevent long recompiling.
+ * Import stylesheets separately to prevent long recompiling
+ * instead of having single index.scss.
  */
 
-// Customized/overridden bootstrap (components, layout, utilities, ...)
+// Overridden bootstrap (components, layout, utilities, ...)
 import "./scss/bootstrap.scss";
 
-// Core styles (everything)
-import "./scss/index.scss";
+// Core styles (everything custom)
+import "./scss/rankrise.scss";
 
 render(
   <HashRouter>

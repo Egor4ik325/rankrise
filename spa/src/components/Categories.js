@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { ControlledTreeEnvironment, Tree } from "react-complex-tree";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, Spinner } from "react-bootstrap";
 // import "react-complex-tree/lib/style.css";
 import api from "../client";
 import { faCaretDown } from "@fortawesome/free-solid-svg-icons";
@@ -126,7 +126,7 @@ const Categories = ({ selectedItems, setSelectedItems }) => {
 
   const render = () => {
     if (items === null) {
-      return <div>Loading...</div>;
+      return <Spinner animation="border" variant="light" size="sm" />;
     }
 
     // console.log(items);
