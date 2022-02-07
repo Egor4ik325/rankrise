@@ -1,0 +1,12 @@
+// Global form styling overriding (instead of variable-based configuration)
+form {
+  .form-control {
+    border-radius: 10px;
+    padding: 8px 15px;
+
+    &:focus {
+      border-color: $bisque;
+      box-shadow: 0 0 0 0.25rem $bisque-200;
+    }
+  }
+}

@@ -8,6 +8,9 @@ import { useMessages } from "../hooks/MessagesContext";
 import api from "../client";
 import { LoginError } from "../client/errors";
 import routes from "../routes";
+import rankingFirst from "../assets/img/illustrations/ranking-first.svg";
+import { faLock, faUser } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Login = ({ onLogin }) => {
   const navigate = useNavigate();
@@ -61,35 +64,47 @@ const Login = ({ onLogin }) => {
   };
 
   return (
-    <div>
-      <h3>Login</h3>
+    <div className="login">
+      <div className="left">
+        <div className="teaser">
+          <h2>Rankrise</h2>
+          <p>Best product worth authentication</p>
+        </div>
 
-      <Form onSubmit={handleLoginSubmit}>
-        <Form.Group className="mb-3" controlId="formBasicEmail">
-          <Form.Label>Username</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Nezort11"
-            onChange={handleUsernameChange}
-            required
-            isInvalid={invalid}
-          />
-        </Form.Group>
+        <img src={rankingFirst} width={600} />
+      </div>
+      <div className="right">
+        <h1 className="heading">Login</h1>
 
-        <Form.Group className="mb-3" controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="••••••••"
-            onChange={handlePasswordChange}
-            required
-            isInvalid={invalid}
-          />
-        </Form.Group>
-        <Button variant="tertiary" type="submit">
-          Login
-        </Button>
-      </Form>
+        <Form onSubmit={handleLoginSubmit}>
+          <Form.Group className="mb-3" controlId="formBasicEmail">
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Nezort11"
+              onChange={handleUsernameChange}
+              required
+              isInvalid={invalid}
+            />
+            <FontAwesomeIcon icon={faUser} />
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formBasicPassword">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="••••••••"
+              onChange={handlePasswordChange}
+              required
+              isInvalid={invalid}
+            />
+            <FontAwesomeIcon icon={faLock} />
+          </Form.Group>
+          <Button variant="tertiary" type="submit">
+            Login
+          </Button>
+        </Form>
+      </div>
     </div>
   );
 };

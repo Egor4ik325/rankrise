@@ -1,3 +1,17 @@
+// Index/global website-wide styles
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;500;600;700&display=swap");
+
+html * {
+  font-family: Outfit !important;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+// Base configuration vars/utilities
 @import "./base";
 
 @import "./components/header";
