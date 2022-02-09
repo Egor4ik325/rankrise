@@ -1,0 +1,18 @@
+// Index/global website-wide styles
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;500;600;700&display=swap");
+
+html * {
+  font-family: Outfit !important;
+}
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+a {
+  :hover {
+    color: $gray-400;
+  }
+}

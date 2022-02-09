@@ -256,13 +256,23 @@ Nice to have:
 
 - [x] crud/app pages (func + style)
 
+- [ ] JOIN API endpoint multiple dependent resources together on server-side (like filtering/searching)
+
 **Website design**:
 
-- [ ] Header
+- [x] Header
 
-- [ ] Hero/Home
+- [x] Hero/Home
 
-- [ ] Footer
+- [x] Footer
+
+- [x] Search
+
+- [ ] Question page
+
+- [ ] Product add
+
+- [ ] Modals
 
 ## Question
 

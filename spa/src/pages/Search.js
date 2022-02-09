@@ -15,11 +15,6 @@ const SearchProduct = ({ product }) => {
       </div>
     </div>
   );
-  // <div>
-  //   <b>{question.title}</b>
-  //   <div>
-  //   </div>
-  // </div>
 };
 
 const Search = () => {
@@ -167,25 +162,29 @@ const Search = () => {
   };
 
   return (
-    <Container>
-      <Form>
+    <Container className="search">
+      <Form className="search-filters">
+        <div className="filter-title">Filters:</div>
         <Form.Check
           type="radio"
           label="Questions"
-          name="group1"
-          defaultChecked
+          name="question"
+          checked={questionSearch}
           id="question-search-radio"
           onChange={() => setQuestionSearch(true)}
+          className="question-filter"
         />
         <Form.Check
           type="radio"
           label="Products"
-          name="group1"
+          name="product"
+          checked={!questionSearch}
           id="product-search-radio"
           onChange={() => setQuestionSearch(false)}
+          className="product-filter"
         />
       </Form>
-      <p>
+      <p className="search-description">
         Search results {renderSearchResultsCount()} for query &quot;{query}
         &quot; and categories ({categories?.join(", ")}) with {page} pages:
       </p>

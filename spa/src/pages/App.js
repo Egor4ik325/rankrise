@@ -91,7 +91,7 @@ const App = () => {
               }
             />
             <Route path="404" element={<NotFound />} />
-            <Route path="*" element={<NotFound />} />
+            <Route path="*" element={<Navigate to={routes.notFound} />} />
           </Route>
         </Routes>
       </MessagesContextProvider>

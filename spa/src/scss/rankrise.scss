@@ -1,18 +1,7 @@
-// Index/global website-wide styles
-@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@100;400;500;600;700&display=swap");
-
-html * {
-  font-family: Outfit !important;
-}
-
-#root {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
 // Base configuration vars/utilities
 @import "./base";
+
+@import "./index";
 
 @import "./components/header";
 @import "./components/hero";
@@ -22,6 +11,9 @@ html * {
 @import "./components/footer";
 @import "./components/messages";
 @import "./components/form";
+@import "./components/radio";
 
 @import "./pages/home";
 @import "./pages/login";
+@import "./pages/not-found";
+@import "./pages/search";

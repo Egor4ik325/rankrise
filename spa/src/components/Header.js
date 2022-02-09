@@ -110,7 +110,7 @@ const SearchBar = ({ selectedCategories, setSelectedCategories }) => {
       pathname: routes.search,
       search: `?${createSearchParams({
         ...(query && { query }),
-        ...(selectedCategories.length > 0 && {
+        ...(selectedCategories?.length > 0 && {
           categories: selectedCategories.toString(),
         }),
       })}`,
@@ -123,6 +123,22 @@ const SearchBar = ({ selectedCategories, setSelectedCategories }) => {
     setSelectedCategories([]);
   };
 
+  const handleSearchIconClick = () => {
+    navigate({
+      pathname: routes.search,
+      search: `?${createSearchParams({
+        ...(query && { query }),
+        ...(selectedCategories?.length > 0 && {
+          categories: selectedCategories.toString(),
+        }),
+      })}`,
+    });
+
+    formRef.current?.reset();
+    setQuery(null);
+    setSelectedCategories([]);
+  };
+
   const handleSearchResultClick = () => {
     // Reset the form => clear the query => remove the results
     formRef.current?.reset();
@@ -131,7 +147,11 @@ const SearchBar = ({ selectedCategories, setSelectedCategories }) => {
   return (
     <div className="search-bar">
       <Form ref={formRef} onSubmit={handleSearchSubmit}>
-        <FontAwesomeIcon icon={faSearch} className="search-icon" />
+        <FontAwesomeIcon
+          icon={faSearch}
+          className="search-icon"
+          onClick={handleSearchIconClick}
+        />
         <Form.Control
           type="text"
           name="query"
@@ -165,7 +185,9 @@ const Profile = () => {
         >
           Login
         </Button>
-        <Button variant="tertiary">Sign up</Button>
+        <Button variant="tertiary" className="btn-signup">
+          Sign up
+        </Button>
       </div>
     );
   }
