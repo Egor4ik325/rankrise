@@ -1,0 +1,12 @@
+.form-check {
+  &-input {
+    &:checked {
+      background-color: $macaroni-and-cheese;
+      border-color: $bisque;
+      box-shadow: 0 0 0 0.25rem $bisque;
+    }
+  }
+
+  &-label {
+  }
+}
