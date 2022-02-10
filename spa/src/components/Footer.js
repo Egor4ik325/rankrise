@@ -39,40 +39,42 @@ const Logo = () => {
 
 const Header = () => {
   return (
-    <footer>
-      <Logo />
-      <div className="right-side">
-        <div className="copyright">
-          Copyright &copy; 2022 by{" "}
-          <a href="https://egorindev.com" target="_blank" rel="noreferrer">
-            Egor Zorin
-          </a>
+    <div className="mt-auto">
+      <footer>
+        <Logo />
+        <div className="right-side">
+          <div className="copyright">
+            Copyright &copy; 2022 by{" "}
+            <a href="https://egorindev.com" target="_blank" rel="noreferrer">
+              Egor Zorin
+            </a>
+          </div>
+          <div className="social-media">
+            <a
+              href="https://github.com/Egor4ik325"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FontAwesomeIcon icon={faGithub} />
+            </a>
+            <a
+              href="https://linkedin.com/in/nezort11"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FontAwesomeIcon icon={faLinkedin} />
+            </a>
+            <a
+              href="https://twitter.com/nezort11"
+              target="_blank"
+              rel="noreferrer"
+            >
+              <FontAwesomeIcon icon={faTwitter} />
+            </a>
+          </div>
         </div>
-        <div className="social-media">
-          <a
-            href="https://github.com/Egor4ik325"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FontAwesomeIcon icon={faGithub} />
-          </a>
-          <a
-            href="https://linkedin.com/in/nezort11"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FontAwesomeIcon icon={faLinkedin} />
-          </a>
-          <a
-            href="https://twitter.com/nezort11"
-            target="_blank"
-            rel="noreferrer"
-          >
-            <FontAwesomeIcon icon={faTwitter} />
-          </a>
-        </div>
-      </div>
-    </footer>
+      </footer>
+    </div>
   );
 };
 export default Header;

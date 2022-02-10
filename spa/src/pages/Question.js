@@ -10,8 +10,10 @@ import { useUserContext } from "../hooks/UserContext";
 import AsyncSelect from "react-select/async";
 import ReportModal from "../components/ReportModal";
 import { ObjectModel } from "../client/models";
+import { faFlag } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const Headline = ({ question }) => {
+const Headline = ({ question, onReport, onSuggest }) => {
   if (question === undefined) {
     return (
       <div>
@@ -21,9 +23,23 @@ const Headline = ({ question }) => {
   }
 
   return (
-    <div>
-      <h2>{question.title}</h2>
-      <h5>Asked {moment(question.askTime).fromNow()}</h5>
+    <div className="headline">
+      <div className="headline-block">
+        <FontAwesomeIcon
+          icon={faFlag}
+          onClick={onReport}
+          className="report-flag"
+        />
+        <div className="content">
+          <h1>{question.title}</h1>
+          <div>Asked {moment(question.askTime).fromNow()}</div>
+        </div>
+        <div className="asked-suggest">
+          <Button onClick={onSuggest} size="lg" variant="tertiary">
+            Suggest
+          </Button>
+        </div>
+      </div>
     </div>
   );
 };
@@ -508,11 +524,13 @@ const Question = () => {
 
   return (
     <>
-      <div>
-        <Headline question={question} />
-        <Button variant="light" onClick={() => setShowReportModal(true)}>
-          Report
-        </Button>
+      <div className="question">
+        <Headline
+          question={question}
+          onReport={() => setShowReportModal(true)}
+          onSuggest={handleOptionSuggest}
+        />
+        <hr />
         {question && <Category question={question} />}
 
         {render()}

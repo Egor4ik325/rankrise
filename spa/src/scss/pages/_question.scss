@@ -1,0 +1,31 @@
+.question {
+  .headline {
+    &-block {
+      display: flex;
+      flex-direction: column;
+      width: 700px;
+      margin: 0 auto;
+      text-align: center;
+
+      .report-flag {
+        font-size: 1.5rem;
+        align-self: end;
+        cursor: pointer;
+      }
+
+      h1 {
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+      }
+
+      .asked-suggest {
+        display: flex;
+        justify-content: space-between;
+
+        .btn {
+          border-radius: 15px;
+        }
+      }
+    }
+  }
+}
