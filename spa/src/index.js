@@ -3,6 +3,7 @@ import { HashRouter } from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 
 import App from "./pages/App";
+import "bootstrap/dist/js/bootstrap.bundle";
 
 /*
  * Import stylesheets separately to prevent long recompiling

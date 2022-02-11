@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import api from "../client";
 import { APIError, DoesNotExistsError } from "../client/errors";
 import moment from "moment";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
 import routes from "../routes";
 import Modal from "../components/Modal";
 import { useUserContext } from "../hooks/UserContext";
@@ -22,23 +22,35 @@ const Headline = ({ question, onReport, onSuggest }) => {
     );
   }
 
+  // const renderReportTooltip = ({ props }) => (
+  // );
+
   return (
     <div className="headline">
       <div className="headline-block">
-        <FontAwesomeIcon
-          icon={faFlag}
-          onClick={onReport}
-          className="report-flag"
-        />
+        <OverlayTrigger
+          placement="right"
+          delay={{ show: 250, hide: 400 }}
+          overlay={
+            <Tooltip id="button-tooltip">Report as inappropriate</Tooltip>
+          }
+        >
+          <div className="report-flag">
+            <FontAwesomeIcon icon={faFlag} onClick={onReport} />
+          </div>
+        </OverlayTrigger>
         <div className="content">
           <h1>{question.title}</h1>
           <div>Asked {moment(question.askTime).fromNow()}</div>
         </div>
-        <div className="asked-suggest">
-          <Button onClick={onSuggest} size="lg" variant="tertiary">
-            Suggest
-          </Button>
-        </div>
+        <Button
+          onClick={onSuggest}
+          size="lg"
+          variant="tertiary"
+          className="btn-suggest"
+        >
+          Suggest
+        </Button>
       </div>
     </div>
   );
@@ -267,7 +279,7 @@ const Option = ({ question, option, onVote }) => {
 
   return (
     <>
-      <div>
+      <div className="option card">
         <div>ID: {option.id}</div>
         {product !== null ? (
           <Link to={routes.product(product.pk)}>Detail</Link>
@@ -373,13 +385,17 @@ const Options = ({ question }) => {
   ));
 };
 
-const ProductSuggestModal = ({ defaultShow, question, onSuggest }) => {
+const ProductSuggestModal = ({ defaultShow, question, onSuggest, onClose }) => {
   const [shown, setShown] = useState(defaultShow);
   const [selectedValue, setSelectedValue] = useState(null);
   const fetchTimeoutId = useRef(null);
   const [user] = useUserContext();
   const navigate = useNavigate();
   const location = useLocation();
+
+  useEffect(() => {
+    setShown(defaultShow);
+  }, [defaultShow]);
 
   const handleSuggestClick = () => {
     if (user === undefined) {
@@ -457,7 +473,10 @@ const ProductSuggestModal = ({ defaultShow, question, onSuggest }) => {
       <Modal
         header={<div>Suggest an Option</div>}
         show={shown}
-        onHide={() => setShown(false)}
+        onHide={() => {
+          setShown(false);
+          onClose();
+        }}
       >
         <p>Select existing product</p>
         <AsyncSelect
@@ -482,6 +501,7 @@ const Question = () => {
   delete location.state?.from;
   const [question, setQuestion] = useState(undefined);
   const [showReportModal, setShowReportModal] = useState(false);
+  const [defaultShown, setDefaultShown] = useState(from === routes.productAdd);
 
   const fetchQuestion = async () => {
     try {
@@ -528,7 +548,7 @@ const Question = () => {
         <Headline
           question={question}
           onReport={() => setShowReportModal(true)}
-          onSuggest={handleOptionSuggest}
+          onSuggest={() => setDefaultShown(true)}
         />
         <hr />
         {question && <Category question={question} />}
@@ -536,9 +556,10 @@ const Question = () => {
         {render()}
         {question ? <Options question={question} /> : <>Loading...</>}
         <ProductSuggestModal
-          defaultShow={from === routes.productAdd}
+          defaultShow={defaultShown}
           question={question}
           onSuggest={handleOptionSuggest}
+          onClose={() => setDefaultShown(false)}
         />
       </div>
       <ReportModal

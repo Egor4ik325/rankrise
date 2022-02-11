@@ -1,11 +1,13 @@
 .question {
   .headline {
+    margin-top: 3rem;
+    margin-bottom: 3rem;
     &-block {
       display: flex;
       flex-direction: column;
-      width: 700px;
+      align-items: center;
+      width: 800px;
       margin: 0 auto;
-      text-align: center;
 
       .report-flag {
         font-size: 1.5rem;
@@ -13,19 +15,22 @@
         cursor: pointer;
       }
 
-      h1 {
-        margin-top: 2rem;
-        margin-bottom: 3rem;
-      }
+      .content {
+        margin: 3rem auto;
 
-      .asked-suggest {
-        display: flex;
-        justify-content: space-between;
-
-        .btn {
-          border-radius: 15px;
+        h1 {
+          font-size: 3rem;
         }
       }
+
+      .btn-suggest {
+        font-size: 1.8rem;
+        align-self: end;
+        border-radius: 20px;
+      }
     }
+  }
+
+  .option {
   }
 }
