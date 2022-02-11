@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Container, Form } from "react-bootstrap";
+import { Button, Container, Form, Spinner } from "react-bootstrap";
 import { Link, useSearchParams } from "react-router-dom";
 import SearchQuestion from "../components/SearchQuestion";
 
@@ -103,7 +103,7 @@ const Search = () => {
     }
 
     if (responses === null) {
-      return <>Loading...</>;
+      return <Spinner animation="grow" />;
     }
 
     if (responses.length === 0) {

@@ -3,7 +3,13 @@ import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import api from "../client";
 import { APIError, DoesNotExistsError } from "../client/errors";
 import moment from "moment";
-import { Button, Form, OverlayTrigger, Tooltip } from "react-bootstrap";
+import {
+  Button,
+  Form,
+  OverlayTrigger,
+  Spinner,
+  Tooltip,
+} from "react-bootstrap";
 import routes from "../routes";
 import Modal from "../components/Modal";
 import { useUserContext } from "../hooks/UserContext";
@@ -12,12 +18,13 @@ import ReportModal from "../components/ReportModal";
 import { ObjectModel } from "../client/models";
 import { faFlag } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CircularProgress from "../components/CircularProgress";
 
 const Headline = ({ question, onReport, onSuggest }) => {
   if (question === undefined) {
     return (
       <div>
-        <h2>Loading...</h2>
+        <Spinner animation="grow" />
       </div>
     );
   }
@@ -41,7 +48,10 @@ const Headline = ({ question, onReport, onSuggest }) => {
         </OverlayTrigger>
         <div className="content">
           <h1>{question.title}</h1>
-          <div>Asked {moment(question.askTime).fromNow()}</div>
+          <div className="d-flex justify-content-between">
+            <Category question={question} />
+            <div>Asked {moment(question.askTime).fromNow()}</div>
+          </div>
         </div>
         <Button
           onClick={onSuggest}
@@ -72,10 +82,14 @@ const Category = ({ question }) => {
   }, []);
 
   if (category === null) {
-    return <div>Category: loading...</div>;
+    return (
+      <div>
+        Category... <Spinner animation="border" size="sm" />
+      </div>
+    );
   }
 
-  return <div>Category: {category.name}</div>;
+  return <div>{category.name}</div>;
 };
 
 const ShareExperienceModal = ({
@@ -280,16 +294,27 @@ const Option = ({ question, option, onVote }) => {
   return (
     <>
       <div className="option card">
-        <div>ID: {option.id}</div>
-        {product !== null ? (
-          <Link to={routes.product(product.pk)}>Detail</Link>
-        ) : (
-          <div>Loading...</div>
-        )}
-        <div>{product !== null ? product.name : <>Loading...</>}</div>
-        {firstProductImage && <img src={firstProductImage.url} />}
-        <div>Rank: {option.rank}</div>
+        <div className="option-header">
+          <CircularProgress percent={option.rank} />
+          {product !== null ? (
+            <div className="option-name">{product.name}</div>
+          ) : (
+            <Spinner animation="grow" />
+          )}
+        </div>
+
         <div>
+          {product !== null ? (
+            <Link to={routes.product(product.pk)}>
+              {firstProductImage && (
+                <img src={firstProductImage.url} className="option-image" />
+              )}
+            </Link>
+          ) : (
+            <Spinner animation="grow" />
+          )}
+        </div>
+        <div className="option-footer">
           👍{" "}
           <Button
             variant="link"
@@ -315,7 +340,11 @@ const Option = ({ question, option, onVote }) => {
         <div>Experience: {vote?.at(0)?.experience}</div>
         <div>
           Price:{" "}
-          {product !== null ? product.price.presentation : <>Loading...</>}
+          {product !== null ? (
+            product.price.presentation
+          ) : (
+            <Spinner animation="grow" />
+          )}
         </div>
         {product?.website && <a href={product?.website}>See</a>}
         <Button onClick={() => setShareShown(true)}>Share</Button>
@@ -372,7 +401,7 @@ const Options = ({ question }) => {
   // --- Rendering ---
 
   if (options === null) {
-    return <div>Loading...</div>;
+    return <Spinner animation="grow" />;
   }
 
   return options.results.map((option, index) => (
@@ -551,10 +580,14 @@ const Question = () => {
           onSuggest={() => setDefaultShown(true)}
         />
         <hr />
-        {question && <Category question={question} />}
+        {/* {question && <Category question={question} />} */}
 
         {render()}
-        {question ? <Options question={question} /> : <>Loading...</>}
+        {question ? (
+          <Options question={question} />
+        ) : (
+          <Spinner animation="grow" />
+        )}
         <ProductSuggestModal
           defaultShow={defaultShown}
           question={question}
