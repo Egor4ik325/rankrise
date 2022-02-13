@@ -336,18 +336,20 @@ const Option = ({ question, option, onVote }) => {
             Downvotes
           </Button>
           {option.downvotes}
+          <div>
+            Price:{" "}
+            {product !== null ? (
+              product.price.presentation
+            ) : (
+              <Spinner animation="grow" />
+            )}
+          </div>
+          {product?.website && <a href={product?.website}>See</a>}
+          <Button onClick={() => setShareShown(true)} className="d-block">
+            Share
+          </Button>
+          {/* <div>Experience: {vote?.at(0)?.experience}</div> */}
         </div>
-        <div>Experience: {vote?.at(0)?.experience}</div>
-        <div>
-          Price:{" "}
-          {product !== null ? (
-            product.price.presentation
-          ) : (
-            <Spinner animation="grow" />
-          )}
-        </div>
-        {product?.website && <a href={product?.website}>See</a>}
-        <Button onClick={() => setShareShown(true)}>Share</Button>
       </div>
       <ShareExperienceModal
         show={shareShown}
