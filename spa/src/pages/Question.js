@@ -4,6 +4,7 @@ import api from "../client";
 import { APIError, DoesNotExistsError } from "../client/errors";
 import moment from "moment";
 import {
+  ButtonGroup,
   Button,
   Form,
   OverlayTrigger,
@@ -16,9 +17,16 @@ import { useUserContext } from "../hooks/UserContext";
 import AsyncSelect from "react-select/async";
 import ReportModal from "../components/ReportModal";
 import { ObjectModel } from "../client/models";
-import { faFlag } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFlag,
+  faAngleUp,
+  faAngleDown,
+  faBullhorn,
+  faLink,
+} from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CircularProgress from "../components/CircularProgress";
+import { Price } from "../client/models";
 
 const Headline = ({ question, onReport, onSuggest }) => {
   if (question === undefined) {
@@ -315,39 +323,61 @@ const Option = ({ question, option, onVote }) => {
           )}
         </div>
         <div className="option-footer">
-          👍{" "}
-          <Button
-            variant="link"
-            className={`text-dark text-decoration-none ${
-              votedUp && " fw-bold"
-            }`}
-            onClick={handleUpvoteClick}
-          >
-            Upvotes
-          </Button>
-          {option.upvotes} | 👎{" "}
-          <Button
-            variant="link"
-            className={`text-dark text-decoration-none ${
-              votedDown && " fw-bold"
-            }`}
-            onClick={handleDownvoteClick}
-          >
-            Downvotes
-          </Button>
-          {option.downvotes}
-          <div>
-            Price:{" "}
+          <div className="option-price">
             {product !== null ? (
-              product.price.presentation
+              product.price.value === Price.Free ? (
+                <div className="option-price-free">
+                  FREE
+                  <FontAwesomeIcon icon={faLink} />
+                </div>
+              ) : product.price.value === Price.Paid ? (
+                <div className="option-price-paid">
+                  PAID
+                  <FontAwesomeIcon icon={faLink} />
+                </div>
+              ) : product.price.value === Price.OpenSource ? (
+                <div className="option-price-open">
+                  OPEN
+                  <FontAwesomeIcon icon={faLink} />
+                </div>
+              ) : (
+                <></>
+              )
             ) : (
               <Spinner animation="grow" />
             )}
           </div>
-          {product?.website && <a href={product?.website}>See</a>}
-          <Button onClick={() => setShareShown(true)} className="d-block">
-            Share
-          </Button>
+          <div className="option-footer-right">
+            <div className="option-votes">
+              <ButtonGroup>
+                <Button
+                  variant="link"
+                  className={`option-upvote text-dark text-decoration-none  ${
+                    votedUp && " fw-bold"
+                  }`}
+                  onClick={handleUpvoteClick}
+                >
+                  <FontAwesomeIcon icon={faAngleUp} />
+                  <div>{option.upvotes}</div>
+                  <div>Recommend</div>
+                </Button>
+                <Button
+                  variant="link"
+                  className={`option-downvote text-dark text-decoration-none ${
+                    votedDown && " fw-bold"
+                  }`}
+                  onClick={handleDownvoteClick}
+                >
+                  <FontAwesomeIcon icon={faAngleDown} /> {option.downvotes}
+                </Button>
+              </ButtonGroup>
+            </div>
+            <div className="option-share">
+              <Button onClick={() => setShareShown(true)} className="d-block">
+                <FontAwesomeIcon icon={faBullhorn} />
+              </Button>
+            </div>
+          </div>
           {/* <div>Experience: {vote?.at(0)?.experience}</div> */}
         </div>
       </div>
@@ -500,7 +530,15 @@ const ProductSuggestModal = ({ defaultShow, question, onSuggest, onClose }) => {
 
   return (
     <>
-      <Button onClick={handleSuggestClick}>Suggest</Button>
+      <div className="d-flex justify-content-center">
+        <Button
+          onClick={handleSuggestClick}
+          variant="tertiary"
+          className="btn-suggest"
+        >
+          Suggest
+        </Button>
+      </div>
       <Modal
         header={<div>Suggest an Option</div>}
         show={shown}
@@ -554,14 +592,6 @@ const Question = () => {
     fetchQuestion();
   }, [id]);
 
-  const render = () => {
-    if (question === undefined) {
-      return <div>Loading</div>;
-    }
-
-    return <div>Question #{id}</div>;
-  };
-
   const handleOptionSuggest = () => {
     // Trigger question state change + refetch
     setQuestion(undefined);
@@ -584,7 +614,6 @@ const Question = () => {
         <hr />
         {/* {question && <Category question={question} />} */}
 
-        {render()}
         {question ? (
           <Options question={question} />
         ) : (

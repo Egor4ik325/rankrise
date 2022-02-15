@@ -35,6 +35,7 @@
     width: 600px;
     margin: 0 auto;
     padding: 0;
+    margin-bottom: 30px;
 
     &-header {
       display: flex;
@@ -51,10 +52,73 @@
       width: 100%;
       height: 200px;
       object-fit: cover;
+      margin: 20px 0;
     }
 
     &-footer {
+      font-size: 1.2rem !important;
       display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 15px 20px;
+      &-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
     }
+    &-price {
+      &-free,
+      &-paid,
+      &-open {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 5px 10px;
+        border-radius: 10px;
+      }
+
+      &-free {
+        background-color: $teal-200;
+      }
+      &-paid {
+        background-color: $purple-200;
+      }
+      &-open {
+        background-color: $cyan-200;
+      }
+    }
+    &-votes {
+      .btn {
+        background-color: $bisque;
+        font-size: 1.2rem !important;
+      }
+    }
+
+    &-upvote {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-right: 3px solid $white;
+    }
+    &-downvote {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    &-share {
+      .btn {
+        background-color: $bisque;
+        color: $black;
+        font-size: 1.2rem !important;
+        border: none;
+      }
+    }
+  }
+
+  .btn-suggest {
+    margin: 30px auto;
+    font-size: 1.8rem;
+    border-radius: 20px;
   }
 }

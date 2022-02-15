@@ -7,6 +7,13 @@ import routes from "../routes";
 import api from "../client";
 import ReportModal from "../components/ReportModal";
 import { ObjectModel } from "../client/models";
+import {
+  faFlag,
+  faLink,
+  faAngleLeft,
+  faAngleRight,
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ImageForm = ({ product, onSubmit }) => {
   const [user, ,] = useUserContext();
@@ -91,7 +98,7 @@ const Category = ({ product }) => {
     return <div>Category: loading...</div>;
   }
 
-  return <div>Category: {category.name}</div>;
+  return category.name;
 };
 
 const Product = () => {
@@ -146,7 +153,13 @@ const Product = () => {
 
     // return null;
     return images.map((image) => (
-      <img key={image.pk} src={image.url} width={200} />
+      <div className="product__images__item" key={image.pk}>
+        <img
+          className="product__images__item__image"
+          src={image.url}
+          width={200}
+        />
+      </div>
     ));
   };
 
@@ -160,25 +173,69 @@ const Product = () => {
 
     return (
       <>
-        <div>
-          <h2>{product.name}</h2>
-          <Button variant="light" onClick={() => setShowReportModal(true)}>
-            Report
-          </Button>
-          {product.category && <Category product={product} />}
-          <p>{product.description}</p>
-          <div>Price: {product.price.presentation}</div>
-          {product.website && <a href={product.website}>Check Out</a>}
-          <div>
-            <h5>Images:</h5>
-            <div>{renderImages()}</div>
-            {user === undefined ? (
-              <div>Loading...</div>
-            ) : (
-              <ImageForm product={product} onSubmit={handleImageSubmit} />
-            )}
+        <main className="product card">
+          <div className="product__header">
+            <h2 className="product__header__heading">{product.name}</h2>
+            <div
+              className="product__header__report"
+              onClick={() => setShowReportModal(true)}
+            >
+              <FontAwesomeIcon icon={faFlag} />
+            </div>
           </div>
+          <div className="product__category">Gaming</div>
+          {/* <div className="product__category">
+            {product.category && <Category product={product} />}
+          </div> */}
+          {/* <p className="product__description">{product.description}</p> */}
+          <p className="product__description">
+            Minecraft is game of freedom, of creativity and infinite
+            imagination.
+          </p>
+          <div className="product__link-price">
+            <Button
+              as={"a"}
+              className="product__link-price__link"
+              variant="tertiary"
+              href={product?.website}
+            >
+              <div className="product__link-price__link__text">Open</div>
+              <FontAwesomeIcon icon={faLink} />
+            </Button>
+            <div className="product__link-price__price">
+              {product.price.presentation}
+            </div>
+          </div>
+          <div className="product__images">
+            <div className="product__images__button product__images__button--left">
+              <FontAwesomeIcon icon={faAngleLeft} />
+            </div>
+            {/* {renderImages()} */}
+            {/* <div className="product__images__item">
+              <img className="product__image" />
+              <div className="product__image__add-icon"></div>
+            </div>
+            <div className="product__images__item"></div>
+            <div className="product__images__item"></div>
+            <div className="product__images__item"></div> */}
+            <div className="product__images__button product__images__button--right">
+              <FontAwesomeIcon icon={faAngleRight} />
+            </div>
+          </div>
+        </main>
+
+        <p></p>
+        {/* <div>Price: </div> */}
+        {}
+        <div>
+          <div></div>
+          {user === undefined ? (
+            <div>Loading...</div>
+          ) : (
+            <ImageForm product={product} onSubmit={handleImageSubmit} />
+          )}
         </div>
+        {/* </main> */}
         <ReportModal
           show={showReportModal}
           onHide={() => setShowReportModal(false)}

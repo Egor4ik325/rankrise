@@ -1,0 +1,78 @@
+// Block (root), element (child), modifier (customization), global CSS class (kebab-case).
+.product {
+  width: 700px;
+  margin: 30px auto;
+  padding: 30px;
+  position: relative;
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+
+    &__heading {
+      font-size: 2.2rem;
+      margin-bottom: 0;
+    }
+    &__report {
+      font-size: 1.2rem;
+    }
+  }
+
+  &__category {
+    font-size: 1.4rem;
+    margin-bottom: 2rem;
+  }
+
+  &__description {
+    font-size: larger;
+    margin-bottom: 2rem;
+  }
+
+  &__link-price {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+
+    &__link {
+      display: flex;
+      width: 100px;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+
+      &__text {
+        margin-right: 0.5rem;
+      }
+    }
+    &__price {
+      text-transform: uppercase;
+    }
+  }
+
+  &__images {
+    display: grid;
+    grid-auto-flow: column;
+    gap: 15px;
+    overflow-x: scroll;
+    padding-bottom: 10px;
+
+    &__button {
+      position: absolute;
+      bottom: 90px;
+      font-size: 1.2rem;
+
+      &--left {
+        left: 10px;
+      }
+      &--right {
+        right: 10px;
+      }
+    }
+
+    &__item {
+      &__image {
+        border-radius: 8px;
+      }
+    }
+  }
+}
