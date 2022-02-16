@@ -35,13 +35,20 @@ const ReportModal = ({ show, onHide, model, id }) => {
 
   return (
     <Modal
+      className="report-modal"
       show={show}
       onHide={onHide}
       header={<div>Report {_.capitalize(model)}</div>}
+      footer={
+        <Button
+          className="modal__button--action"
+          type="submit"
+          variant="tertiary"
+        >
+          Report
+        </Button>
+      }
     >
-      <h3>
-        Report {_.capitalize(model)} #{id}
-      </h3>
       <Form onSubmit={handleSubmit}>
         <Form.Group>
           <Form.Label>Title</Form.Label>
@@ -55,6 +62,7 @@ const ReportModal = ({ show, onHide, model, id }) => {
         <Form.Group>
           <Form.Label>Description</Form.Label>
           <Form.Control
+            className="report-modal__description"
             as="textarea"
             name="description"
             autoComplete="off"
@@ -62,9 +70,6 @@ const ReportModal = ({ show, onHide, model, id }) => {
             onChange={handleDescriptionChange}
           />
         </Form.Group>
-        <Button type="submit" variant="tertiary">
-          Report
-        </Button>
       </Form>
     </Modal>
   );

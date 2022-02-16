@@ -16,5 +16,25 @@
   .modal__button--close,
   .modal__button--action {
     font-size: 1.3rem;
+    padding-left: 25px;
+    padding-right: 25px;
+  }
+}
+
+.report-modal {
+  &__description {
+    resize: none;
+  }
+}
+
+.share-experience-modal {
+  &__experience {
+    height: 100px;
+    resize: none;
+  }
+  &__help-text {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: $gray-800;
   }
 }

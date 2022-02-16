@@ -134,11 +134,30 @@ const ShareExperienceModal = ({
   };
 
   return (
-    <Modal header={<>Share experience</>} show={show} onHide={onHide}>
-      <p>Let others know why you like or dislike a particular option.</p>
+    <Modal
+      className="share-experience-modal"
+      header={<>Share your Experience</>}
+      footer={
+        <Button
+          className="modal__button--action"
+          variant="tertiary"
+          type="submit"
+        >
+          Share
+        </Button>
+      }
+      show={show}
+      onHide={onHide}
+    >
       <Form onSubmit={handleShare}>
-        <Form.Control as="textarea" name="experience" onChange={handleChange} />
-        <Button type="submit">Share</Button>
+        <Form.Label>Experience</Form.Label>
+        <Form.Control
+          className="share-experience-modal__experience"
+          as="textarea"
+          name="experience"
+          onChange={handleChange}
+        />
+        <div className="share-experience-modal__help-text">Optional</div>
       </Form>
     </Modal>
   );
@@ -563,8 +582,12 @@ const ProductSuggestModal = ({ defaultShow, question, onSuggest, onClose }) => {
           onInputChange={handleInputChange}
           onChange={(newSelectedValue) => setSelectedValue(newSelectedValue)}
         />
-        <p className="pt-3">Or</p>
-        <Button variant="link" onClick={handleAddNewClick}>
+        <p className="mt-3">Or</p>
+        <Button
+          className="p-0 text-dark"
+          variant="link"
+          onClick={handleAddNewClick}
+        >
           Add new
         </Button>
       </Modal>

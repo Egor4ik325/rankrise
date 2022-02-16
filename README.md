@@ -268,11 +268,11 @@ Nice to have:
 
 - [x] Search
 
-- [ ] Question page
+- [x] Question page
 
-- [ ] Product add
+- [x] Product add
 
-- [ ] Modals
+- [x] Modals
 
 ## Question
 

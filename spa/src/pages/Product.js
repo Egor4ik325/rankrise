@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button, Form, Spinner } from "react-bootstrap";
 import { useParams, useNavigate } from "react-router-dom";
 import { useUserContext } from "../hooks/UserContext";
 import { useMessages } from "../hooks/MessagesContext";
@@ -12,6 +12,7 @@ import {
   faLink,
   faAngleLeft,
   faAngleRight,
+  faPlus,
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -64,10 +65,14 @@ const ImageForm = ({ product, onSubmit }) => {
   }
 
   return (
-    <Form>
+    <Form className="product__images__add-image-form">
       <Form.Group>
-        <Form.Label>Upload an image</Form.Label>
+        <FontAwesomeIcon
+          className="product__images__add-image-form__icon"
+          icon={faPlus}
+        />
         <Form.Control
+          className="product__images__add-image-form__control"
           type="file"
           name="image"
           accept="image/*"
@@ -210,31 +215,20 @@ const Product = () => {
             <div className="product__images__button product__images__button--left">
               <FontAwesomeIcon icon={faAngleLeft} />
             </div>
-            {/* {renderImages()} */}
-            {/* <div className="product__images__item">
-              <img className="product__image" />
-              <div className="product__image__add-icon"></div>
-            </div>
-            <div className="product__images__item"></div>
-            <div className="product__images__item"></div>
-            <div className="product__images__item"></div> */}
+            {renderImages()}
+            {user === undefined ? (
+              <div className="product__images__item">
+                <Spinner animation="grow" />
+              </div>
+            ) : (
+              <ImageForm product={product} onSubmit={handleImageSubmit} />
+            )}
             <div className="product__images__button product__images__button--right">
               <FontAwesomeIcon icon={faAngleRight} />
             </div>
           </div>
         </main>
 
-        <p></p>
-        {/* <div>Price: </div> */}
-        {}
-        <div>
-          <div></div>
-          {user === undefined ? (
-            <div>Loading...</div>
-          ) : (
-            <ImageForm product={product} onSubmit={handleImageSubmit} />
-          )}
-        </div>
         {/* </main> */}
         <ReportModal
           show={showReportModal}

@@ -3,7 +3,7 @@ import { Button, Modal } from "react-bootstrap";
 const Model = ({ header, footer, children, ...props }) => {
   return (
     <Modal {...props} size="lg" centered>
-      <Modal.Header closeButton>
+      <Modal.Header className="mx-3" closeButton>
         <Modal.Title id="contained-modal-title-vcenter">{header}</Modal.Title>
       </Modal.Header>
       <Modal.Body>{children}</Modal.Body>
