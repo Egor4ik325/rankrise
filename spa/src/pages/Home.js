@@ -61,26 +61,30 @@ const QuestionCreateModal = ({ show, onHide, onQuestionCreate }) => {
 
   return (
     <Modal
-      header={<>My modal</>}
+      className="create-question-modal"
+      header={<>Create new question</>}
       footer={
-        <Button variant="tertiary" onClick={handleFormSubmit}>
+        <Button
+          className="modal__button--action"
+          variant="tertiary"
+          onClick={handleFormSubmit}
+        >
           Create
         </Button>
       }
       show={show}
       onHide={onHide}
     >
-      <h3>Hello, World</h3>
-      <p>It is my modal</p>
       <Form>
         <Form.Group>
-          <Form.Label>Title</Form.Label>
+          <Form.Label>Ask your question</Form.Label>
           <Form.Control
             type="text"
             placeholder="What is the best game?"
             onChange={handleTitleChange}
             required
             isInvalid={invalid}
+            height={60}
           />
         </Form.Group>
         <Form.Group>

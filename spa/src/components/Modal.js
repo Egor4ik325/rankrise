@@ -8,7 +8,9 @@ const Model = ({ header, footer, children, ...props }) => {
       </Modal.Header>
       <Modal.Body>{children}</Modal.Body>
       <Modal.Footer>
-        <Button onClick={props.onHide}>Close</Button>
+        <Button className="modal__button--close" onClick={props.onHide}>
+          Close
+        </Button>
         {footer}
       </Modal.Footer>
     </Modal>

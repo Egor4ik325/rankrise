@@ -2,7 +2,7 @@ import { useRef } from "react";
 import AsyncSelect from "react-select/async";
 import api from "../client";
 
-const CategorySelect = ({ onChange }) => {
+const CategorySelect = ({ onChange, styles }) => {
   const fetchTimeoutId = useRef(null);
 
   const fetchCategories = async (inputValue) => {
@@ -34,6 +34,7 @@ const CategorySelect = ({ onChange }) => {
       loadOptions={loadCategories}
       onChange={(category) => onChange(category.value)}
       defaultOptions
+      styles={styles}
     />
   );
 };

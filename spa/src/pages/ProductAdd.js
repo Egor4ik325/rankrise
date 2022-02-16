@@ -6,6 +6,7 @@ import api from "../client";
 import { Price } from "../client/models";
 import CategorySelect from "../components/CategorySelect";
 import { useMessages } from "../hooks/MessagesContext";
+import addInformation from "../assets/img/illustrations/add-information.svg";
 
 const ProductAdd = () => {
   const location = useLocation();
@@ -69,10 +70,16 @@ const ProductAdd = () => {
   ];
 
   return (
-    <Container>
-      <h2>Add Product</h2>
-      <Form onSubmit={handleFormSubmit}>
-        <Form.Group>
+    <Container className="product-add">
+      <div className="product-add__illustration">
+        <h2 className="product-add__illustration__heading">Add Product</h2>
+        <img
+          className="product-add__illustration__image"
+          src={addInformation}
+        />
+      </div>
+      <Form className="product-add__form" onSubmit={handleFormSubmit}>
+        <Form.Group className="product-add__form__group">
           <Form.Label>Name</Form.Label>
           <Form.Control
             type="text"
@@ -84,9 +91,10 @@ const ProductAdd = () => {
             autoFocus="on"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="product-add__form__group">
           <Form.Label>Description</Form.Label>
           <Form.Control
+            className="product-add__form__description"
             as="textarea"
             placeholder="Web browser created by Mozilla organization."
             name="description"
@@ -94,11 +102,33 @@ const ProductAdd = () => {
             autoComplete="off"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="product-add__form__group">
           <Form.Label>Category</Form.Label>
-          <CategorySelect onChange={handleCategoryChange} />
+          <CategorySelect
+            className="product-add__form__category"
+            onChange={handleCategoryChange}
+            styles={{
+              control: (styles) => ({ ...styles, borderRadius: 10 }),
+              option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+                if (isSelected) {
+                  return {
+                    ...styles,
+                    backgroundColor: "#ffbb98",
+                  };
+                }
+
+                if (isFocused) {
+                  return {
+                    ...styles,
+                    backgroundColor: "var(--bs-tertiary)",
+                  };
+                }
+                return styles;
+              },
+            }}
+          />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="product-add__form__group">
           <Form.Label>Website</Form.Label>
           <Form.Control
             type="url"
@@ -108,15 +138,42 @@ const ProductAdd = () => {
             autoComplete="off"
           />
         </Form.Group>
-        <Form.Group>
+        <Form.Group className="product-add__form__group">
           <Form.Label>Price</Form.Label>
           <Select
+            className="product-add__form__price"
             options={options}
             name="price"
             onChange={(option) => setForm({ ...form, price: option.value })}
+            styles={{
+              control: (styles) => ({
+                ...styles,
+                borderRadius: 10,
+              }),
+              option: (styles, { data, isDisabled, isFocused, isSelected }) => {
+                if (isSelected) {
+                  return {
+                    ...styles,
+                    backgroundColor: "#ffbb98",
+                  };
+                }
+
+                if (isFocused) {
+                  return {
+                    ...styles,
+                    backgroundColor: "var(--bs-tertiary)",
+                  };
+                }
+                return styles;
+              },
+            }}
           />
         </Form.Group>
-        <Button variant="tertiary" type="submit">
+        <Button
+          className="product-add__form__submit"
+          variant="tertiary"
+          type="submit"
+        >
           Add
         </Button>
       </Form>

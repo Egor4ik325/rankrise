@@ -541,22 +541,32 @@ const ProductSuggestModal = ({ defaultShow, question, onSuggest, onClose }) => {
       </div>
       <Modal
         header={<div>Suggest an Option</div>}
+        footer={
+          <Button
+            className="modal__button--action"
+            variant="tertiary"
+            onClick={handleSuggestOption}
+          >
+            Suggest
+          </Button>
+        }
         show={shown}
         onHide={() => {
           setShown(false);
           onClose();
         }}
       >
-        <p>Select existing product</p>
+        <Form.Label>Select existing product</Form.Label>
         <AsyncSelect
           // cacheOptions
           loadOptions={loadOptions}
           onInputChange={handleInputChange}
           onChange={(newSelectedValue) => setSelectedValue(newSelectedValue)}
         />
-        <Button onClick={handleSuggestOption}>Suggest</Button>
-        <p>Or</p>
-        <Button onClick={handleAddNewClick}>Add new</Button>
+        <p className="pt-3">Or</p>
+        <Button variant="link" onClick={handleAddNewClick}>
+          Add new
+        </Button>
       </Modal>
     </>
   );
